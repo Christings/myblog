@@ -3,16 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
-author: John Doe
+title: lilly's blog
+subtitle: Up in the wind!
+description: 研究生、爬虫、python、数据挖掘、数据分析、前端
+author: Lilly gong
+email: voidqueens@hotmail.com
 language:
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://gladysgong.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -75,9 +76,43 @@ pagination_dir: page
 theme: yilia
 #theme: next
 
+# Extensions
+Plugins:
+- hexo-generator-feed
+- hexo-generator-sitemap
+
+#Feed Atom
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+
+#sitemap
+sitemap:
+  path: sitemap.xml
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
   repo: git@github.com:gladysgong/gladysgong.github.io.git
   branch: master
+
+jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
