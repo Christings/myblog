@@ -1,12 +1,11 @@
 ---
-title: Hexo+Github Pages搭建博客
+title: Hexo+Github Pages+yilia搭建博客
 date: 2018-01-05 18:06:40
+toc: true
 tags:
         - Hexo
         - Github
         - yilia
-categories:
-        - crawler
 ---
 
 # Hexo+Github Pages搭建博客
@@ -18,13 +17,13 @@ categories:
 ### 一、快速创建个人Github Pages
 #### 1.什么是Github Pages
 
+<!-- more-->
+
 	GitHub Pages 本用于介绍托管在GitHub的项目，不过由于他的空间免费稳定，很适合用来搭建一个博客。
 
 	每个帐号只能有一个仓库来存放个人主页，而且仓库的名字必须是username/username.github.io，这是特殊的命名约定。你可以通过http://username.github.io 来访问你的个人主页，比如我的就是gladysgong.github.io。
 
 	这里特别提醒一下，需要注意的个人主页的网站内容是在master分支下的。
-	
-<!-- more-->
 
 #### 2.创建自己的Github Pages
 	新建代码仓库(repository),此处命名格式有限制的，形如username.github.io
