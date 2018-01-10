@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f6a80d5-a3c2-4c35-819d-01f20c0dec5a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/source/baidu_verify_bcmq5jEIWm.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/source/googlec682ccfee60b1f8c.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/themes/next" afterPath="$PROJECT_DIR$/themes/next" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/themes/yilia" afterPath="$PROJECT_DIR$/themes/yilia" />
     </list>
@@ -69,8 +67,8 @@
       <file leaf-file-name="head.swig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/themes/next/layout/_partials/head.swig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="49" column="93" lean-forward="false" selection-start-line="49" selection-start-column="93" selection-end-line="49" selection-end-column="93" />
+            <state relative-caret-position="502">
+              <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -175,9 +173,9 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="338" />
-    <option name="y" value="115" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="-42" />
+    <option name="y" value="104" />
     <option name="width" value="1936" />
     <option name="height" value="1083" />
   </component>
@@ -499,15 +497,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1515145243484</updated>
-      <workItem from="1515372563307" duration="43899000" />
+      <workItem from="1515372563307" duration="43961000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43899000" />
+    <option name="totallyTimeSpent" value="43961000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="338" y="115" width="1936" height="1083" extended-state="0" />
+    <frame x="-42" y="104" width="1936" height="1083" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -814,8 +812,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/themes/next/layout/_partials/head.swig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="49" column="93" lean-forward="false" selection-start-line="49" selection-start-column="93" selection-end-line="49" selection-end-column="93" />
+        <state relative-caret-position="502">
+          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding />
         </state>
       </provider>
