@@ -10,14 +10,12 @@ tags:
 
 # Hexo+Github Pages搭建博客
  
-
 - CSDN地址: http://blog.csdn.net/u012052168/article/details/78981377
 - 博客展示: https://gongyanli.com
 - github: https://github.com/Gladysgong/Gladysgong.github.io
 ### 一、快速创建个人Github Pages
-#### 1.什么是Github Pages
-
 <!-- more-->
+#### 1.什么是Github Pages
 
 	GitHub Pages 本用于介绍托管在GitHub的项目，不过由于他的空间免费稳定，很适合用来搭建一个博客。
 

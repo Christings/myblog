@@ -5,10 +5,10 @@
 # Site
 title: lilly's blog
 subtitle: voidqueens@hotmail.com
-description: 研究生、爬虫、python、数据挖掘、数据分析、前端
-author: Lilly gong
+description: Up in the wind!
+author: Lilly
 email: voidqueens@hotmail.com
-language:
+language: zh-Hans
 timezone:
 
 # URL
@@ -35,7 +35,7 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true # 插入图片--七牛
 relative_link: false
 future: true
 highlight:
@@ -73,8 +73,8 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yilia
-#theme: next
+#theme: yilia
+theme: next
 
 # Extensions
 Plugins:
