@@ -6,6 +6,8 @@ tags:
         - 搜索引擎
 categirues:
 	- 爬虫
+	- scrapy
+	- 搜索引擎
 ---
 
 # 搜索引擎
