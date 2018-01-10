@@ -14,7 +14,6 @@ github：https://github.com/Gladysgong/3D_earth_all
 csdn: http://blog.csdn.net/u012052168/article/details/78459872
 tips：可以自己研究一下，等有时间我再详细讲解代码。
 ### 1.worldFlights
-<!-- more-->
 	所用框架：philogl
 	位置：examples\worldFlights
 	说明：philogl (https://github.com/senchalabs/philogl) 官方项目下的一个demo，把全球飞行航线在3d地球上表示出来。
