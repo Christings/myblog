@@ -6,14 +6,14 @@
 title: lilly's blog
 subtitle: voidqueens@hotmail.com
 description: Up in the wind!
-author: Lilly
+author: Lillyp
 email: voidqueens@hotmail.com
 language: zh-Hans
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://gladysgong.github.io
+url: http://gongyanli.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -95,7 +95,9 @@ sitemap:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:gladysgong/gladysgong.github.io.git
+  repo:
+    - git@github.com:gladysgong/gladysgong.github.io.git
+    - git@git.coding.net:Lillygong/Lillygong.coding.me.git
   branch: master
 
 jsonContent:
