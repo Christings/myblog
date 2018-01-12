@@ -6,7 +6,7 @@
 title: lilly's blog
 subtitle: voidqueens@hotmail.com
 description: Up in the wind!
-author: Lillyp
+author: Lilly
 email: voidqueens@hotmail.com
 language: zh-Hans
 timezone:
@@ -15,7 +15,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://gongyanli.com
 root: /
-permalink: :year/:month/:day/:title/
+permalink: :title/
 permalink_defaults:
 
 # Directory
