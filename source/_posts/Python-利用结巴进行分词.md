@@ -1,0 +1,39 @@
+---
+title: Python--利用结巴进行分词
+date: 2018-01-26 18:51:20
+tags: [jieba]
+categories:
+		- nlp
+		- jieba
+---
+> 本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Python-%E5%88%A9%E7%94%A8%E7%BB%93%E5%B7%B4%E8%BF%9B%E8%A1%8C%E5%88%86%E8%AF%8D/)
+
+
+前言：本文是一些关于jieba分词的简单操作，把文档进行分词后，然后利用wordcloud输出。
+
+## 一、安装
+	
+	pip install jieba
+## 二、准备数据
+
+依然是维基百科文章保存为txt，地址[https://zh.wikipedia.org/wiki/%E6%AC%A7%E9%98%B3%E4%BF%AE](https://zh.wikipedia.org/wiki/%E6%AC%A7%E9%98%B3%E4%BF%AE)
+下载文件[simsun.ttf](https://s3-us-west-2.amazonaws.com/notion-static/b869cb0c7f4e4c909a069eaebbd2b7ad/simsun.ttf)，如果没有这个文件，生成的词云将会是乱码，不是中文。因为wordcloud默认字体是英文，不包含中文编码。
+## 三、分词
+	
+	`import jieba  # 导入jieba
+	import matplotlib.pyplot as plt
+	from wordcloud import WordCloud
+
+	filename = "ouyangxiu.txt"
+	with open(filename) as f:
+    	mytext = f.read()
+    	mytext=" ".join(jieba.cut(mytext))  # 进行jieba分词
+    	wordcloud=WordCloud(font_path="simsun.ttf").generate(mytext) 
+		# 中文分词后再生成词云，同时注意指定输出字体simsun.ttf
+    	plt.imshow(wordcloud,interpolation='bilinear')
+    	plt.axis("off")
+    	plt.show()
+    # print(mytext)
+`
+## 四、出图
+![](http://p2lakvkq0.bkt.clouddn.com/ouyangxiu.jpg)

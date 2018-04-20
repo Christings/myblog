@@ -7,10 +7,17 @@ tags:
 		- map
 		- 百度地图扩展
 categories:
-		- front
+		- 前端
+		- echarts
 ---
-- github：https://github.com/Gladysgong/echarts-map
-- csdn: http://blog.csdn.net/u012052168/article/details/79014246
+![](http://p2lakvkq0.bkt.clouddn.com/echarts01.jpg)
+> 本文首发于我的博客：[gongyanli.com](http://gongyanli.com/echarts-map-%E7%99%BE%E5%BA%A6%E5%9C%B0%E5%9B%BE%E6%89%A9%E5%B1%95/)
+> 
+> github：https://github.com/Gladysgong/echarts-map
+> 
+> csdn: http://blog.csdn.net/u012052168/article/details/79014246
+<!--more-->
+
 ### 一、worldMap.html--世界地图
 	依赖：echarts.js和world.js
 

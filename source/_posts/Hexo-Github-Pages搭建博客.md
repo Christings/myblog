@@ -5,14 +5,13 @@ toc: true
 tags:
         - Hexo
         - Github
-        - yilia
+categories:
+		- 博客
+		- hexo
 ---
-
-# Hexo+Github Pages搭建博客
+>本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Hexo-Github-Pages%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/)  
+>github: [https://github.com/Gladysgong/Gladysgong.github.io](https://github.com/Gladysgong/Gladysgong.github.io)
  
-- CSDN地址: http://blog.csdn.net/u012052168/article/details/78981377
-- 博客展示: https://gongyanli.com
-- github: https://github.com/Gladysgong/Gladysgong.github.io
 ### 一、快速创建个人Github Pages
 #### 1.什么是Github Pages
 

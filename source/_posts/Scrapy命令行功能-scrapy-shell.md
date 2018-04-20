@@ -1,13 +1,12 @@
 ---
 title: Scrapy命令行功能--scrapy shell
 date: 2018-01-12 15:36:05
-tags:
-		- scrapy
+tags: [Scrapy]
 categories:
 		- 爬虫
-		- scrapy
+		- Scrapy
 ---
->本文首发于我的博客：gongyanli.com
+>本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Scrapy%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8A%9F%E8%83%BD-scrapy-shell/)
 
 前言:本文主要讲解Scrapy的命令行功能，Scrapy提供了两种类型的命令。
 	

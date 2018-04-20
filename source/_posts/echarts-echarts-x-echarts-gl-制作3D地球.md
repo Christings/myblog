@@ -8,11 +8,17 @@ tags:
         - echarts-gl
         - 3D地球
 categories:
-        - front
+        - 前端
+        - echarts
 ---
-github：https://github.com/Gladysgong/3D_earth_all
-csdn: http://blog.csdn.net/u012052168/article/details/78459872
-tips：可以自己研究一下，等有时间我再详细讲解代码。
+>本文首发于我的博客：[gongyanli.com](http://gongyanli.com/echarts-echarts-x-echarts-gl-%E5%88%B6%E4%BD%9C3D%E5%9C%B0%E7%90%83/)  
+>
+>github：https://github.com/Gladysgong/3D_earth_all
+>
+>csdn: http://blog.csdn.net/u012052168/article/details/78459872
+
+前言：因为要做一个3D地球，之前也没怎么用过echarts，再加上就是个业余前端水平，所以折腾了好久，代码下载下来可以直接运行，具体情况看我每个里面怎么说的。小伙伴们可以自己先研究一下，等有时候我详细代码注释一下。
+
 ### 1.worldFlights
 	所用框架：philogl
 	位置：examples\worldFlights
