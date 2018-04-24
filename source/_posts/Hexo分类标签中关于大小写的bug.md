@@ -3,6 +3,7 @@ title: Hexo分类标签中关于大小写的bug
 date: 2018-04-13 14:13:58
 tags: Hexo
 categories:
+		- 博客
 		- Hexo
 ---
 ### 1.描述
