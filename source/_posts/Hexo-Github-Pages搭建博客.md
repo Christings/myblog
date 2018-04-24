@@ -7,7 +7,7 @@ tags:
         - Github
 categories:
 		- 博客
-		- hexo
+		- Hexo
 ---
 >本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Hexo-Github-Pages%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/)  
 >github: [https://github.com/Gladysgong/Gladysgong.github.io](https://github.com/Gladysgong/Gladysgong.github.io)
