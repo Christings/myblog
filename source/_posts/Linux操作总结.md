@@ -196,4 +196,7 @@ categories:
 	
 	diff test test.bak
 	vimdiff test test.bak
+### 28.查看Linux中的命令及帮助文档？待确认用法
+	compgen -c
+	连按两次tab
 
