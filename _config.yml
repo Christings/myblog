@@ -74,7 +74,7 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 #theme: yilia
-theme: next
+theme: next-reloaded
 
 # Extensions
 Plugins:
@@ -106,7 +106,7 @@ deploy:
 - type: git
   repo:
     - git@github.com:gladysgong/gladysgong.github.io.git
-    - git@git.coding.net:Lillygong/Lillygong.coding.me.git
+#    - git@git.coding.net:Lillygong/Lillygong.coding.me.git
   branch: master
 - type: baidu_url_submitter
 

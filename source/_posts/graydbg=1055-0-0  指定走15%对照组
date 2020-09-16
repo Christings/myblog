@@ -1,0 +1,66 @@
+graydbg=1055-0-0  指定走15%对照组
+graydbg=1055-0-1  指定走15%实验组
+
+Q=kg游戏俱乐部   可验证单独回捞实验vr逻辑
+Q=徽柔   可验证回捞实验vr和原始vr逻辑
+
+
+普通前端（不走实验） 
+                Q=kg游戏俱乐部   没有微博展现
+                Q=徽柔    展现11018201
+实验前端（带实验参数）
+                Q=kg游戏俱乐部   展现11018202
+                Q=徽柔    展现11018202
+
+
+http://10.160.59.114/web/searchList.jsp?uID=AAHj15waLwAAAAqgO3IyJwAAAAA%3D&v=5&dp=1&pid=sogou-waps-7880d7226e872b77&w=1283&t=1590815549688&s_t=1590815558316&s_from=result_up&htprequery=%E5%BE%BD%E6%9F%94&keyword=%E5%BE%BD%E6%9F%94&pg=webSearchList&rcer=gNz_a8U1sUAKzX9o&graydbg=1055-0-0&s=%E6%90%9C%E7%B4%A2&suguuid=9ab15061-7796-4fd6-96d2-e6784aa07073&sugsuv=&sugtime=1590815558316
+
+http://10.160.59.114/web/searchList.jsp?uID=KhbMSqjWkKjMXWJr&v=5&from=index&pid=sogou-waps-7880d7226e872b77&w=1274&t=1590815592444&s_t=1590815595296&s_from=index&pg=webSearchList&inter_index=&keyword=%E5%BE%BD%E6%9F%94&sourceid=sugg&sugoq=&sugn=10&suguuid=8c975027-41aa-4b90-b661-3e80036812d1&sugsuv=&sugtime=1590815595296
+
+http://10.160.59.114/web/searchList.jsp?uID=M4z__UsNVZMDYec6&v=5&from=index&pid=sogou-waps-7880d7226e872b77&w=1274&t=1590817241317&s_t=1590817247651&s_from=index&pg=webSearchList&inter_index=&keyword=%E5%BE%BD%E6%9F%94&sourceid=sugg&sugoq=hui&sugn=10&sugri=1&sugct=0&suguuid=efe085b0-ca5a-46e6-881a-48d22a6cf979&sugsuv=&sugtime=1590817247651
+
+
+http://10.160.59.114/web/searchList.jsp?uID=0Da40MpFAVBKWkX2&v=5&from=index&pid=sogou-waps-7880d7226e872b77&w=1274&t=1590834328858&s_t=1590834349617&s_from=index&pg=webSearchList&inter_index=&keyword=%E5%BE%BD%E6%9F%94&sourceid=sugg&sugoq=hui&sugn=10&sugri=1&sugct=0&suguuid=c4cebd65-1430-428b-a15b-4e15d1547160&sugsuv=&sugtime=1590834349617
+
+http://10.160.59.114/web/searchList.jsp?uID=AAFz%2F78bLwAAAAqgO3JdAwAAAAA%3D&v=5&dp=1&pid=sogou-waps-7880d7226e872b77&w=1283&t=1590834630970&s_t=1590834685764&s_from=result_up&htprequery=%E6%9C%BA%E6%99%BA%E7%9A%84%E5%8C%BB%E7%94%9F%E7%94%9F%E6%B4%BB&keyword=%E5%AE%97%E9%A6%A5%E8%8E%89&pg=webSearchList&rcer=QNz_aJ4iY4Gcw-M3&graydbg=1055-0-0&sourceid=sugg&sugoq=zongfuli&sugn=10&sugri=1&sugct=0&suguuid=8bbbe524-8d4b-49ef-8863-57f7658e1c12&sugsuv=&sugtime=1590834685763&graydbg=1055-0-1
+
+http://10.160.59.114/web/searchList.jsp?uID=AAFzZVgqLwAAAAqgO3KODgAAAAA%3D&v=5&dp=1&pid=sogou-waps-7880d7226e872b77&w=1283&t=1591079499373&s_t=1591079524537&s_from=result_up&htprequery=%E5%BE%BD%E6%9F%94&keyword=%E5%AE%97%E9%A6%A5%E8%8E%89&pg=webSearchList&rcer=uNz_alvVqvzeAE_5&sourceid=sugg&sugoq=zongfu&sugn=10&sugri=1&sugct=0&suguuid=4625ede5-e816-44a5-9732-8f1753f1c81b&sugsuv=&sugtime=1591079524537&forceQuery=on
+
+
+\cp -r /search/odin/gongyanli/query_tool/inst_query/CONF_lq $test_path/client_application/conf
+\cp /search/odin/gongyanli/query_tool/inst_query/lauch/lq/* $test_path/client_application
+
+\cp -r /search/odin/gongyanli/query_tool/inst_query/CONF_qs $test_path/server_application/conf
+\cp /search/odin/gongyanli/query_tool/inst_query/lauch/qs/* $test_path/server_application
+
+#ln -s /search/odin/gongyanli/query_tool/inst_query/DATA $test_path/client_application/data
+
+
+cd /search/odin/gongyanli/query_tool/inst_query
+sh downData.sh
+
+cd $test_path/client_application/data
+ln -s /search/odin/daemon/inst_idx_new/data/service1 service1
+ln -s /search/odin/daemon/inst_idx_new/data/service2 service2
+
+cd $test_path/server_application
+sh start_test.sh
+
+cd $test_path/client_application
+sh start_test.sh
+
+
+
+
+
+
+#test_tool_path='/search/odin/liutianhua/test_tool'
+#test_svn=`echo ${test_svn_branch} | awk '{print $1}'| awk -F "=" '{print $2}'`
+#base_svn=`echo ${base_svn_branch} | awk '{print $1}'| awk -F "=" '{print $2}'`
+#
+#
+#echo "generate the branch checkout script..."
+#cd /search/odin/liutianhua/test_tool
+#echo ${test_svn_branch} | awk '{for(i=2;i<=NF;i++) print $i}'| awk -F "=" '{print "svn --username qa_svnreader --password '\'New\$oGou4U\!\'' co "$2" "$1}' > test_svn.sh
+#echo ${base_svn_branch} | awk '{for(i=2;i<=NF;i++) print $i}'| awk -F "=" '{print "svn --username qa_svnreader --password '\'New\$oGou4U\!\'' co "$2" "$1}' > base_svn.sh
+#
