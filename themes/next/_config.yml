@@ -720,7 +720,7 @@ pace: true
 pace_theme: pace-theme-minimal
 
 # Canvas-nest
-canvas_nest: true
+canvas_nest: false
 
 # three_waves
 three_waves: false
@@ -799,7 +799,7 @@ vendors:
 
   # Internal version: 1.0.0
   # https://github.com/hustcc/canvas-nest.js
-  canvas_nest:
+  canvas_nest: 
 
   # three
   three:
@@ -810,7 +810,7 @@ vendors:
 
   # three_waves
   # https://github.com/jjandxa/canvas_lines
-  canvas_lines:
+  canvas_lines: 
 
   # three_waves
   # https://github.com/jjandxa/canvas_sphere
