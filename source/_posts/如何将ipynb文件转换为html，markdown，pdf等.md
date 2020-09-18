@@ -3,7 +3,6 @@ title: 如何将ipynb文件转换为html，markdown，pdf等
 date: 2018-09-09 22:25:54
 tags: Jupyter
 category:
-		- Python
 		- 工具篇
 		- Jupyter
 ---

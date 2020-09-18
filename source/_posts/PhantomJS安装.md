@@ -1,7 +1,10 @@
 ---
-title: Python3爬虫--PhantomJS安装
+title: PhantomJS安装
 date: 2018-03-29 15:40:06
-tags:
+tags: PhantomJS
+categories:
+	- Python
+	- PhantomJS
 ---
 ## 一、下载
 	http://phantomjs.org/download.html 

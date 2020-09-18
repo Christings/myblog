@@ -3,6 +3,7 @@ title: Hadoop环境配置
 date: 2018-05-02 15:59:08
 tags: Hadoop
 categories:
+		- 大数据
 		- Hadoop
 ---
 ## 一、使用ifconfig查看当前机器的ip

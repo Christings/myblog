@@ -2,11 +2,7 @@
 title: echarts echarts-x echarts-gl 制作3D地球
 date: 2018-01-08 17:04:42
 toc: true
-tags: 
-        - echarts
-        - echarts-x
-        - echarts-gl
-        - 3D地球
+tags: echarts       
 categories:
         - 前端
         - echarts

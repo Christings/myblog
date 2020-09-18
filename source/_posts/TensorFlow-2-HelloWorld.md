@@ -2,6 +2,9 @@
 title: TensorFlow-2.HelloWorld
 date: 2020-02-18 21:25:36
 tags: TensorFlow
+category:
+        - 机器学习和深度学习
+        - TensorFlow
 ---
 TensorFlow1.x和TensorFlow2.0函数区别：https://docs.google.com/spreadsheets/d/1FLFJLzg7WNP6JHODX5q8BDgptKafq_slHpnHVbJIteQ/edit#gid=0
 

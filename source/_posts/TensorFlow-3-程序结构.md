@@ -2,6 +2,9 @@
 title: TensorFlow-3.程序结构
 date: 2020-02-18 21:27:41
 tags: TensorFlow
+category:
+        - 机器学习和深度学习
+        - TensorFlow
 ---
 ## 一、结构
 TensorFlow程序分为两个独立的部分:

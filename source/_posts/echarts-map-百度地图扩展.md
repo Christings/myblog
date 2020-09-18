@@ -2,10 +2,7 @@
 title: 'echarts,map,百度地图扩展'
 date: 2018-01-09 16:02:11
 toc: true
-tags: 
-		- echarts
-		- map
-		- 百度地图扩展
+tags: echarts
 categories:
 		- 前端
 		- echarts

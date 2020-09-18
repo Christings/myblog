@@ -1,9 +1,9 @@
 ---
-title: nltk-二-语料库使用
+title: nltk-2-语料库使用
 date: 2018-01-12 11:37:01
 tags: [nltk]
 categories:
-		- nlp
+		- 机器学习和深度学习
 		- nltk
 ---
 ## NLTK语料库

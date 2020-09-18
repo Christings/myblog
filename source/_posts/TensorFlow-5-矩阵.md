@@ -2,6 +2,9 @@
 title: TensorFlow-5.矩阵
 date: 2020-02-18 23:19:19
 tags: TensorFlow
+category:
+        - 机器学习和深度学习
+        - TensorFlow
 ---
 代码：4-matrix.ipynb
 

@@ -3,7 +3,7 @@ title: PhantomJS+Selenium+Scrapy抓取巨潮资讯网企业信息(一)
 date: 2018-03-30 10:39:34
 tags: [Scrapy,Selenium,PhantomJS]
 categories:
-		- 数据抓取和分析
+		- 数据分析和抓取
 		- Scrapy
 ---
 >本文首发于我的博客：[gongyanli.com](http://gongyanli.com/PhantomJS-Selenium-Scrapy%E6%8A%93%E5%8F%96%E5%B7%A8%E6%BD%AE%E8%B5%84%E8%AE%AF%E7%BD%91%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF/)  

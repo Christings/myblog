@@ -1,3 +1,12 @@
+---
+title: nltk-1-入门
+date: 2018-01-12 10:13:56
+tags: jenkins 
+categories:
+    - 工具篇
+    - jenkins
+---
+
 #!groovy
 def remote = [:]
 remote.allowAnyHosts = true

@@ -1,7 +1,10 @@
 ---
 title: 三--数据探索--Python数据分析与挖掘实战
 date: 2018-02-26 15:33:34
-tags:
+tags: 
+categories:
+    - 机器学习和深度学习
+    - 《Python数据分析挖掘实战》
 ---
 问题：
 

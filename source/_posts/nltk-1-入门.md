@@ -1,9 +1,9 @@
 ---
-title: nltk-一-入门
+title: nltk-1-入门
 date: 2018-01-12 10:13:56
 tags: nltk 
 categories:
-		- nlp
+		- 机器学习和深度学习
 		- nltk
 ---
 >本文首发于我的博客：[gongyanli.com](http://gongyanli.com/(%E4%B8%80)%20nltk%E2%80%94%E2%80%94%E5%85%A5%E9%97%A8/)  

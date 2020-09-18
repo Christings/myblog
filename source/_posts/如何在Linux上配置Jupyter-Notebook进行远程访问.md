@@ -3,7 +3,6 @@ title: 如何在Linux上配置Jupyter Notebook进行远程访问
 date: 2018-03-13 16:14:44
 tags: [Jupyter]
 categories:
-		- Python
 		- 工具篇
 		- Jupyter
 ---
