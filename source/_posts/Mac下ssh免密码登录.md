@@ -3,8 +3,8 @@ title: Mac下ssh免密码登录
 date: 2018-06-11 18:16:42
 tags: ssh
 categories:
-		- Linux
-		- SSH
+        - 工具篇
+        - ssh
 ---
 ## 本地生成公钥和私钥（客户端Mac）
 	

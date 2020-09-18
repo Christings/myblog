@@ -3,8 +3,8 @@ title: Mac终端ssh登录Linux提示cannot change locale(UTF_8)
 date: 2018-06-19 10:15:26
 tags: ssh
 categories:
-        - Linux
-        - SSH
+        - 工具篇
+        - ssh
 ---
 ## 警告
     在Mac终端ssh登录远程Linux主机时，总是提示：

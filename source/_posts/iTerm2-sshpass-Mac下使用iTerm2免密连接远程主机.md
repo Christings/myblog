@@ -1,10 +1,10 @@
 ---
 title: 'iTerm2+sshpass:Mac下使用iTerm2免密连接远程主机'
 date: 2018-08-31 11:37:49
-tags: [SSH,iTerm2]
+tags: [ssh]
 category:
-		- Linux
-		- SSH
+		- 工具篇
+		- ssh
 ---
 ## 一.安装iTerm2
 	不再介绍

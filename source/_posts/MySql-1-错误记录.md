@@ -1,7 +1,7 @@
 ---
-title: MySql中的常见错误
+title: MySql-1-错误记录
 date: 2018-08-15 13:17:25
-tags: [数据库]
+tags: [MySql]
 categories:
 		- 数据库
 		- MySql
@@ -36,3 +36,23 @@ categories:
 	db = pymysql.connect("localhost","root","00000000","TESTDB" ,use_unicode=True, charset="utf8")
 	注意：如果charset="utf-8"也会报错，错误信息为【AttributeError: 'NoneType' object has no attribute 'encoding'】
 	可以看出是编码格式的问题，原来connect中的charset是"utf8"，而不是"utf-8"。同时port的需要number而不是string。
+
+## 三.ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+	mac解决办法：
+	$ sudo cd /usr/local/mysql/data
+	$ rm -rf ib_logfile0
+	$ rm -rf ib_logfile1
+	停止mysql服务；
+	$ cd /usr/local/mysql/bin/
+	$ sudo su
+	$ ./mysqld_safe --skip-grant-tables & # 禁止mysql验证功能
+	# 回车后mysql会自动重启
+	$ ./mysql
+	> FLUSH PRIVILEGES; 
+	> ALTER USER 'root'@'localhost' IDENTIFIED BY '新密码'; 
+## 四.2059 - Authentication plugin 'caching_sha2_password' cannot be loaded: dlopen(../Frameworks/caching_sha2_password.so, 2): image not found
+	
+	mac解决办法：
+	$ mysql -u root -p
+	> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '新密码';
+	
