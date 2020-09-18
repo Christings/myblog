@@ -1,9 +1,10 @@
 ---
-title: 'Css,Xpath'
+title: 'Css-Xpath'
 date: 2018-05-03 09:39:28
-tags: 爬虫
+tags: Xpath
 categories:
-		- 爬虫
+		- 数据分析和抓取
+        - Scrapy
 ---
 当我们抓取网页源码后，就需要从源码中提取信息，而提取信息的方式有如下几种：
 
