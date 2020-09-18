@@ -3,7 +3,7 @@ title: 利用Scrapy抓取一带一路战略性支撑平台信息
 date: 2018-03-30 18:31:31
 tags: [Scrapy]
 categories:
-		- 爬虫
+		- 数据分析和抓取
 		- Scrapy
 ---
 >本文首发于我的博客：[http://gongyanli.com](http://gongyanli.com/%E5%88%A9%E7%94%A8Scrapy%E6%8A%93%E5%8F%96%E4%B8%80%E5%B8%A6%E4%B8%80%E8%B7%AF%E6%88%98%E7%95%A5%E6%80%A7%E6%94%AF%E6%92%91%E5%B9%B3%E5%8F%B0%E4%BF%A1%E6%81%AF/)  

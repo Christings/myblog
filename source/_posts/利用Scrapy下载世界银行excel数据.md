@@ -3,7 +3,7 @@ title: 利用Scrapy下载世界银行excel文件
 date: 2018-04-03 16:36:53
 tags: [Scrapy]
 categories:
-		- 爬虫
+		- 数据分析和抓取
 		- Scrapy
 ---
 >本文首发于我的博客：[http://gongyanli.com](http://gongyanli.com/%E5%88%A9%E7%94%A8Scrapy%E4%B8%8B%E8%BD%BD%E4%B8%96%E7%95%8C%E9%93%B6%E8%A1%8Cexcel%E6%95%B0%E6%8D%AE/)  

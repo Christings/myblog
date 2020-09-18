@@ -3,7 +3,7 @@ title: Flask+Scrapy+MongoDB开发
 date: 2018-04-04 11:01:32
 tags: [Flask,Scrapy,MongoDB]
 categories:
-		- 爬虫
+		- 数据分析和抓取
 		- Scrapy
 ---
 >代码传送门：[https://github.com/Gladysgong/flask_scrapy_aiot](https://github.com/Gladysgong/flask_scrapy_aiot)  

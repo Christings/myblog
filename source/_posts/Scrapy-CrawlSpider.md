@@ -3,7 +3,7 @@ title: Scrapy--CrawlSpider
 date: 2018-04-23 15:17:20
 tags: [Scrapy]
 categories:
-		- 爬虫
+		- 数据分析和抓取
 		- Scrapy
 ---
 ### 一、CrawlSpider

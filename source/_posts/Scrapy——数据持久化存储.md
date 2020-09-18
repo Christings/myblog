@@ -3,7 +3,7 @@ title: Scrapy——数据持久化存储
 date: 2018-01-12 17:57:03
 tags: [Scrapy]
 categories:
-		- 爬虫
+		- 数据分析和抓取
 		- Scrapy
 ---
 >本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Scrapy%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8/)
