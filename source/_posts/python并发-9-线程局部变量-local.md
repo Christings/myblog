@@ -1,10 +1,10 @@
 ---
 title: python并发-9.线程局部变量-local()
 date: 2020-02-26 14:25:43
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 当多线程操作同一公有资源时，如果涉及到修改该资源的操作，为了避免数据不同步可能导致的错误，需要使用互斥锁机制。
 

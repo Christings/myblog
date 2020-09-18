@@ -1,10 +1,10 @@
 ---
 title: python并发-13.多进程编程合多线程编程的优缺点
 date: 2020-02-27 20:16:41
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 
 多进程编程和多钱程编程，都可以使用并行机制来提升系统的运行效率。

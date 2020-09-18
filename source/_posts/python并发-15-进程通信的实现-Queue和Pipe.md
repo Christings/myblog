@@ -1,10 +1,10 @@
 ---
 title: python并发-15.进程通信的实现-Queue和Pipe
 date: 2020-02-27 21:59:56
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 Python 提供了多种实现进程间通信的机制，主要有以下 2 种：
 

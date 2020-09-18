@@ -1,10 +1,10 @@
 ---
 title: python并发-3.线程生命周期
 date: 2020-02-21 21:01:44
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 当程序中包含多个线程时，CPU 不会一直被特定的线程霸占，而是轮流执行各个线程。
 

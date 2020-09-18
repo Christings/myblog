@@ -1,10 +1,10 @@
 ---
 title: python并发-10.定时器Timer
 date: 2020-02-26 14:50:58
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 Thread 类有一个 Timer子类，该子类可用于控制指定函数在特定时间内执行一次。
 

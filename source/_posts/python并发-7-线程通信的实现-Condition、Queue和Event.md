@@ -1,10 +1,10 @@
 ---
 title: python并发-7.线程通信的实现(Condition、Queue和Event)
 date: 2020-02-23 21:58:38
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 ## 一、Condition
 当线程在系统中运行时，线程的调度具有一定的透明性，通常程序无法准确控制线程的轮换执行，如果有需要，Python 可通过线程通信来保证线程协调运行。

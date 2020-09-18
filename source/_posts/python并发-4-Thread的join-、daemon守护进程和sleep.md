@@ -1,10 +1,10 @@
 ---
 title: python并发-4.Thread的join()、daemon守护进程和sleep()
 date: 2020-02-21 21:28:45
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 ## 一、join()
 《python并发-2.线程创建》这节中，程序的执行结果不唯一。原因是主线程 MainThread 和子线程 Thread-1 会轮流获得 CPU 资源，因此该程序的输出结果才会如此。

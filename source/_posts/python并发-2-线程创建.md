@@ -2,9 +2,10 @@
 title: python并发-2.线程创建
 date: 2020-02-21 20:29:32
 tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 python中线程模块：
     

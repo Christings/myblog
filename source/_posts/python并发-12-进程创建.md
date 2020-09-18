@@ -1,10 +1,10 @@
 ---
 title: python并发-12.进程创建
 date: 2020-02-26 20:51:12
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 ## 一、os.fork()--在windows系统上无效
 每个 Python 程序在执行时，系统都会生成一个新的进程，该进程又称父进程（或主进程）。

@@ -1,10 +1,10 @@
 ---
 title: python并发-1.进程和线程
 date: 2020-02-21 11:29:02
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 
 ## 一、并发与并行

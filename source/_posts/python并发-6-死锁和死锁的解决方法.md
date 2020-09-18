@@ -1,10 +1,10 @@
 ---
 title: python并发-6.死锁和死锁的解决方法
 date: 2020-02-22 23:59:05
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 
 当两个线程相互等待对方释放资源时，就会发生死锁。Python 解释器没有监测，也不会主动采取措施来处理死锁情况，所以在进行多线程编程时应该采取措施避免出现死锁。

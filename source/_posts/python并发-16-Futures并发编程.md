@@ -1,10 +1,10 @@
 ---
 title: python并发-16.Futures并发编程
 date: 2020-02-27 22:25:19
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 下载网站内容并打印（单线程）：
 ```

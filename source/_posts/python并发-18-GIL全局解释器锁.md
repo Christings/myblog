@@ -1,10 +1,10 @@
 ---
 title: python并发-18.GIL全局解释器锁
 date: 2020-02-27 23:30:32
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 GIL，中文译为全局解释器锁。
 

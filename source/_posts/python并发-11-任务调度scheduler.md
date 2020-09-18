@@ -1,10 +1,10 @@
 ---
 title: python并发-11.任务调度scheduler
 date: 2020-02-26 15:03:06
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 
 Timer 定时器的弊端：只能控制线程在指定时间内执行一次任务，如果想实现每隔一段时间就执行一次，需要借助循环结构。

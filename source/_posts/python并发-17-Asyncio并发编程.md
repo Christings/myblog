@@ -1,10 +1,10 @@
 ---
 title: python并发-17.Asyncio并发编程
 date: 2020-02-27 23:06:24
-tags: python并发
+tags: Python并发
 categories:
-        - python
-        - python并发
+        - Python
+        - Python并发
 ---
 多线程和普通的单线程相比，其运行效率会有极大的提高。但多线程也存在一定的局限性：
 
