@@ -2,11 +2,9 @@
 title: Hexo+Github Pages+yilia搭建博客
 date: 2018-01-05 18:06:40
 toc: true
-tags:
-        - Hexo
-        - Github
+tags: Hexo
 categories:
-		- 博客
+		- 工具篇
 		- Hexo
 ---
 >本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Hexo-Github-Pages%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/)  
