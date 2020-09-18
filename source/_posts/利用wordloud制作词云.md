@@ -1,9 +1,9 @@
 ---
-title: Python--利用wordloud制作词云
+title: 利用wordloud制作词云
 date: 2018-01-26 17:46:54
 tags: [wordcloud]
 categories:
-		- 数据分析
+		- 数据分析和抓取
 		- wordcloud
 ---
 > 本文首发于我的博客: [gongyanli.com](http://gongyanli.com/Python-%E5%88%A9%E7%94%A8wordloud%E5%88%B6%E4%BD%9C%E8%AF%8D%E4%BA%91/)  

@@ -4,7 +4,7 @@ date: 2018-04-17 13:30:10
 tags: [爬虫]
 categories:
 		- 爬虫
-		- Python
+		- Scrapy
 ---
 >本文首发于我的博客：[http://gongyanli.com/](http://gongyanli.com/%E7%94%A8Python%E4%B8%8B%E8%BD%BD%E5%B7%A8%E6%BD%AE%E8%B5%84%E8%AE%AF%E5%86%9C%E4%B8%9A%E4%B8%8A%E5%B8%82%E4%BC%81%E4%B8%9A%E7%9A%84%E5%B9%B4%E6%8A%A5PDF%E6%96%87%E4%BB%B6(%E4%BA%8C)/)   
 >代码传送门：[https://github.com/Gladysgong/cninfo/tree/master/cninfo/pdf](https://github.com/Gladysgong/cninfo/tree/master/cninfo/pdf)  

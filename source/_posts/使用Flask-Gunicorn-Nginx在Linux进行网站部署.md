@@ -1,9 +1,9 @@
 ---
 title: 使用Flask+Gunicorn+Nginx在Linux进行网站部署
 date: 2018-04-13 14:33:57
-tags: [Python,Flask,Gunicorn,Nginx]
+tags: [Flask,Gunicorn,Nginx]
 categories:
-		- Linux
+		- 工具篇
 		- 网站部署
 ---
 >本文首发于我的博客：[http://gongyanli.com/](http://gongyanli.com/%E4%BD%BF%E7%94%A8Flask-Gunicorn-Nginx%E5%9C%A8Linux%E8%BF%9B%E8%A1%8C%E7%BD%91%E7%AB%99%E9%83%A8%E7%BD%B2/)   

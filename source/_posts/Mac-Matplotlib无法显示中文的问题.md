@@ -1,16 +1,16 @@
 ---
-title: 'Mac:matplotlib无法显示中文的问题'
+title: 'matplotlib-1-问题记录'
 date: 2018-09-02 13:29:05
 tags: Matplotlib
 category:
-		- 数据分析
+		- 数据分析和抓取
 		- Matplotlib
 ---
-## 前言
+## 一、问题：matplotlib无法显示中文的问题
 	网上找了好多种方法，显示中文的时候还是小框框，在我的Mac上就是不行。这是在我的Mac上可行的办法，希望对你也有用。
-## 下载SimHei.ttf字体
+### 1、下载SimHei.ttf字体
 	http://www.fontpalace.com/font-details/SimHei/
-## 解决办法
+### 2、解决办法
 	1.找到Matplotlib路径
 	$ python
 	> import matplotlib
@@ -64,7 +64,7 @@ category:
     },
 	
 	之后重启项目，matplotlib即可显示中文字体了。
-## 查看matplotlib支持的字体集
+## 二、查看matplotlib支持的字体集
 	$ python 
 	> import matplotlib
 	> xxx=sorted(f.name for f in matplotlib.font_manager.fontManager.ttflist)

@@ -1,9 +1,9 @@
 ---
-title: Pandas学习
+title: Pandas-1-基础
 date: 2018-01-24 08:37:53
 tags: Pandas
 categories:
-		- 数据分析
+		- 数据分析和抓取
 		- Pandas
 ---
 > 本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Pandas%E5%AD%A6%E4%B9%A0/) 

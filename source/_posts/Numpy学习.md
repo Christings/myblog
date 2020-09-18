@@ -1,10 +1,10 @@
 ---
-title: Numpy学习
+title: Numpy-1-基础
 date: 2018-01-23 17:35:00
 tags: numpy
 categories: 
-		- 数据分析
-		- Numpy
+		- 数据分析和抓取
+		- numpy
 ---
 > 本文首发于我的博客：[gongyanli.com](http://gongyanli.com/Numpy%E5%AD%A6%E4%B9%A0/)
 

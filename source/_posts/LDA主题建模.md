@@ -1,9 +1,9 @@
 ---
 title: LDA主题建模
 date: 2018-01-26 15:23:34
-tags: 机器学习
+tags: LDA
 categories:
-		-  机器学习
+		-  机器学习和深度学习
 ---
 >本文首发于我的博客：[gongyanli.com](http://gongyanli.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E4%B8%8E%E8%AE%A4%E7%9F%A5%E6%99%BA%E8%83%BD-%E8%82%96%E4%BB%B0%E5%8D%8E/)  
 

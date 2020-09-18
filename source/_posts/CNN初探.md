@@ -1,10 +1,9 @@
 ---
-title: Re:CNN初探
+title: CNN初探
 date: 2018-08-16 18:52:43
-tags: [深度学习]
+tags: [CNN]
 categories:
-		- 深度学习
-		- CNN
+		- 机器学习和深度学习
 ---
 转载地址：[http://www.cnblogs.com/fydeblog/p/7450413.html](http://www.cnblogs.com/fydeblog/p/7450413.html)
 

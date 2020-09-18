@@ -2,8 +2,23 @@
 title: TensorFlow-1.介绍
 date: 2020-02-18 21:24:09
 tags: TensorFlow
+category:
+        - 机器学习和深度学习
+        - TensorFlow
+
 ---
+参考：[莫烦TensorFlow](https://morvanzhou.github.io/tutorials/machine-learning/tensorflow/)
+
 ## 一、介绍
+    900百亿神经细胞组成了我们的生物神经网络，而它是通过刺激来产生新的联结，让信号能够
+    通过新的联结传递来形成反馈；
+        人工神经网络一种典型模式就是通过训练数据来进行预测，而预测的结果不一定很好，所以就
+    通过正向或是反向传播来更新神经元，从而再形成一个好的神经系统。其在本质上，是一个能
+    让计算机处理和优化的数学模型。
+
+        当今神经网络是是深度学习最流行的一种框架，它的基本原理就是梯度下降(Gradient Descent)
+    机制，其中的梯度就是我们大学所学的求导求微分。一般来说, 神经网络是一连串神经层所组成的把输入进行加工再输出的系统。
+
 开源深度学习库 TensorFlow 允许将深度神经网络的计算部署到任意数量的 CPU 或 GPU 的服务器、PC 或移动设备上，且只利用一个 TensorFlow API。你可能会问，还有很多其他的深度学习库，如 Torch、Theano、Caffe 和 MxNet，那 TensorFlow 与其他深度学习库的区别在哪里呢？包括 TensorFlow 在内的大多数深度学习库能够自动求导、开源、支持多种 CPU/GPU、拥有预训练模型，并支持常用的NN架构，如递归神经网络（RNN）、卷积神经网络（CNN）和深度置信网络（DBN）。
 
 
