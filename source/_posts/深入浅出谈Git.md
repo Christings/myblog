@@ -1,10 +1,10 @@
 ---
 title: 深入浅出谈Git
 date: 2018-08-24 18:56:03
-tags: Git
+tags: git
 category:
-		- 版本管理
-		- Git
+		- 工具篇
+		- git
 ---
 ## 一.Git配置
 	$ git config --global user.name "Your Name"

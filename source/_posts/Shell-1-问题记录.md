@@ -1,11 +1,12 @@
 ---
-title: Shell脚本--integer expression expected解决办法
+title: Shell-1-问题记录
 date: 2018-07-26 09:54:56
 tags: Shell
 categories:
-		- Linux
+		- 工具篇
 		- Shell
 ---
+## 一、问题：integer expression expected
 ### 1.错误及原因
 	在Shell脚本中，在进行参数比较时，比如[ $var -eq "en" ],此时就会出现“integer expression expected”的错误。这是因为参数-eq，-lt，-gt比较的都是数字和变量，而变量var如果是一个字符串的话，就会出现上述错误了。
 ### 2.解决办法

@@ -1,9 +1,9 @@
 ---
-title: Shell编程
+title: Shell-2-基础
 date: 2018-07-11 16:43:14
 tags: Shell
 categories:
-		- Linux
+		- 工具篇
 		- Shell
 ---
 ### 1.变量

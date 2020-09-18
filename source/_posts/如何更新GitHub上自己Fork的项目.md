@@ -1,10 +1,10 @@
 ---
 title: 如何更新GitHub上自己Fork的项目
 date: 2018-05-04 09:34:12
-tags: Git
+tags: git
 categories:
-		- 版本管理
-		- Git
+		- 工具篇
+		- git
 ---
 当我们在GitHub上fork别人的项目后，可以方便我们学习使用，但是当别人更新了源码后，而我们fork的分支却不会一起更新，需要手动更新。
 以我的账号-Gladysgong为例，fork的项目是https://github.com/qq547276542/Agriculture_KnowledgeGraph.git
