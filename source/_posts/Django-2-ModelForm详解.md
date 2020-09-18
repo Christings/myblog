@@ -1,9 +1,9 @@
 ---
-title: 'Django:ModelForm详解'
+title: 'Django-2-ModelForm详解'
 date: 2018-08-31 12:41:10
 tags: Django
 category: 
-		- Python3
+		- Python
 		- Django
 ---
 ## 一.前言
