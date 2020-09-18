@@ -1,11 +1,10 @@
 ---
 title: SMTP发送邮件
 date: 2018-07-27 14:37:07
-tags: 邮件
+tags: Mail
 categories:
-		- Python3
-		- 高级篇
-		- SMTP发送邮件
+		- Python
+		- Mail
 ---
 ## 一.概述
 	SMTP（Simple Mail Transfer Protocol）即简单邮件传输协议,它是一组用于由源地址到目的地址传送邮

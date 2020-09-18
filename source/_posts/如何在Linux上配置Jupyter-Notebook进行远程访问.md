@@ -3,7 +3,8 @@ title: 如何在Linux上配置Jupyter Notebook进行远程访问
 date: 2018-03-13 16:14:44
 tags: [Jupyter]
 categories:
-		- Python3
+		- Python
+		- 工具篇
 		- Jupyter
 ---
 本机的内存开始不够用了，所以就开始把东西都折腾到服务器了，如何在服务器上安装

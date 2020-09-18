@@ -1,9 +1,10 @@
 ---
-title: 在Python2下操作文件和目录
+title: Python操作文件和目录
 date: 2018-03-27 12:42:03
 tags: [Python]
 categories:
 		- Python
+		- 基础
 ---
 在Python中经常用到os和shutil模块对文件和目录进行操作，下面就对常用方法进行一个整理：
 	
