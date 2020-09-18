@@ -1,7 +1,6 @@
 ---
 title: categories
-date: 2018-01-10 13:35:04
-type: categories
-layout: categories
+date: 2020-09-18 15:50:25
+type: "categories"
 comments: false
 ---
