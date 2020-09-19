@@ -1,7 +1,7 @@
 ---
 title: MongoDB导入和导出数据
 date: 2018-03-22 13:03:19
-tags: [数据库]
+tags: [MongoDB]
 categories:
 		- 数据库
 		- MongoDB
