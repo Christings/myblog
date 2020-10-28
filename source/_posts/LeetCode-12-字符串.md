@@ -113,7 +113,7 @@ class Solution:
         return self.res
 ```
 
-题解三：
+?题解三：
     
     把每个字母当成回文串的结束
 
@@ -140,7 +140,7 @@ class Solution:
         return s[start: start+max_len]
 ```
 
-题解二（动态规划）：
+?题解四|动态规划：
 ![](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/dp.png)
 
 https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zhong-xin-kuo-san-dong-tai-gui-hua-by-liweiwei1419/
@@ -1048,6 +1048,7 @@ class Solution:
         27 -> AA
         28 -> AB 
         ...
+
     示例 1:
 
     输入: 1
@@ -1061,7 +1062,49 @@ class Solution:
     输入: 701
     输出: "ZY"
 
-题解一（转26进制）：
+
+65--'A'
+97--'a'
+
+chr(65)  输出'A'
+ord('A') 输出65
+
+divmod() 函数把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)。
+
+除留余数法：
+1、将486由10进制转换为10进制
+
+    486 / 10^0 % 10 = 6
+    486 / 10^1 % 10 = 8
+    486 / 10^2 % 10 = 4
+
+    10 的 3 次幂大于 486 循环结束，可拆解出 10 进制数的个位、十位、百位…，再反向罗列得到 486
+
+2、将486由10进制转换为2进制
+
+    486 / 2^0 % 10 = 0
+    486 / 2^1 % 10 = 1
+    486 / 2^2 % 10 = 1
+    486 / 2^3 % 10 = 0
+    486 / 2^4 % 10 = 0
+    486 / 2^5 % 10 = 1
+    486 / 2^6 % 10 = 1
+    486 / 2^7 % 10 = 1
+    486 / 2^8 % 10 = 1
+
+    2 的 9 次幂大于 486 循环结束，可拆解出 2 进制数 逻辑上的 个位、十位、百位…，再反向罗列得到 111100110
+
+3、486 由 10 进制转换为 26 进制
+    
+    486 / 26^0 % 10 = 6
+    486 / 26^1 % 10 = 1
+
+10 进制包括数字：0~9
+2 进制包括：0、1
+26 进制应包括：0~25
+
+题解一|转26进制：
+
 ```
 class Solution:
     def convertToTitle(self, n: int) -> str:
@@ -1080,13 +1123,13 @@ class Solution:
     def convertToTitle(self, n: int) -> str:
         res=''
         while n:
-            n-=1
+            n-=1 # 26字母中没有任何一个字母是表示0, 所以我们可以从 商 借一个给余数。
             n,y=divmod(n,26)
             res=chr(y+65)+res
         return res
 ```
 
-题解二（递归）：
+题解二|递归：
 ```
 class Solution:
     def convertToTitle(self, n: int) -> str:
@@ -1199,24 +1242,24 @@ class Solution:
 方法六：swap交换操作，以中间为基准，交换对称位置的字符
 
     def reverse5(str):
-    str_list = list(str)
-    if len(str_list) == 0 or len(str_list) == 1:
-        return str
-    i = 0
-    length = len(str_list)
-    while i < length / 2:
-        str_list[i], str_list[length - i - 1] = str_list[length - i - 1], str_list[i]
-        i += 1
-    return ''.join(str_list)
+        str_list = list(str)
+        if len(str_list) == 0 or len(str_list) == 1:
+            return str
+        i = 0
+        length = len(str_list)
+        while i < length / 2:
+            str_list[i], str_list[length - i - 1] = str_list[length - i - 1], str_list[i]
+            i += 1
+        return ''.join(str_list)
 
-题解一（内置函数）：
+题解一|内置函数：
 ```
 class Solution:
     def reverseString(self, s):
         s.reverse()
 ```
 
-题解二（递归）：
+题解二|递归：
 
 时间复杂度：O(N)。执行了 N/2 次的交换。
 空间复杂度：O(N)，递归过程中使用的堆栈空间。
@@ -1234,7 +1277,7 @@ class Solution:
         helper(0,len(s)-1)
 ```
 
-题解二（双指针）:
+题解三|双指针:
 
 时间复杂度：O(N)。执行了 N/2 次的交换。
 空间复杂度：O(1)，只使用了常数级空间。
@@ -1266,7 +1309,7 @@ class Solution:
     输入: "leetcode"
     输出: "leotcede"
 
-题解一（栈）：
+题解一|栈：
 ```
 class Solution:
     def reverseVowels(self, s: str) -> str:
@@ -1281,7 +1324,7 @@ class Solution:
         return ''.join(res)
 ```
 
-题解二（双指针）：
+题解二|双指针：
 ```
 class Solution:
     def reverseVowels(self, s: str) -> str:
@@ -1317,7 +1360,7 @@ class Solution:
     canConstruct("aa", "ab") -> false
     canConstruct("aa", "aab") -> true
 
-题解一（Counter）：
+题解一|Counter：
 ```
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
@@ -1330,7 +1373,7 @@ class Solution:
             return False
 ```
 
-题解二(双指针)：
+题解二|双指针：
 
 时间复杂度为O(nlog(n)+mlog(m))
 空间复杂度为O(m + n)
@@ -1338,21 +1381,23 @@ class Solution:
 ```
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
-        sorted(ransomNote)
-        sorted(magazine)
+        ransomNoteList=list(ransomNote)
+        magazineList=list(magazine)
+        ransomNoteList.sort()
+        magazineList.sort()
         i,j=0,0
-        while i<len(ransomNote) and j<len(magazine):
-            if ransomNote[i]>magazine[j]:
+        while i<len(ransomNoteList) and j<len(magazineList):
+            if ransomNoteList[i]>magazineList[j]:
                 j+=1
-            elif ransomNote[i] < magazine[j]:
+            elif ransomNoteList[i] < magazineList[j]:
                 return False
             else:
                 i+=1
                 j+=1
-        return i==len(ransomNote)
+        return i==len(ransomNoteList)
 ```
 
-题解三（hash）：
+题解三|hash：
 
 时间复杂度: O(N) - N（遍历magazine） + 1（字典检索为O(1)）
 空间复杂度: O(N)
@@ -1374,7 +1419,7 @@ class Solution:
         return True
 ```
 
-题解四（暴力）：
+题解四|暴力：
 
 时间复杂度: O(N^2) - N（遍历ransomNote） * N（replace最糟糕的情况是遍历整个magazine）
 空间复杂度: O(1)
@@ -1384,7 +1429,7 @@ class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
         for i in ransomNote:
             if i in magazine:
-                magazine=magazine.replace(i,'',1) # 可选字符串, 替换不超过 max 次
+                magazine=magazine.replace(i,'',1) # 可选字符串, 1代表替换不超过 max 次
             else:
                 return False
         return True
@@ -1406,7 +1451,7 @@ class Solution:
 
     注意事项：您可以假定该字符串只包含小写字母。
 
-题解一（切片）：
+题解一|切片：
 ```
 class Solution:
     def firstUniqChar(self, s: str) -> int:
@@ -1418,7 +1463,7 @@ class Solution:
         return -1
 ```
 
-题解二(内置函数)：
+题解二|内置函数：
 
 时间复杂度： O(N)，只遍历了两遍字符串，同时散列表中查找操作是常数时间复杂度的。
 空间复杂度： O(N)，用到了散列表来存储字符串中每个元素出现的次数。
@@ -1443,7 +1488,7 @@ class Solution:
         return -1
 ```
 
-题解三（find）:
+题解三|find:
 
 1.证明字母只出现了一次
 如果一个字符串中的字符在字符串中从左边搜索和从右边搜索得到的index一样，那就证明只有一个了
@@ -1469,17 +1514,20 @@ class Solution(object):
     num1 和num2 的长度都小于 5100.
     num1 和num2 都只包含数字 0-9.
     num1 和num2 都不包含任何前导零。
-    你不能使用任何內建 BigInteger 库， 也不能直接将输入的字符串转换为整数形式。
+    你不能使用任何內建 BigInteger 库，也不能直接将输入的字符串转换为整数形式。
 
 
 题解一：
+
+zfill() 方法返回指定长度的字符串，原字符串右对齐，前面填充0。
+
 ```
 class Solution:
     def addStrings(self, num1: str, num2: str) -> str:
         n=max(len(num1),len(num2))
         n1=num1.zfill(n)
         n2=num2.zfill(n)
-        print(n1,n2)
+        # print(n1,n2)
         carry=0
         res=[]
         for i in range(n-1,-1,-1):
@@ -1489,11 +1537,11 @@ class Solution:
             carry//=10
         if carry==1:
             res.append(1)
-        res.reverse()
+        res.reverse() # res里面的数字是int
         return ''.join([str(i) for i in res])
 ```
 
-题解二（双指针）:
+题解二|双指针:
 
 时间复杂度:O(max(M,N))：其中 M，N 为 2 数字长度，按位遍历一遍数字（以较长的数字为准）；
 空间复杂度:O(1),指针与变量使用常数大小空间。
@@ -1526,7 +1574,7 @@ class Solution:
     输出: 5
     解释: 这里的单词是指连续的不是空格的字符，所以 "Hello," 算作 1 个单词。
 
-题解一（split）:
+题解一|split:
 
 时间复杂度 : O(n)。
 这里用到的内置函数（无论是 Java 还是 Python）的时间复杂度或为 O(n)，或为 O(1) ，故整个算法可以在线性复杂度内完成。
@@ -1539,7 +1587,7 @@ class Solution:
     def countSegments(self, s: str) -> int:
         if not s:
             return 0
-        return len(s.split(' ')) # 这段代码是错误的，并不能解决连续过个空格的case
+        return len(s.split(' ')) # 这段代码是错误的，并不能解决连续多个空格的case
 ```
 
 ```
@@ -1556,7 +1604,6 @@ class Solution:
 题解二：
 
 时间复杂度 : O(n)，对每个下标进行常数时间的检测。
-
 空间复杂度 : O(1)，只使用了额外的几个整数，因此使用的空间为常数。
 
 ```
@@ -1565,12 +1612,12 @@ class Solution:
         count=0
         for i in range(len(s)):
             if s[i] != ' ' and (s[i-1] ==' ' or i==0 ):
-                print(s[i])
+                # print(s[i])
                 count+=1
         return count 
 ```
 
-    ### 520. 检测大写字母
+### 520. 检测大写字母
     链接：https://leetcode-cn.com/problems/detect-capital/
 
     给定一个单词，你需要判断单词的大写使用是否正确。
@@ -1592,7 +1639,7 @@ class Solution:
     输出: False
     注意: 输入是由大写和小写拉丁字母组成的非空单词。
 
-题解一（内置函数）:
+题解一|内置函数:
 ```
 class Solution:
     def detectCapitalUse(self, word: str) -> bool:
