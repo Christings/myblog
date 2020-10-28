@@ -349,6 +349,110 @@ class Solution:
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/or.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/or.png)
 
+
+### 84. 柱状图中最大的矩形
+    链接：https://leetcode-cn.com/problems/largest-rectangle-in-histogram/
+
+    给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+
+    求在该柱状图中，能够勾勒出来的矩形的最大面积。
+
+    以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 [2,1,5,6,2,3]。
+
+    图中阴影部分为所能勾勒出的最大矩形面积，其面积为 10 个单位。
+
+    示例:
+
+    输入: [2,1,5,6,2,3]
+    输出: 10
+
+题解一|暴力|超时：
+```
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        if not heights:
+            return 0
+        n=len(heights)
+        area=0
+        for i in range(n):
+            tmp=heights[i]
+            for j in range(i,n):
+                tmp=min(tmp,heights[j])
+                area=max(area,tmp*(j-i+1))
+        return area
+```
+
+题解二|递增栈：
+```
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        if not heights:
+            return 0
+        n=len(heights)
+        stack=[]
+        area,i=0,0
+        while i < n:
+            if not stack or (heights[i] > heights[stack[-1]]):
+                stack.append(i)
+                i+=1
+            else:
+                tmp=stack.pop()
+                area=max(area,heights[tmp]*((i-stack[-1]-1) if stack else i))
+        while stack:
+            tmp=stack.pop()
+            area=max(area,heights[tmp]*((i-stack[-1]-1) if stack else i))
+        return area
+```
+
+### 85. 最大矩形
+    链接：https://leetcode-cn.com/problems/maximal-rectangle/
+
+    给定一个仅包含 0 和 1 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
+
+    示例:
+
+    输入:
+    [
+      ["1","0","1","0","0"],
+      ["1","0","1","1","1"],
+      ["1","1","1","1","1"],
+      ["1","0","0","1","0"]
+    ]
+    输出: 6
+
+题解一|暴力：
+
+时间复杂度：O（m²n）。
+空间复杂度：O（mn）。
+
+```
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix:
+            return 0
+        m=len(matrix)
+        n=len(matrix[0])
+        dp=[[0] * n for i in range(m)]
+        area=0
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j]=='1':
+                    if n==0:
+                        dp[i][j]=1
+                    else:
+                        dp[i][j]=dp[i][j-1]+1
+                else:
+                    dp[i][j]=0   
+
+                minWidth=dp[i][j]
+                for k in range(i,-1,-1):
+                    height=i-k+1
+                    minWidth=min(minWidth,dp[k][j])
+                    area=max(area,height*minWidth)
+            
+        return area
+```
+
 ### 409.最长回文串
     链接：https://leetcode-cn.com/problems/longest-palindrome/
 

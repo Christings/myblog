@@ -1,4 +1,4 @@
----
+s---
 title: LeetCode-12-字符串
 date: 2020-03-28 23:45:50
 tags: LeetCode
@@ -198,12 +198,14 @@ https://leetcode-cn.com/problems/longest-palindromic-substring/solution/gao-hao-
     输出: "MCMXCIV"
     解释: M = 1000, CM = 900, XC = 90, IV = 4.
 
-题解一(贪心算法)：
-![](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/rome.png)
+题解一|贪心算法：
+
+![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/rome.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/rome.png)
 ```
 class Solution:
     def intToRoman(self, num: int) -> str:
         # dicts={'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
+
         dicts={1:'I',4:'IV',5:'V',9:'IX',10:'X',40:'XL',50:'L',90:'XC',100:'C',400:'CD',500:'D',900:'CM',1000:'M' }
         ans=''
         for key in sorted(dicts.keys())[::-1]:
@@ -218,7 +220,7 @@ class Solution:
 ```
 
 ### 13.罗马数字转整数
-    链接：https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/rome.png
+    链接：https://leetcode-cn.com/problems/roman-to-integer/
 
     罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
 
@@ -262,7 +264,8 @@ class Solution:
     输出: 1994
     解释: M = 1000, CM = 900, XC = 90, IV = 4.
 
-题解一(hash)：
+题解一|hash：
+
     首先建立一个HashMap来映射符号和值，然后对字符串从左到右来，如果当前字符代表的值小于其右边，就减去该值；否则就加上该值，以此类推到最右边的数
 ```
 class Solution:
@@ -276,12 +279,15 @@ class Solution:
                 ans+=arr[s[i]]
         return ans
 ```
-题解二（hash）：
-    # 构建一个字典记录所有罗马数字子串，注意长度为2的子串记录的值是（实际值 - 子串内左边罗马数字代表的数值）
 
-    # 然后，遍历整个 s 的时候判断当前位置和前一个位置的两个字符组成的字符串是否在字典内，如果在就记录值，不在就说明当前位置不存在小数字在前面的情况，直接记录当前位置字符对应值
+题解二|hash：
 
-    # 举个例子，遍历经过 IV 的时候先记录 I 的对应值 1，再往前移动一步记录 IV 的值 3，加起来正好是 IV 的真实值 4。max 函数在这里是为了防止遍历第一个字符的时候出现 [-1:0] 的情况，因为s[-1:0]为空。
+    构建一个字典记录所有罗马数字子串，注意长度为2的子串记录的值是（实际值 - 子串内左边罗马数字代表的数值）
+
+    然后，遍历整个 s 的时候判断当前位置和前一个位置的两个字符组成的字符串是否在字典内，如果在就记录值，不在就说明当前位置不存在小数字在前面的情况，直接记录当前位置字符对应值
+
+    举个例子，遍历经过 IV 的时候先记录 I 的对应值 1，再往前移动一步记录 IV 的值 3，加起来正好是 IV 的真实值 4。max 函数在这里是为了防止遍历第一个字符的时候出现 [-1:0] 的情况，因为s[-1:0]为空。
+
 ```
 class Solution:
     def romanToInt(self, s: str) -> int:
@@ -300,7 +306,7 @@ class Solution:
 ```
 
 
-?### 14.最长公共前缀
+### ?14.最长公共前缀
     链接：https://leetcode-cn.com/problems/longest-common-prefix/
 
     编写一个函数来查找字符串数组中的最长公共前缀。
@@ -987,7 +993,7 @@ class Solution:
     输入: "race a car"
     输出: false
 
-题解一（双指针）：
+题解一|双指针：
 ```
 class Solution:
     def isPalindrome(self, s: str) -> bool:
@@ -1009,7 +1015,7 @@ class Solution:
 
 isalnum():检测字符串是否由字母和数字组成。
 
-题解二（正则）：
+题解二|正则：
 ```
 class Solution:
     def isPalindrome(self, s: str) -> bool:
@@ -1019,7 +1025,7 @@ class Solution:
         return True if p==p[::-1] else False
 ```
 
-题解三（内置函数）：
+题解三|内置函数：
 ```
 class Solution:
     def isPalindrome(self, s: str) -> bool:

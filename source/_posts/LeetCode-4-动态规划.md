@@ -159,8 +159,8 @@ class Solution:
         n = len(s)
         start = 0
         for i in range(1,n):
-            even = s[i-max_len:i+1]
-            odd = s[i - max_len-1:i+1]
+            even = s[i-max_len:i+1] # 偶数
+            odd = s[i - max_len-1:i+1] # 奇数
             #print(even,odd)
             if i - max_len - 1 >= 0 and odd == odd[::-1]:
                 start = i - max_len - 1
@@ -289,13 +289,17 @@ class Solution:
     进阶:
 
     如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的分治法求解。
-暴力——动态规划——贪心——分治?
-https://leetcode-cn.com/problems/maximum-subarray/solution/zui-da-zi-xu-he-cshi-xian-si-chong-jie-fa-bao-li-f/
+
+参考：https://leetcode-cn.com/problems/maximum-subarray/solution/zui-da-zi-xu-he-cshi-xian-si-chong-jie-fa-bao-li-f/
 题解一：
 
     遍历整个数组，在数组的每一个位置时，求出一个全局最大值L，代表以当前位置
     为结尾的最大字串，而G是当前位置的L和上一个位置L相比较后，取数值更大的。
     当遍历到i时，以i个为结尾的最大字串就是我们的L。
+
+    l：代表以当前位置为结尾的最大字符
+    g：当前位置l和上一个位置l取数值最大
+
     数组[-2,1,-3,4,-1,2,1,-5,4]
     位置0：L=-2,G=-2
     位置1：L=1,G=1
@@ -1262,7 +1266,7 @@ class Solution:
 ```
 class Solution:
     def getRow(self, rowIndex: int) -> List[int]:
-        dp=[[0]* i for i in range(1,rowIndex+2)]
+        dp=[[0]* i for i in range(1,rowIndex+2)] # 从1开始的，所以rowIndex+2
         for i in range(rowIndex+1):
             dp[i][0]=dp[i][-1]=1
         for i in range(rowIndex+1):
@@ -2035,7 +2039,7 @@ class NumMatrix:
     要求算法的空间复杂度为O(n)。
     你能进一步完善解法吗？要求在C++或任何其他语言中不使用任何内置函数（如 C++ 中的 __builtin_popcount）来执行此操作。
 
-题解一（动态规划）：
+题解一|动态规划：
 
 1、定义数组含义
 
@@ -2554,7 +2558,7 @@ class Solution:
                         count[i]=count[j]
                     elif dp[j]+1 == dp[i]: # 代表已经遇到最长子序列
                         count[i]+=count[j]
-            MAX = max(MAX, dp[i])
+        MAX = max(dp)
         res=0
         for i in range(len(nums)):
             if dp[i]==MAX:
@@ -2586,7 +2590,7 @@ class Solution:
 
     nums[i]＞nums[i−1]，i至少可以与i-1形成一个连续递增序列，因为它们俩挨着，并且是递增的，长度上是dp[i-1]+1
 
-    nums[i]＜=nums[i-1],这时候，不能形成连续递增序列，后一个数要比前一个数小，呈下降的趋势，注意=不认为是递增的
+    nums[i]＜=nums[i-1],这时候，不能形成连续递增序列，后一个数要比前一个数小，呈下降的趋势，注意不认为是递增的
 
 3、初始值dp[i]=1
 
@@ -2743,8 +2747,6 @@ class Solution:
 题解二|动态规划
 
 定义：dp[i]为当N=i时，Alice的输赢
-
-
 
 ```
 class Solution:

@@ -363,7 +363,7 @@ class Solution:
         return head
 ```
 
-### ??82.删除排序链表中的重复元素 II
+### 82.删除排序链表中的重复元素 II
     链接：https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/
 
     给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
@@ -379,9 +379,9 @@ class Solution:
 
 题解一：
 
-建立哑结点dummy，当前处理节点为curr，它的值为anchor，它的前序节点为prev。
-
 思路：
+
+建立哑结点dummy，当前处理节点为curr，它的值为anchor，它的前序节点为prev。
 
 如果curr的后序节点的值等于anchor，那么标注flag为True，curr一直后移下去，总之，curr移到连续的最后一个值为anchor的节点，停下来。如果经历了上述步骤，那么prev和curr.next相连，prev按兵不动，curr后移一位；如果没有经历，curr的值是独一无二的，那么prev和curr同时右移一位。继续循环直到curr移到最后一位。
 
@@ -417,11 +417,11 @@ class Solution:
         return dummy.next
 ```
 
-题解二（快慢指针）：
+题解二|快慢指针：
 
-    // 3.1 fast 遍历链表,让fast 去嗅探不相等元素
-    // 3.2 slow.next == fast --> slow 与 fast 之间没有重复元素，slow 动。
-    // 3.3 slow.next != fast --> slow 与 fast 之间存在重复元素，让slow指向的元素跳过这些重复元素，slow 不动。
+    1. fast 遍历链表,让fast 去嗅探不相等元素
+    2. slow.next == fast --> slow 与 fast 之间没有重复元素，slow 动。
+    3. slow.next != fast --> slow 与 fast 之间存在重复元素，让slow指向的元素跳过这些重复元素，slow 不动。
 
 ```
 # Definition for singly-linked list.
@@ -493,7 +493,7 @@ class Solution:
         return dummy.next
 ```
 
-题解三（递归）：
+题解三|递归：
 ```
 class Solution:
     def deleteDuplicates(self, head: ListNode) -> ListNode:
@@ -504,7 +504,7 @@ class Solution:
                 head=head.next
             return self.deleteDuplicates(head.next)
         else:
-            head.next=self.deleteDuplicates(head.next)
+            head.next=self.deleteDuplicates(head.next) 
         return head
 ```
 
@@ -576,7 +576,7 @@ class Solution:
 
 这道题要求我们划分链表，把所有小于给定值的节点都移到前面，大于该值的节点顺序不变，相当于一个局部排序的问题。那么可以想到的一种解法是首先找到第一个大于或等于给定值的节点，用题目中给的例子来说就是先找到4，然后再找小于3的值，每找到一个就将其取出置于4之前即可
 
-题解一（双指针法）：
+题解一|双指针法：
     
 用两个指针before 和 after 来追踪上述的两个链表。两个指针可以用于分别创建两个链表，然后将这两个链表连接即可获得所需的链表。
 
@@ -622,7 +622,7 @@ class Solution:
     输入: 1->2->3->4->5->NULL, m = 2, n = 4
     输出: 1->4->3->2->5->NULL
 
-题解一（迭代）：
+题解一|迭代：
 
 时间复杂度: O(N)。考虑包含 N 个结点的链表。对每个节点最多会处理
 （第 n 个结点之后的结点不处理）。
@@ -759,7 +759,6 @@ class Solution:
     输出：tail connects to node index 1
     解释：链表中有一个环，其尾部连接到第二个节点。
 
-
     示例 2：
 
     输入：head = [1,2], pos = 0
@@ -775,7 +774,7 @@ class Solution:
 
     进阶：你是否可以不用额外空间解决此题？
 
-题解一(hash)：
+题解一|hash：
 ```
 # Definition for singly-linked list.
 # class ListNode:
@@ -794,7 +793,7 @@ class Solution:
                 return head
         return None
 ```
-题解二(快慢指针):
+题解二|快慢指针:
 ```
 class Solution:
     def detectCycle(self, head: ListNode) -> ListNode:
@@ -828,11 +827,11 @@ class Solution:
 
     给定链表 1->2->3->4->5, 重新排列为 1->5->2->4->3.
 
-题解一（反转链表）:
+题解一|反转链表:
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/linknode4.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/linknode4.png)
 
-分析：
+思路：
 
     找中点
     翻转中点之后的链表
@@ -878,7 +877,7 @@ class Solution:
         return head
 ```
 
-题解二（栈）：
+题解二|栈：
 ```
 # Definition for singly-linked list.
 # class ListNode:
@@ -943,7 +942,7 @@ class Solution:
         return head
 ```
 
-### ???147. 对链表进行插入排序
+### 147. 对链表进行插入排序
     链接：https://leetcode-cn.com/problems/insertion-sort-list
 
     对链表进行插入排序。
@@ -971,7 +970,7 @@ class Solution:
 
 参考：https://blog.csdn.net/qq_17550379/article/details/80708238
 
-插入排序（数组）：
+数组的插入排序：
 ```
 def insertSort(lists):
     count=len(lists)
@@ -987,6 +986,43 @@ def insertSort(lists):
 ```
 
 题解一：
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def insertionSortList(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        cur,nxt=head,head.next
+        dummy=ListNode(float('-inf'))
+        dummy.next=head
+
+        while nxt:
+            if nxt.val >= cur.val:
+                cur=cur.next
+                nxt=nxt.next
+            else:
+                cur.next=nxt.next # 断链
+
+                pre1,pre2=dummy,dummy.next # 寻找插入位置
+                while nxt.val > pre2.val:
+                    pre1=pre2
+                    pre2=pre2.next
+
+                pre1.next=nxt
+                nxt.next=pre2
+
+                nxt=cur.next # 再从第一个值开始循环
+        return dummy.next
+```
+
+
+题解二：
 
 ```
 # Definition for singly-linked list.
@@ -1020,7 +1056,7 @@ class Solution:
         return dummy.next
 ```
 
-？？题解二：
+？题解三：
 ```
 # Definition for singly-linked list.
 # class ListNode:
@@ -1153,22 +1189,6 @@ class Solution:
         return p
 ```
 
-扩展：链表有环，如何判断相交？
-
-分析：如果有环且两个链表相交，则两个链表都有共同一个环，即环上的任意一个节点都存在于两个链表上。因此，就可以判断一链表上俩指针相遇的那个节点，在不在另一条链表上。
-
-    无环链表和有环链表是不可能相交的;
-
-    两个有环链表若相交，其“整个环上”的所有node一定都重合;
-
-    有环链表的相交，情况只有2种：相交于”环上”或相交于”不是环的部分”,即下图所示;
-
-![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/link.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/link.png)
-
-```
-https://cloud.tencent.com/developer/article/1045468
-```
-
 ### 203. 移除链表元素
     链接：https://leetcode-cn.com/problems/remove-linked-list-elements/
 
@@ -1181,7 +1201,7 @@ https://cloud.tencent.com/developer/article/1045468
 
 题解一|删除头结点时另做考虑：
 
-思路：删除头结点时另做考虑（由于头结点没有前一个结点）
+思路：删除头结点时另做考虑，由于头结点没有前一个结点。
 
 ```
 class Solution:
@@ -1239,13 +1259,13 @@ class Solution:
         return dummy.next
 ```
 
-???题解三（递归）：
+题解三|递归：
 ```
 class Solution:
     def removeElements(self, head: ListNode, val: int) -> ListNode:
         if not head:
             return head
-        head.next=self.removeElements(head.next,val)        
+        head.next=self.removeElements(head.next,val) # 不能移动到代码最后        
         if head.val==val:
             return head.next
         else:
@@ -1263,8 +1283,6 @@ class Solution:
     输出: 5->4->3->2->1->NULL
     进阶:
     你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
-
-题解一：
 
 参考：
     [https://leetcode.com/problems/reverse-linked-list/solution/](https://leetcode.com/problems/reverse-linked-list/solution/)  
@@ -1315,7 +1333,7 @@ class Solution:
 ![](http://p2lakvkq0.bkt.clouddn.com/linkedlist.jpg)
 
 
-题解一(指针迭代)：
+题解一|指针迭代：
 
 反转一个节点的时候，把一个节点的后驱改为指向它前驱就可以了。这里需要注意的点就是，当你把当前节点的后驱指向前驱的时候，这个时候链表会被截断，也就是说后面的节点和当前节点分开了，所以我们需要一个变量来保存当前节点的后驱，以访丢失。
 
@@ -1359,7 +1377,7 @@ class Solution:
         return pre
 ```
 
-???题解二(递归):
+???题解二|递归:
 
 递归的两个条件：
 
@@ -1404,7 +1422,6 @@ class Solution:
             return pre,head
         res,_=helper(head)
         return res,_
-
 ```
 
 问题扩展：部分节点进行反转
@@ -1548,6 +1565,7 @@ class Solution:
     给定的节点为非末尾节点并且一定是链表中的一个有效节点。
     不要从你的函数中返回任何结果。
 
+题解一：
 时间复杂度 O(1)
 空间复杂度 O(1)
 ```
@@ -1682,7 +1700,7 @@ class Solution:
 
     如果不得使用临时缓冲区，该怎么解决？
 
-题解一（hash）：
+题解一|hash：
 ```
 # Definition for singly-linked list.
 # class ListNode:
@@ -1704,7 +1722,7 @@ class Solution:
             head=head.next
         return dummy.next
 ```
-???题解二（快慢指针)：
+题解二|二重循环|python运行超时：
 
 思路：
 
@@ -1712,7 +1730,6 @@ class Solution:
     2.第二层循环为fast循环，prev的下一个始终指向fast，保证出现fast.val==slow.val时，可以有效的删除相同结点，只需要fast和prev即可完美做到
     3.slow和fast双层循环依次进行，slow和fast以及以后的依次比较，直到结束
 
-运行超时
 
 ```
 # Definition for singly-linked list.
@@ -1728,7 +1745,7 @@ class Solution:
             fast=slow.next
             pre=slow
             while fast:
-                if fast.val == slow.val:
+                if fast.val == slow.val: # 注意对比的是fast和slow
                     pre.next=fast.next
                 else:
                     pre=pre.next
@@ -1783,11 +1800,11 @@ class Solution:
             tmp=tmp.next
         return tmp.val
 ```
-题解二（快慢指针）:
+题解二|快慢指针:
 
-    定义两个指针，快指针 fast， 慢指针 low .
-    让 fast 先向前移动 k 个位置，然后 low 和 fast 再一起向前移动 .
-    当 fast 到达链表尾部，返回 low .
+    定义两个指针，快指针 fast， 慢指针 slow .
+    让 fast 先向前移动 k 个位置，然后 slow 和 fast 再一起向前移动 .
+    当 fast 到达链表尾部，返回 slow .
 
 ```
 # Definition for singly-linked list.
@@ -1881,8 +1898,6 @@ class Solution:
 
     编写函数对这两个整数求和，并用链表形式返回结果。
 
-     
-
     示例：
 
     输入：(7 -> 1 -> 6) + (5 -> 9 -> 2)，即617 + 295
@@ -1946,7 +1961,7 @@ class Solution:
     进阶：
     你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
 
-题解一（数组）：
+题解一|数组：
 ```
 class Solution:
     def isPalindrome(self, head: ListNode) -> bool:
@@ -1956,7 +1971,7 @@ class Solution:
             head=head.next
         return arr==arr[::-1]
 ```
-题解二（快慢指针）:
+题解二|快慢指针:
 ```
 # Definition for singly-linked list.
 # class ListNode:
@@ -2018,8 +2033,8 @@ class Solution:
     可假定整个链表结构中没有循环。
     程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。
 
-题解一（循环）：
-超时
+题解一|循环|超时：
+
 ```
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
@@ -2032,7 +2047,7 @@ class Solution:
         p=p.next
         return None
 ```
-题解二（双指针）：
+题解二|双指针：
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/link10.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/link10.png)
 
@@ -2080,11 +2095,12 @@ class Solution:
 
     进阶：你是否可以不用额外空间解决此题？
 
-题解一（双指针）：
+题解一|双指针：
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/linknode6.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/linknode6.png)
 
 z=n*环的大小+z
+
 ```
 class Solution:
     def detectCycle(self, head: ListNode) -> ListNode:
@@ -2217,7 +2233,12 @@ class Solution:
         return pre
 ```
 
-### 
+### 面试题35. 复杂链表的复制
+
+    链接：https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/
+
+    请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。
+
 题解一：
 ```
 class Solution:
@@ -2225,7 +2246,7 @@ class Solution:
         return copy.deepcopy(head)
 ```
 
-题解二（深度优先遍历）：
+题解二|深度优先遍历：
 ```
 """
 # Definition for a Node.
@@ -2251,7 +2272,7 @@ class Solution:
         return dfs(head)
 ```
 
-题解三（bfs）：
+题解三|bfs：
 ```
 """
 # Definition for a Node.
@@ -2276,7 +2297,7 @@ class Solution:
             while queue:
                 tmp=queue.pop()
                 if tmp.next and tmp.next not in visited:
-                    visited[tmp.next]=None(tmp.next.val,[],[])
+                    visited[tmp.next]=Node(tmp.next.val,[],[])
                     queue.append(tmp.next)
                 if tmp.random and tmp.random not in visited:
                     visited[tmp.random] = Node(tmp.random.val, [], [])
@@ -2285,7 +2306,6 @@ class Solution:
                 visited[tmp].random=visited.get(tmp.random)
             return clone
         return bfs(head)
-
 ```
 
 ### 面试题52. 两个链表的第一个公共节点
@@ -2323,7 +2343,7 @@ class Solution:
     可假定整个链表结构中没有循环。
     程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。
 
-题解一（hash）：
+题解一|hash：
 ```
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
@@ -2342,7 +2362,7 @@ class Solution:
         return None
 ```
 
-题解二（双指针）：
+题解二|双指针：
 
 时间复杂度：O(M+N)
 空间复杂度：O(1)

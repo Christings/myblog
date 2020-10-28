@@ -12,41 +12,11 @@ categories:
     https://www.bilibili.com/video/BV1hW411a7ys?from=search&seid=3722651774629068033
     https://www.cnblogs.com/dahu-daqing/p/9302668.html
 
+
+
 ## 一、KMP
 
 KMP算法，又称模式匹配算法，能够在线性时间内判定字符串 T 是否为 S 的子串，并求出字符串 T 在 S 中各次出现的位置。
-
-## 中心扩散
-
-    思路：
-
-        每个字母当成回文串的中心
-        考虑两种情况:回文串的长度为奇数或者偶数情况。
-
-    缺点：
-        奇数和偶数需要分开讨论
-        没有充分利用前面查找的结果
-        没有思考回文字符本身的特性--对称性
-
-
-```
-class Solution:
-    def longestPalindrome(self, s: str) -> str:
-        n=len(s)
-        self.res=''
-        def helper(i,j):
-            while i>= 0 and j<n and s[i]==s[j]:
-                i-=1
-                j+=1
-            if len(self.res) < j-i-1:
-                self.res=s[i+1:j]
-                # print(i,self.res)
-        
-        for i in range(n):
-            helper(i,i)
-            helper(i,i+1) # 解决case为"cbbd",即解决回文串为偶数的情况
-        return self.res
-```
 
 ## 二、代码
     1、解决奇偶数问题
@@ -122,4 +92,38 @@ p = 'abababca'
 print(getNext(p))
 print(kmp(s, p))
 
+```
+
+## 三、中心扩散--验证回文串
+
+    中心扩散主要用于验证字符串是否是回文串。
+
+    思路：
+
+        每个字母当成回文串的中心
+        考虑两种情况:回文串的长度为奇数或者偶数情况。
+
+    缺点：
+        奇数和偶数需要分开讨论
+        没有充分利用前面查找的结果
+        没有思考回文字符本身的特性--对称性
+
+
+```
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        n=len(s)
+        self.res=''
+        def helper(i,j):
+            while i>= 0 and j<n and s[i]==s[j]:
+                i-=1
+                j+=1
+            if len(self.res) < j-i-1:
+                self.res=s[i+1:j]
+                # print(i,self.res)
+        
+        for i in range(n):
+            helper(i,i)
+            helper(i,i+1) # 解决case为"cbbd",即解决回文串为偶数的情况
+        return self.res
 ```

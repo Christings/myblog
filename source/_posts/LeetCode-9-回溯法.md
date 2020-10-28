@@ -148,7 +148,7 @@ class Solution:
 ### 22. 括号生成
     链接：https://leetcode-cn.com/problems/generate-parentheses/
 
-    数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+    数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的 括号组合。
 
     示例：
 
@@ -356,7 +356,7 @@ class Solution:
       [3,5]
     ]
 
-题解一（回溯）:
+题解一|回溯:
 https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-m-2/
 ```
 class Solution:
@@ -443,7 +443,7 @@ class Solution:
 第 40 题：从候选数组的当前索引值的下一位开始。
 相同之处：解集不能包含重复的组合。
 
-题解一（回溯）:
+题解一|回溯:
 https://leetcode-cn.com/problems/combination-sum-ii/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-m-3/
 ```
 class Solution:
@@ -553,7 +553,7 @@ class Solution:
       [3,2,1]
     ]
 
-题解一（回溯）:
+题解一|回溯:
 ```
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
@@ -698,7 +698,7 @@ output: [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 2, 1], [3, 1, 2]]
       [1,2,1],
       [2,1,1]
     ]
-题解一（回溯）：
+题解一|回溯：
 https://leetcode-cn.com/problems/permutations-ii/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liwe-2/
 ```
 class Solution:
@@ -801,7 +801,7 @@ class Solution:
     ]
     解释: 4 皇后问题存在两个不同的解法。
 
-题解一（回溯法）:
+题解一|回溯法:
 
 问题是十九世纪著名的数学家高斯1850年提出：在8X8格的国际象棋上摆放八个皇后（棋子），使其不能互相攻击，即任意两个皇后都不能处于同一行、同一列或同一斜线上。
 
@@ -840,7 +840,9 @@ class Solution:
 
 ```
 
-???### 60. 第k个排列
+### 60. 第k个排列
+    链接：https://leetcode-cn.com/problems/permutation-sequence/
+
     给出集合 [1,2,3,…,n]，其所有元素共有 n! 种排列。
 
     按大小顺序列出所有排列情况，并一一标记，当 n = 3 时, 所有排列如下：
@@ -887,7 +889,7 @@ class Solution:
         if not n or not k:
             return ''
         backtrace([],1)
-        print(res)
+        # print(res)
         tmp=[str(i) for i in res[k-1]]
         return ''.join(tmp)
 ```
@@ -1050,7 +1052,7 @@ class Solution:
       [1,2],
       []
     ]
-题解一（库函数）:
+题解一|库函数:
 ```
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
@@ -1061,7 +1063,7 @@ class Solution:
                 res.append(j)
         return res
 ```
-题解二（迭代）:
+题解二|迭代:
 ```
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
@@ -1072,7 +1074,7 @@ class Solution:
         return res
 
 ```
-题解三（回溯）:
+题解三|回溯:
 https://leetcode-cn.com/problems/subsets/solution/hui-su-python-dai-ma-by-liweiwei1419/
 
 ```
@@ -1128,7 +1130,7 @@ class Solution:
       []
     ]
 
-题解一（回溯）:
+题解一|回溯:
 ```
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
@@ -1185,7 +1187,7 @@ class Solution:
     IP的格式,每位是在0~255之间,
     不能出现以0开头的两位以上数字,比如012,08...
 
-题解一(暴力):
+题解一|暴力:
 ```
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
@@ -1211,7 +1213,7 @@ class Solution:
                             res.append(tmp1+'.'+tmp2+'.'+tmp3+'.'+tmp4)
         return res
 ```
-题解二（回溯）:
+题解二|回溯:
 
 参考：https://leetcode-cn.com/problems/restore-ip-addresses/solution/shou-hua-tu-jie-huan-yuan-dfs-hui-su-de-xi-jie-by-/
 
@@ -1392,7 +1394,7 @@ class Solution:
 ```
 
 题解二|数学：
-```
+
 这是一道数学题，很容易发现规律：
 
 如果 n = 1，ans = 10；
@@ -1402,7 +1404,7 @@ class Solution:
 
 因此，我们从 i = 1 开始，每次累加结果，一直计算到 i = n 即可得到答案。注意：当 n > 10 时，与 n = 10 的结果相同。
 
-Python3 实现：
+```
 class Solution:
     def countNumbersWithUniqueDigits(self, n: int) -> int:
         def factorial(cnt):  # 从9阶乘cnt次
