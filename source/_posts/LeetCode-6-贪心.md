@@ -67,7 +67,7 @@ def intervalSchedule(intvs):
 
     假设你总是可以到达数组的最后一个位置。
 
-参考：https://mp.weixin.qq.com/s?__biz=Mzg2NzA4MTkxNQ==&mid=2247486128&idx=2&sn=bcec6b9eb7374169d823963bb7ca8415&scene=21#wechat_redirect
+>https://mp.weixin.qq.com/s?__biz=Mzg2NzA4MTkxNQ==&mid=2247486128&idx=2&sn=bcec6b9eb7374169d823963bb7ca8415&scene=21#wechat_redirect
 
 问题是：保证你一定可以跳到最后一格，请问你最少要跳多少次，才能跳过去？
 
@@ -85,6 +85,25 @@ class Solution:
             cur=right-1
             for i in range(right-2,-1,-1):
                 if (i+nums[i]) >= right:
+                    cur=i
+            right=cur
+            sum+=1
+        return sum
+```
+
+```
+class Solution(object):
+    def jump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        right=len(nums)-1
+        sum=0
+        while right>0:
+            cur=right-1
+            for i in range(right-1,-1,-1):
+                if i+nums[i]>=right:
                     cur=i
             right=cur
             sum+=1
@@ -133,7 +152,8 @@ int dp(vector<int>& nums, int p) {
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/greepy1.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/greepy1.png)
 
-时间复杂度是 O(n)，空间复杂度是 O(1)。
+时间复杂度是 O(n)
+空间复杂度是 O(1)
 
 ```
 class Solution:
@@ -171,6 +191,7 @@ class Solution:
     解释: 无论怎样，你总会到达索引为 3 的位置。但该位置的最大跳跃长度是 0 ， 所以你永远不可能到达最后一个位置。
 
 题解一：
+
 ```
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
@@ -189,15 +210,19 @@ class Solution:
     通过题目中的跳跃规则，最多能跳多远？如果能够越过最后一格，返回 true，否则返回 false。
 
 ```
-class Solution:
-    def canJump(self, nums: List[int]) -> bool:
+class Solution(object):
+    def canJump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
         n=len(nums)
-        maxDistance=0
+        farthest=0
         for i in range(n-1):
-            maxDistance=max(maxDistance,i+nums[i])
-            if maxDistance <= i:
+            farthest=max(farthest,i+nums[i])
+            if  farthest <= i:
                 return False
-        return maxDistance >= n-1
+        return farthest >= n-1
 ```
 
 
@@ -240,7 +265,7 @@ class Solution:
     解释: 你可以分别给这三个孩子分发 1、2、1 颗糖果。
          第三个孩子只得到 1 颗糖果，这已满足上述两个条件。
 
-题解一：
+题解一|两个数组：
 https://leetcode-cn.com/problems/candy/solution/candy-cong-zuo-zhi-you-cong-you-zhi-zuo-qu-zui-da-/
 ```
 class Solution:
@@ -257,7 +282,25 @@ class Solution:
             count+=max(left[i],right[i])
         return count
 ```
-题解二：
+
+题解二|一个数组：
+
+时间复杂度：O(n) 。长度为 n 数组 candies 被遍历了 3 次。
+空间复杂度：O(n)。数组 candies 长度为 n 。
+```
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        left=[1 for _ in range(len(ratings))]
+        for i in range(1,len(ratings)):
+            if ratings[i]>ratings[i-1]:
+                left[i]=left[i-1]+1
+        count=left[-1]
+        for i in range(len(ratings)-2,-1,-1):
+            if ratings[i]>ratings[i+1]:
+                left[i]=max(left[i],left[i+1]+1)
+            count+=left[i]
+        return count
+```
 https://leetcode-cn.com/problems/candy/solution/fen-fa-tang-guo-by-powcai/
 ### 316.去除重复字母
     链接：https://leetcode-cn.com/problems/remove-duplicate-letters/
@@ -278,7 +321,8 @@ https://leetcode-cn.com/problems/candy/solution/fen-fa-tang-guo-by-powcai/
     字典序：对于字符而言，按 ascii 码值进行比较，小的排在前，大的排在后。对于字符串，从第 0 位字符开始比较，ascii 码数值小的排在前面，如果相同，就延后一位比较 ascii 码值大小。
 
     子序列：子序列不同于子串，子串要求它们在原串中连续，而子序列则不要求连续。例如acd是abcd的子序列，但不是子串。
-?题解一（递归）：
+
+?题解一|递归：
 ```
 class Solution:
     def removeDuplicateLetters(self, s: str) -> str:
@@ -288,7 +332,7 @@ class Solution:
                 return i+self.removeDuplicateLetters(tmp.replace(i,''))
         return ''
 ```
-?题解二（迭代）：
+?题解二|迭代：
 ```
 class Solution:
     def removeDuplicateLetters(self, s: str) -> str:
@@ -302,7 +346,7 @@ class Solution:
             s = s[s.index(a):].replace(a, "")
         return res
 ```
-题解三(栈):
+题解三|栈:
 https://mp.weixin.qq.com/s?__biz=Mzg2NzA4MTkxNQ==&mid=2247486367&idx=2&sn=b25c0701241325f644acda12599ec06a&scene=21#wechat_redirect
 ```
 class Solution:
@@ -319,6 +363,67 @@ class Solution:
                 existed.add(i)
             count[i]-=1
         return ''.join(stack)
+```
+
+### 330. 按要求补齐数组
+    链接：https://leetcode-cn.com/problems/patching-array/
+
+    给定一个已排序的正整数数组 nums，和一个正整数 n 。从 [1, n] 区间内选取任意个数字补充到 nums 中，使得 [1, n] 区间内的任何数字都可以用 nums 中某几个数字的和来表示。请输出满足上述要求的最少需要补充的数字个数。
+
+    示例 1:
+
+    输入: nums = [1,3], n = 6
+    输出: 1 
+    解释:
+    根据 nums 里现有的组合 [1], [3], [1,3]，可以得出 1, 3, 4。
+    现在如果我们将 2 添加到 nums 中， 组合变为: [1], [2], [3], [1,3], [2,3], [1,2,3]。
+    其和可以表示数字 1, 2, 3, 4, 5, 6，能够覆盖 [1, 6] 区间里所有的数。
+    所以我们最少需要添加一个数字。
+    示例 2:
+
+    输入: nums = [1,5,10], n = 20
+    输出: 2
+    解释: 我们需要添加 [2, 4]。
+    示例 3:
+
+    输入: nums = [1,2,2], n = 5
+    输出: 0
+
+题解一|贪心：
+
+补齐数组特点：
+
+    假设数组 arr 添加一个元素即可覆盖 [1, n) 内所有数字，那么添加的数字 mm 一定满足m <= n。
+    假设数组 arr 可以覆盖 [1, n) 的所有数字，则给 arr 内加元素 mm ：
+    
+        若m <= n，新数组可以覆盖[1, m + n) = [1, n) ∪ [m, m + n)内所有数字；
+
+贪心法则： 
+对于一个覆盖 [1, n)[1,n) 的数组 arrarr 来说，添加数字 nn 连续扩容范围最大（扩容至 [1, 2n)[1,2n) ）。
+
+思路： 设置一个初始范围 [1, 1)，通过不断确认并扩大数组可以覆盖的范围，最终计算出最少需要加入的数字。
+
+    当i < len(nums)且nums[i] <= add时：不需要加入新数字，循环确认并更新数组可以覆盖的范围[1, add + nums[i])，直到找到大于确认范围 add 的 nums[i] 或索引越界。
+    否则：无法根据现有数字构建更大的连续范围，，因此需要使用贪心策略向数组加入数字 add，将数组从覆盖 [1, add) 扩容至可覆盖 [1, 2add)。
+    直到确认的范围add > n，说明此时已经覆盖 [1, n] ，退出迭代并返回。
+
+```
+class Solution(object):
+    def minPatches(self, nums, n):
+        """
+        :type nums: List[int]
+        :type n: int
+        :rtype: int
+        """
+        add,count,i=1,0,0
+        while add <= n:
+            if i<len(nums) and nums[i]<=add:
+                add+=nums[i] # from [1, add] to [1, add + nums[i]]
+                i+=1
+            else:
+                add+=add # from [1, add] to [1, 2add]
+                count+=1
+        return count
 ```
 
 ### 435.无重叠区间
@@ -361,7 +466,7 @@ def eraseOverlapIntervals(intervals) {
 }
 ```
 
-题解一（贪心）:
+题解一|贪心:
     
     先计算能组成不重叠最多区间个数： 
     （1）按区间结尾排序

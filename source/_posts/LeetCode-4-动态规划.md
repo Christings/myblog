@@ -276,6 +276,191 @@ class Solution:
         
 ```
 
+### 10. 正则表达式匹配
+    链接：https://leetcode-cn.com/problems/regular-expression-matching/
+
+    给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
+
+    '.' 匹配任意单个字符
+    '*' 匹配零个或多个前面的那一个元素
+    所谓匹配，是要涵盖 整个 字符串 s的，而不是部分字符串。
+
+    
+    示例 1：
+
+    输入：s = "aa" p = "a"
+    输出：false
+    解释："a" 无法匹配 "aa" 整个字符串。
+    示例 2:
+
+    输入：s = "aa" p = "a*"
+    输出：true
+    解释：因为 '*' 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 'a'。因此，字符串 "aa" 可被视为 'a' 重复了一次。
+    示例 3：
+
+    输入：s = "ab" p = ".*"
+    输出：true
+    解释：".*" 表示可匹配零个或多个（'*'）任意字符（'.'）。
+    示例 4：
+
+    输入：s = "aab" p = "c*a*b"
+    输出：true
+    解释：因为 '*' 表示零个或多个，这里 'c' 为 0 个, 'a' 被重复一次。因此可以匹配字符串 "aab"。
+    示例 5：
+
+    输入：s = "mississippi" p = "mis*is*p*."
+    输出：false
+    
+
+    提示：
+
+    0 <= s.length <= 20
+    0 <= p.length <= 30
+    s 可能为空，且只包含从 a-z 的小写字母。
+    p 可能为空，且只包含从 a-z 的小写字母，以及字符 . 和 *。
+    保证每次出现字符 * 时，前面都匹配到有效的字符
+
+题解一|动态规划：
+
+参考：https://leetcode-cn.com/problems/regular-expression-matching/solution/shou-hui-tu-jie-wo-tai-nan-liao-by-hyj8/
+
+思路：
+
+1、定义dp[i][j]：dp[i][j]代表s的前i个元素能否被p的前j个元素匹配
+
+2、递推表达式
+
+    (1) s[i-1] == p[j-1] or p[j-1]=='.'时：dp[i][j] = dp[i-1][j-1]=True；
+    (2) s[i-1] != p[j-1]时：
+            p[j-1]=='*'时：
+                s[i-1]!=p[j-2]时：dp[i][j] = dp[i][j-2]
+                s[i-1]==p[j-2] or p[j-2]=='*':
+                    p[j-2]重复0次，dp[i][j]=dp[i][j-2]
+                    p[j-2]重复1次，dp[i][j]=dp[i-1][j-2]
+                    p[j-2]重复2次以上，dp[i][j]=dp[i-1][j]
+3、初始值
+    s和p为空，匹配。dp[i][j]=True
+    s不为空，p为空，不匹配。dp[i][0]=False
+    s为空，p不为空，如果要匹配，s='',p='a*',这样让p变成空，才能匹配。dp[0][j]=dp[0][j-2]=True
+
+```
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        # if not s or not p: # 当s='',p='a*',此case无法通过。
+        #     return False
+        m,n=len(s),len(p)
+        dp=[[False]*(n+1) for _ in range(m+1)] # dp[i][j]代表s的前i个元素能否被p的前j个元素匹配
+        dp[0][0]=True
+        for j in range(1,n+1): # 初始值
+            if p[j-1]=='*':
+                dp[0][j]=dp[0][j-2]
+        for i in range(1,m+1):
+            for j in range(1,n+1):
+                if s[i-1]==p[j-1] or p[j-1]=='.':
+                    dp[i][j]=dp[i-1][j-1]
+                elif p[j-1]=='*':
+                    if s[i-1]==p[j-2] or p[j-2]=='.':
+                        dp[i][j]=dp[i][j-2] or dp[i-1][j-2] or dp[i-1][j]
+                    else:
+                        dp[i][j]=dp[i][j-2]
+        return dp[m][n]
+
+```
+
+### 32. 最长有效括号
+    链接：https://leetcode-cn.com/problems/longest-valid-parentheses/
+
+    给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
+
+    示例 1:
+
+    输入: "(()"
+    输出: 2
+    解释: 最长有效括号子串为 "()"
+    示例 2:
+
+    输入: ")()())"
+    输出: 4
+    解释: 最长有效括号子串为 "()()"
+
+题解一|动态规划：
+
+1、定义dp：dp[i]表示以i结尾的最长有效括号
+2、递推表达式：
+    
+        s[i]=='(',所以dp[i]=0；
+        s[i]==')':
+            当s[i-1]=='(',所以dp[i]=dp[i-2]+2；
+            当s[i-1]==')',且s[i-dp[i-1]-1]为'(',所以dp[i]= dp[i-1] + 2 + dp[i-dp[i-1]-2]；
+3、初始化dp[i]=0
+
+时间复杂度：O(n)
+空间复杂度：O(n)
+
+```
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        if not s:
+            return 0
+        dp=[0]*len(s)
+        count=0
+        for i in range(len(s)):
+            if i>0 and s[i]==')':
+                if s[i-1]=='(':
+                    dp[i]=dp[i-2]+2
+                # elif s[i-1]==')' and s[i - dp[i - 1] - 1] == "(": # 无法过case="(()))())("
+                elif s[i-1]==')' and s[i - dp[i - 1] - 1] == "(" and i-dp[i-1]-1>=0:
+                    dp[i]=dp[i-1]+2+dp[i-dp[i-1]-2]  # dp[i-dp[i-1]-2]解决case：()(())
+            if dp[i]>count:
+                count=dp[i]
+        return count
+```
+
+```
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        count=0
+        n=len(s)
+        dp=[0]*n
+        for i in range(1,n):
+            if s[i]==')':
+                if s[i-1]=='(':
+                    if i-2 >= 0:
+                        dp[i]=dp[i-2]+2
+                    else:
+                        dp[i]=2
+                elif s[i-dp[i-1]-1]=='(' and i-dp[i-1]>0:
+                    if i-dp[i-1]-2 >= 0:
+                        dp[i]=dp[i-1]+2+dp[i-dp[i-1]-2]
+                    else:
+                        dp[i]=dp[i-1]+2
+            count=max(count,dp[i])
+        return count
+
+
+```
+
+题解二|栈：
+```
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        if not s:
+            return 0
+        n=len(s)
+        res=0
+        stack=[-1]
+        for i in range(n):
+            if s[i]=='(':
+                stack.append(i)
+            else:
+                stack.pop()
+                if not stack: # 解决第一个字符为')'时，stack.pop()后为空越界的问题
+                    stack.append(i)
+                else:
+                    res=max(res,i-stack[-1])
+        return res
+```
+
 ### 53.最大子序和
     链接：https://leetcode-cn.com/problems/maximum-subarray/
 
@@ -494,7 +679,7 @@ class Solution:
             dp[i]=1
         
         for i in range(1,m):
-            dp[0]=1
+            dp[0]=1 # 每行第一个值为1。
             for j in range(1,n):
                 dp[j]=dp[j-1]+dp[j]
         return dp[n-1]
@@ -577,6 +762,32 @@ class Solution:
         # print(dp[m-1][n-1])
         return dp[-1][-1]
 
+```
+
+题解二|动态规划优化：
+
+时间复杂度：O(mn)
+空间复杂度：O(n)
+
+```
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        m,n=len(obstacleGrid),len(obstacleGrid[0])
+        if not obstacleGrid:
+            return 0
+        if obstacleGrid[0][0]==1 or obstacleGrid[m-1][n-1]==1:
+            return 0
+        dp=n*[0]
+        dp[0]=1
+        for i in range(m):
+            for j in range(n):
+                if obstacleGrid[i][j] == 1:
+                    dp[j]=0
+                    continue
+                if j>=1:
+                    dp[j]=dp[j-1]+dp[j]
+        return dp[n-1]
+            
 ```
 ### 64.最小路径和
     链接：https://leetcode-cn.com/problems/minimum-path-sum/
@@ -673,6 +884,7 @@ class Solution:
     1.  1 阶 + 1 阶 + 1 阶
     2.  1 阶 + 2 阶
     3.  2 阶 + 1 阶
+
 题解一|递归：
 ```
 class Solution:
@@ -971,7 +1183,9 @@ class Solution:
     输入: "226"
     输出: 3
     解释: 它可以解码为 "BZ" (2 26), "VF" (22 6), 或者 "BBF" (2 2 6) 。
+
 题解一|动态规划：
+
     此题类似于青蛙跳台阶问题，不同的只是多了很多限制条件。
 
     青蛙跳台阶时，可以选择跳一级，也可以选择跳两级，所以青蛙到达第 n 级的台阶有两种方式：
@@ -1060,7 +1274,7 @@ class Solution:
         # print(dp[-1])
         return dp[length]
 ```
-### ?95. 不同的二叉搜索树 II
+### 95. 不同的二叉搜索树 II
     链接：https://leetcode-cn.com/problems/unique-binary-search-trees-ii/
 
     给定一个整数 n，生成所有由 1 ... n 为节点所组成的二叉搜索树。
@@ -1145,6 +1359,7 @@ class Solution:
 二叉查找树（Binary Search Tree），（又：二叉搜索树，二叉排序树）它或者是一棵空树，或者是具有下列性质的二叉树： 若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值； 若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值； 它的左、右子树也分别为二叉排序树。
 
 参考：https://leetcode-cn.com/problems/unique-binary-search-trees/solution/bu-tong-de-er-cha-sou-suo-shu-by-leetcode/
+
 方法：
 
     给定一个有序序列 1 ... n，为了根据序列构建一棵二叉搜索树。我们可以遍历每个数字 i，将该数字作为树根，1 ... (i-1) 序列将成为左子树，(i+1) ... n 序列将成为右子树。于是，我们可以递归地从子序列构建子树。
@@ -1162,7 +1377,9 @@ class Solution:
 ![tree](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/tree.png)
 
 1、定义数组元素的含义
+
     G[i]代表二叉搜索树的个数
+
 2、找出数组之间的的关系式
     以i为根，[0,i-1]为左节点，[i+1,n]为右节点
     之后再对[0,i-1]和[i+1,n]递归求解
@@ -1222,6 +1439,7 @@ class Solution:
             triangle.append(row)
         return triangle
 ```
+
 题解二|动态规划：
 
     1、定义数组元素的含义
@@ -1249,6 +1467,16 @@ class Solution:
                     dp[i][j]=dp[i-1][j-1]+dp[i-1][j]
         return dp
 ```
+
+```
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        dp=[[1]*i for i in range(1,numRows+1)]
+        for i in range(2,numRows):
+            for j in range(1,i):
+                dp[i][j]=dp[i-1][j-1]+dp[i-1][j]
+        return dp
+```
 ### 119. 杨辉三角 II
     链接：https://leetcode-cn.com/problems/pascals-triangle-ii/
     
@@ -1274,6 +1502,30 @@ class Solution:
                 if dp[i][j]==0:
                     dp[i][j]=dp[i-1][j-1]+dp[i-1][j]
         return dp[rowIndex]
+```
+
+题解二|动态规划优化：
+```
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        dp=[1 for i in range(rowIndex+1)]
+        for i in range(1,rowIndex+1):
+            for j in range(i-1,0,-1):
+                print(j,)
+                dp[j]=dp[j-1]+dp[j]
+        return dp
+```
+
+```
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        dp = [1] * (rowIndex+1)
+        for i in range(2, rowIndex+1):
+            for j in range(1, i):
+                index = i-j
+                dp[index] = dp[index] + dp[index-1]
+        return dp
+
 ```
 
 ### 120.三角形最小路径和
@@ -1384,6 +1636,7 @@ class Solution:
 
     dp=[False,...,false],长度为n+1，n为字符串长度。
     dp[i]表示s的前i位是否可以用wordDict中的单词表示。
+
 2、找出递推关系式
     
     遍历字符串的所有子串，遍历开始索引i，遍历区间[0,n)：
@@ -1492,7 +1745,7 @@ class Solution:
         return False
 ```
 
-### 152.乘积最大的连续子序列
+### 152. 乘积最大子数组
     链接：https://leetcode-cn.com/problems/maximum-product-subarray/
 
     给定一个整数数组 nums ，找出一个序列中乘积最大的连续子序列（该序列至少包含一个数）。
@@ -1647,6 +1900,7 @@ class Solution:
     n 不超过1690。
 
 题解一|动态规划+3个指针:
+
 ```
 class Solution:
     def nthUglyNumber(self, n: int) -> int:
@@ -1787,6 +2041,7 @@ class Solution:
     dp[i]=1，1 个字符显然是长度为 1 的上升子序列。
 
 时间复杂度：O(n^2)，其中 n 为数组 nums 的长度。动态规划的状态数为 n，计算状态 dp[i] 时，需要 O(n) 的时间遍历 dp[0…i−1] 的所有状态，所以总时间复杂度为 O(n^2)
+
 空间复杂度：O(n)，需要额外使用长度为 n 的 dp 数组。
 
 ```
@@ -1845,9 +2100,67 @@ class Solution:
         return res
 ```
 
+
 https://mp.weixin.qq.com/s/02o_OPgePjaz3dXnw9TA1w
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/search.jpg](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/search.jpg)
+
+```
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        n=len(nums)
+        top=n*[0]
+        piles=0
+        for i in range(n):
+            poker=nums[i]
+            left,right=0,piles
+            while left<right:
+                mid=left+(right-left)//2
+                if top[mid]>poker:
+                    right=mid
+                elif top[mid]<poker:
+                    left=mid+1
+                else:
+                    right=mid
+
+            if left==piles:
+                piles+=1
+            top[left]=poker
+        return piles
+```
+
+题解三|贪心|二分查找：
+
+时间复杂度：O(nlogn)。数组 nums 的长度为 n，我们依次用数组中的元素去更新 dp 数组，而更新 do 数组时需要进行 O(logn) 的二分搜索，所以总时间复杂度为 O(nlogn)。
+
+空间复杂度：O(n)
+
+```
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        dp=[]
+        for num in nums:
+            if not dp or num>dp[-1]:
+                dp.append(num)
+            else:
+                left,right=0,len(dp)-1
+                loc=right
+                while left <= right:
+                    mid=left+(right-left)//2
+                    if dp[mid] >= num:
+                        loc=mid
+                        right=mid-1
+                    else:
+                        left=mid+1
+                dp[loc]=num
+        return len(dp)
+```
 
 ### 303. 区域和检索 - 数组不可变
     链接：https://leetcode-cn.com/problems/range-sum-query-immutable/
@@ -2009,7 +2322,7 @@ class NumMatrix:
         
             for i in range(1, row + 1):
                 for j in range(1, col + 1):
-                    self.dp[i][j] = matrix[i - 1][j - 1] + self.dp[i - 1][j] + self.dp[i][j - 1] - self.dp[i-1][j-1] # [i-1, j-1]重复计算了, 所以需要减去.
+                    self.dp[i][j] = matrix[i - 1][j - 1] + self.dp[i - 1][j] + self.dp[i][j - 1] - self.dp[i-1][j-1] # [i-1, j-1] # 重复计算了, 所以需要减去.
 
     def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
         return self.dp[row2 + 1][col2 + 1] - self.dp[row1][col2 + 1] - self.dp[row2 + 1][col1] + self.dp[row1][col1]
@@ -2019,6 +2332,65 @@ class NumMatrix:
 # param_1 = obj.sumRegion(row1,col1,row2,col2)
 ```
 
+
+### 334. 递增的三元子序列
+    链接：https://leetcode-cn.com/problems/increasing-triplet-subsequence/
+    
+    给定一个未排序的数组，判断这个数组中是否存在长度为 3 的递增子序列。
+
+    数学表达式如下:
+
+    如果存在这样的 i, j, k,  且满足 0 ≤ i < j < k ≤ n-1，
+    使得 arr[i] < arr[j] < arr[k] ，返回 true ; 否则返回 false 。
+    说明: 要求算法的时间复杂度为 O(n)，空间复杂度为 O(1) 。
+
+    示例 1:
+
+    输入: [1,2,3,4,5]
+    输出: true
+    示例 2:
+
+    输入: [5,4,3,2,1]
+    输出: false
+
+题解一|动态规划：
+
+时间复杂度：O(n^2)
+空间复杂度：O(n)
+
+```
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        n=len(nums)
+        dp=[1]*n
+        for i in range(1,n):
+            for j in range(i):
+                if nums[j]<nums[i]:
+                    dp[i]=max(dp[i],dp[j]+1)
+                if dp[i]>=3:
+                    return True
+        return False
+
+```
+
+题解二|双指针：
+
+时间复杂度：O(n)
+空间复杂度：O(1)
+
+```
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        m1,m2=float('inf'),float('inf')
+        for i in nums:
+            if m1>=i:
+                m1=i
+            elif m2>=i:
+                m2=i
+            else:
+                return True
+        return False
+```
 
 ### 338. 比特位计数
     链接：https://leetcode-cn.com/problems/counting-bits/

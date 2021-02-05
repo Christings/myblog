@@ -171,7 +171,7 @@ class Solution:
 ```
 
 ### 21. 合并两个有序链表
-    链接：https://leetcode-cn.com/problems/merge-two-sorted-lists/
+    链接：c
 
     将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
 
@@ -180,7 +180,31 @@ class Solution:
     输入：1->2->4, 1->3->4
     输出：1->1->2->3->4->4
 
-题解一：
+题解一|递归：
+
+时间复杂度：O(n+m)
+空间复杂度：O(n+m)
+```
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        if not l1:
+            return l2
+        elif not l2:
+            return l1
+        elif l1.val < l2.val:
+            l1.next=self.mergeTwoLists(l1.next,l2)
+            return l1
+        else:
+            l2.next=self.mergeTwoLists(l1,l2.next)
+            return l2
+        
+
+```
+
+题解二|迭代：
+
+时间复杂度：O(n+m)
+空间复杂度：O(1)
 
 ```
 # Definition for singly-linked list.
@@ -208,6 +232,154 @@ class Solution:
             head.next=l1
         if l2:
             head.next=l2
+        return dummy.next
+```
+
+### 23. 合并K个升序链表
+    链接：https://leetcode-cn.com/problems/merge-k-sorted-lists/
+
+    给你一个链表数组，每个链表都已经按升序排列。
+
+    请你将所有链表合并到一个升序链表中，返回合并后的链表。
+
+    示例 1：
+
+    输入：lists = [[1,4,5],[1,3,4],[2,6]]
+    输出：[1,1,2,3,4,4,5,6]
+    解释：链表数组如下：
+    [
+    1->4->5,
+    1->3->4,
+    2->6
+    ]
+    将它们合并到一个有序链表中得到。
+    1->1->2->3->4->4->5->6
+    示例 2：
+
+    输入：lists = []
+    输出：[]
+    示例 3：
+
+    输入：lists = [[]]
+    输出：[]
+    
+
+    提示：
+
+    k == lists.length
+    0 <= k <= 10^4
+    0 <= lists[i].length <= 500
+    -10^4 <= lists[i][j] <= 10^4
+    lists[i] 按 升序 排列
+    lists[i].length 的总和不超过 10^4
+
+题解一|两两合并：
+
+时间复杂度：O(k^2*n)
+空间复杂度：O(1)
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+
+        def mergeTwoLists(l1, l2):
+            head=dummy=ListNode(-1)
+            while l1 and l2:
+                if l1.val < l2.val:
+                    head.next=l1
+                    l1=l1.next
+                else:
+                    head.next=l2
+                    l2=l2.next
+                head=head.next
+            if l1:
+                head.next=l1
+            if l2:
+                head.next=l2
+            return dummy.next
+
+        ans=ListNode(float('-inf'))
+        for i in lists:
+            ans=mergeTwoLists(ans,i)
+        return ans.next
+```
+
+题解二|归并：
+
+时间复杂度：O(kn*logk)
+空间复杂度：O(logk)
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+
+        def mergeTwoLists(l1, l2):
+            head=dummy=ListNode(-1)
+            while l1 and l2:
+                if l1.val < l2.val:
+                    head.next=l1
+                    l1=l1.next
+                else:
+                    head.next=l2
+                    l2=l2.next
+                head=head.next
+            if l1:
+                head.next=l1
+            if l2:
+                head.next=l2
+            return dummy.next
+
+        def merge(lists,left,right):
+            if left==right:
+                return lists[left]
+            if left>right:
+                return
+            mid=left+(right-left)//2
+            return mergeTwoLists(merge(lists,left,mid),merge(lists,mid+1,right))
+        
+        if not lists:
+            return
+        return merge(lists,0,len(lists)-1)
+```
+
+题解三|优先队列|小顶堆：
+
+时间复杂度：O(kn*logk)
+空间复杂度：O(k)
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+import heapq
+
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        p=dummy=ListNode(0)
+        head=[]
+        for i in range(len(lists)):
+            if lists[i]:
+                heapq.heappush(head,(lists[i].val,i))
+                lists[i]=lists[i].next
+        while head:
+            val,index=heapq.heappop(head)
+            p.next=ListNode(val)
+            p=p.next
+            if lists[index]:
+                heapq.heappush(head,(lists[index].val,index))
+                lists[index]=lists[index].next
         return dummy.next
 ```
 
@@ -304,6 +476,78 @@ class Solution:
             head=first.next
 
         return dummy.next
+```
+
+### 25. K 个一组翻转链表
+    链接：https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+
+    给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+
+    k 是一个正整数，它的值小于或等于链表的长度。
+
+    如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+    示例：
+
+    给你这个链表：1->2->3->4->5
+
+    当 k = 2 时，应当返回: 2->1->4->3->5
+
+    当 k = 3 时，应当返回: 3->2->1->4->5
+
+    说明：
+
+    你的算法只能使用常数的额外空间。
+    你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
+
+题解一|模拟：
+
+时间复杂度为 O(n∗K)，最好的情况为 O(n) ，最差的情况未 O(n^2)
+空间复杂度为 O(1) 
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        dummy=ListNode(-1)
+        dummy.next=head
+        pre=dummy
+        end=dummy
+
+        while end.next:
+            i=0
+            while i<k and end:
+                end=end.next
+                i+=1
+            if not end: break
+            
+            # 断开链表
+            start=pre.next
+            nxt=end.next
+            end.next=None
+
+            pre.next=self.reverse(start) # 翻转
+            start.next=nxt # 链接断开的链表
+
+            # 后移处理下一组
+            pre=start
+            end=pre
+
+        return dummy.next
+    def reverse(self, head):
+            if not head:
+                return
+            pre=None
+            while head:
+                nxt=head.next
+                head.next=pre
+                pre=head
+                head=nxt
+            return pre
+        
 ```
 
 ### 61. 旋转链表
@@ -1584,6 +1828,50 @@ class Solution:
         node.val=node.next.val
         node.next=node.next.next
 ```
+
+### 328. 奇偶链表
+    链接：https://leetcode-cn.com/problems/odd-even-linked-list/
+
+    给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。
+
+    请尝试使用原地算法完成。你的算法的空间复杂度应为 O(1)，时间复杂度应为 O(nodes)，nodes 为节点总数。
+
+    示例 1:
+
+    输入: 1->2->3->4->5->NULL
+    输出: 1->3->5->2->4->NULL
+    示例 2:
+
+    输入: 2->1->3->5->6->4->7->NULL 
+    输出: 2->3->6->7->1->5->4->NULL
+    说明:
+
+    应当保持奇数节点和偶数节点的相对顺序。
+    链表的第一个节点视为奇数节点，第二个节点视为偶数节点，以此类推。
+
+题解一：
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        # odd:奇数
+        # even:偶数
+        if not head:
+            return
+        odd=head
+        evenHead=even=head.next
+        while odd.next and even.next:
+            odd.next=odd.next.next
+            even.next=even.next.next
+            odd,even=odd.next,even.next
+        odd.next=evenHead
+        return head
+```
+
 ### 876.链表的中间节点
     链接：https://leetcode-cn.com/problems/middle-of-the-linked-list/
 

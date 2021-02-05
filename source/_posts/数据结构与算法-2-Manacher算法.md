@@ -22,7 +22,7 @@ def manacher(s):
 
     for i in range(len(s)):
         if i<MaxRight:
-            RL[i]=min(RL[2*pos-i], MaxRight-i)
+            RL[i]=min(RL[2*pos-i], MaxRight-i)·
         else:
             RL[i]=1
         #尝试扩展，注意处理边界

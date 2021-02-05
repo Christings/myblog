@@ -23,6 +23,7 @@ categories:
     3、结束条件：也就是到达决策树底层，无法再做选择的条件。
 
 回溯算法的框架: 其核心就是 for 循环里面的递归，在递归调用之前「做选择」，在递归调用之后「撤销选择」。
+
 ```
 result = []
 def backtrack(路径, 选择列表):
@@ -66,6 +67,10 @@ for 选择 in 选择列表:
     尽管上面的答案是按字典序排列的，但是你可以任意选择答案输出的顺序。
 
 题解一|暴力：
+
+时间复杂度：O(3^M×4^N)，M 是对应三个字母的数字个数，N 是对应四个字母的数字个数。
+空间复杂度：O(3^M×4^N)，一共要生成 3^M×4^N个结果。
+
 ```
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
@@ -89,8 +94,10 @@ class Solution:
 
 ```
 class Solution:
-    def letterCombinations(self, digits):
-        key_all={
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+        hash={
             '2': ['a', 'b', 'c'],
             '3': ['d', 'e', 'f'],
             '4': ['g', 'h', 'i'],
@@ -100,19 +107,21 @@ class Solution:
             '8': ['t', 'u', 'v'],
             '9': ['w', 'x', 'y', 'z']
         }
-        if digits=='':
-            return ''
         ans=['']
         for num in digits:
             tmp=[]
-            for pre in ans:
-                for suf in key_all[num]:
-                    tmp.append(pre+suf)
-            ans=tmp[:]
+            for i in ans:
+                for j in hash[num]:
+                    tmp.append(i+j)
+                ans=tmp[:]
         return ans
 ```
 
 题解二|回溯：
+
+时间复杂度：O(3^M×4^N)，M 是对应三个字母的数字个数，N 是对应四个字母的数字个数。
+空间复杂度：O(3^M×4^N)，一共要生成 3^M×4^N个结果。
+
 ```
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
@@ -136,7 +145,7 @@ class Solution:
                 res.append(''.join(path))
                 return
             
-            digit=int(digits[index])
+            digit=int(digits[index]) # hash的key定义是int
             for i in hash.get(digit,[]):
                 path.append(i)
                 traceback(digits,index+1,path)
@@ -145,10 +154,41 @@ class Solution:
         return res
 ```
 
+```
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+        res=[]
+        hash={
+            '1':'',
+            '2':'abc',
+            '3':'def',
+            '4':'ghi',
+            '5':'jkl',
+            '6':'mno',
+            '7':'pqrs',
+            '8':'tuv',
+            '9':'wxyz'
+        }
+        def traceback(digits,first,path):
+            if first==len(digits):
+                res.append(''.join(path))
+                return
+            # digit=int(digits[first])
+            digit=digits[first] # hash的key定义为str
+            for i in hash.get(digit,[]):
+                path.append(i)
+                traceback(digits,first+1,path)
+                path.pop()
+        traceback(digits,0,[])
+        return res
+```
+
 ### 22. 括号生成
     链接：https://leetcode-cn.com/problems/generate-parentheses/
 
-    数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的 括号组合。
+    数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的括号组合。
 
     示例：
 
@@ -162,6 +202,11 @@ class Solution:
          ]
 
 题解一|暴力：
+
+时间复杂度：O(2^{2n}n)，对于 2^{2n}个序列中的每一个，我们用于建立和验证该序列的复杂度为 O(n)。
+
+空间复杂度：O(n)，除了答案数组之外，我们所需要的空间取决于递归栈的深度，每一层递归函数需要 O(1) 的空间，最多递归 2n 层，因此空间复杂度为 O(n)。
+
 ```
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
@@ -197,6 +242,10 @@ class Solution:
 我们可以通过跟踪到目前为止放置的左括号和右括号的数目来做到这一点，
 
 如果左括号数量不大于 n，我们可以放一个左括号。如果右括号数量小于左括号的数量，我们可以放一个右括号。
+
+时间复杂度：O(4^n/sqrt(n))，在回溯过程中，每个答案需要 O(n)O(n) 的时间复制到答案数组中。
+
+空间复杂度：O(n)，除了答案数组之外，我们所需要的空间取决于递归栈的深度，每一层递归函数需要 O(1) 的空间，最多递归 2n 层，因此空间复杂度为 O(n)。
 
 ```
 class Solution:
@@ -357,7 +406,9 @@ class Solution:
     ]
 
 题解一|回溯:
+
 https://leetcode-cn.com/problems/combination-sum/solution/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-m-2/
+
 ```
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
@@ -375,7 +426,7 @@ class Solution:
         for i in range(begin,size):
             residue=target-candidates[i]
             if residue < 0:
-                break
+                break # 前面已排序，所以才能用break，否则还是要用continue。
             path.append(candidates[i])
             self.helper(candidates,i,size,residue,res,path)
             path.pop()
@@ -389,6 +440,7 @@ class Solution:
         def backtrace(candidates,start,path,target):
             if target==0:
                 # res.append(path[:])
+                # list2 = list1[:]则是把list1通过切片运算取得的新list对象绑定到list2上，产生了新list，名称和引用也不同，所以，修改其中一个，另一个不会变。
                 res.append(path+[])
                 return
 
@@ -398,6 +450,7 @@ class Solution:
                     continue
                 path.append(candidates[i])
                 backtrace(candidates,i,path,tmp) # 注意此处i的取值
+                # backtrace(candidates,start,path,tmp) # 结果为[[2,2,3],[2,3,2],[3,2,2],[7]]
                 path.pop()
         
         backtrace(candidates,0,[],target)
@@ -481,7 +534,7 @@ class Solution:
         if(i>start && candidates[i]==candidates[i-1]) continue;
 
 ```
-这个避免重复当思想是在是太重要了。
+这个避免重复思想是在是太重要了。
 这个方法最重要的作用是，可以让同一层级，不出现相同的元素。即
                   1
                  / \
@@ -491,7 +544,7 @@ class Solution:
                 例2
                   1
                  /
-                2      这种情况确是允许的
+                 2      这种情况确是允许的
                /
               2  
                 
@@ -508,6 +561,21 @@ class Solution:
 第一个出现的2的特点就是 i == start. 第二个出现的2 特点是i > start.
 
 再通俗点，就是有重复元素的话，比如测试用例中的第一个1和第二个1，都会有1,7组成8，这样就产生了重复的list。因为都是从当前数开始遍历，所以加这一层的意思就是过滤掉重复的数，但是第一个1依然能使用第二个1，而第二个1是失去了作用的。
+
+
+1、给定的数组可能有重复的元素，先排序，使得重复的数字相邻，方便去重。
+
+2、for 循环枚举出选项时，加入下面判断，从而忽略掉同一层重复的选项，避免产生重复的组合。比如[1,2,2,2,5]中，选了第一个 2，变成 [1,2]，它的下一选项也是 2，跳过它，因为选它，就还是 [1,2]。
+
+
+    if (i - 1 >= start && candidates[i - 1] == candidates[i]) {
+        continue;
+    }
+    
+3、当前选择的数字不能和下一个选择的数字重复，给子递归传i+1，避免与当前选的i重复。
+
+    dfs(i + 1, temp, sum + candidates[i]);
+
 
 ```
 
@@ -560,7 +628,7 @@ class Solution:
         
         def backtrack(first=0):
             if first==lens:
-                output.append(nums[:])
+                output.append(nums[:]) # 可以加上return
             for i in range(first,lens):
                 nums[first],nums[i]=nums[i],nums[first]
                 backtrack(first+1) # 注意：不能使用i+1，否则会出现[[1,2,3],[1,3,2],[2,1,3],[3,2,1]]
@@ -584,15 +652,13 @@ class Solution:
             for i in range(first, n):
                 # place i-th integer first
                 # in the current permutation
-                print('i,first:',i, first)
-                print(nums[i], nums[first])
+                print('i,first:',i, first,nums[i], nums[first])
                 nums[first], nums[i] = nums[i], nums[first]
                 # use next integers to complete the permutations
                 backtrack(first + 1)
                 # backtrack
                 nums[first], nums[i] = nums[i], nums[first]
-                print('2:i,first:', i, first)
-                print('2:', nums[i], nums[first])
+                print('2:i,first:', i, first,nums[i], nums[first])
 
         n = len(nums)
         output = []
@@ -702,7 +768,7 @@ output: [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 2, 1], [3, 1, 2]]
 https://leetcode-cn.com/problems/permutations-ii/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liwe-2/
 ```
 class Solution:
-    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+    def permuteUnie(self, nums: List[int]) -> List[List[int]]:
         
         def backtrack(first=0):
             if first==lens:
@@ -806,7 +872,38 @@ class Solution:
 问题是十九世纪著名的数学家高斯1850年提出：在8X8格的国际象棋上摆放八个皇后（棋子），使其不能互相攻击，即任意两个皇后都不能处于同一行、同一列或同一斜线上。
 
 1、判断每次输入的皇后是否在同一行、同一列或者同一斜线上
-2、核心算法
+2、核心算法:https://leetcode-cn.com/problems/n-queens/solution/51-n-queenshui-su-fa-jing-dian-wen-ti-xiang-jie-by/
+
+```
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        
+        def isValid(row,col):
+            for i in range(row):
+                for j in range(n): # 注意此处是n
+                    if board[i][j]=='Q' and (j==col or i-j==row-col or i+j==row+col): # 判断列、对角线和斜对角线
+                        return False
+            return True
+        def helper(row):
+            if row==n: # 结束条件
+                tmplist=[]
+                for each in board:
+                    tmpstr=''.join(each)
+                    tmplist.append(tmpstr)
+                res.append(tmplist)
+                return
+
+            for col in range(n):
+                if isValid(row,col):
+                    board[row][col]='Q'
+                    helper(row+1)
+                    board[row][col]='.'
+            
+        board=[['.']*n for i in range(n)]
+        res=[]
+        helper(0)
+        return res
+```
 
 ```
 class Solution:
@@ -838,6 +935,65 @@ class Solution:
                 return False
         return True
 
+```
+
+### 52. N皇后 II
+    链接：https://leetcode-cn.com/problems/n-queens-ii/
+
+    n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+
+    上图为 8 皇后问题的一种解法。
+
+    给定一个整数 n，返回 n 皇后不同的解决方案的数量。
+
+    示例:
+
+    输入: 4
+    输出: 2
+    解释: 4 皇后问题存在如下两个不同的解法。
+    [
+    [".Q..",  // 解法 1
+    "...Q",
+    "Q...",
+    "..Q."],
+
+    ["..Q.",  // 解法 2
+    "Q...",
+    "...Q",
+    ".Q.."]
+    ]
+    
+    提示：
+
+    皇后，是国际象棋中的棋子，意味着国王的妻子。皇后只做一件事，那就是“吃子”。当她遇见可以吃的棋子时，就迅速冲上去吃掉棋子。当然，她横、竖、斜都可走一或 N-1 步，可进可退。（引用自 百度百科 - 皇后 ）
+
+题解一|回溯：
+```
+class Solution:
+    def __init__(self):
+        self.count=0
+
+    def totalNQueens(self, n: int) -> int:
+        
+        def isValid(row,col):
+            for i in range(row):
+                for j in range(n):
+                    if board[i][j]=='Q' and (j==col or i-j==row-col or i+j==row+col):
+                        return False
+            return True
+        
+        def helper(row):
+            if row==n:
+                self.count+=1
+                return
+            for col in range(n):
+                if isValid(row,col):
+                    board[row][col]='Q'
+                    helper(row+1)
+                    board[row][col]='.'
+        board=[['.']*n for i in range(n)]
+        helper(0)
+        return self.count
 ```
 
 ### 60. 第k个排列
@@ -923,7 +1079,7 @@ class Solution:
         return ''.join(tmp)
 ```
 
-???
+回溯|剪枝：
 ```
 class Solution:
     def getPermutation(self, n: int, k: int) -> str:
@@ -1110,6 +1266,59 @@ class Solution:
         backtrace([],0)
         return res
 ```
+
+### 79. 单词搜索
+    链接：https://leetcode-cn.com/problems/word-search/
+
+    给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+
+    单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+    示例:
+
+    board =
+    [
+      ['A','B','C','E'],
+      ['S','F','C','S'],
+      ['A','D','E','E']
+    ]
+
+    给定 word = "ABCCED", 返回 true
+    给定 word = "SEE", 返回 true
+    给定 word = "ABCB", 返回 false
+     
+
+    提示：
+
+    board 和 word 中只包含大写和小写英文字母。
+    1 <= board.length <= 200
+    1 <= board[i].length <= 200
+    1 <= word.length <= 10^3
+
+题解一|DFS：
+```
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def dfs(board,word,i,j,index):
+            if i<0 or i>=m or j<0 or j>=n or board[i][j]!=word[index]:
+                return False
+            if index==len(word)-1:
+                return True
+            tmp=board[i][j]
+            board[i][j]='.'
+            res=dfs(board,word,i+1,j,index+1) or dfs(board,word,i-1,j,index+1) or dfs(board,word,i,j+1,index+1) or dfs(board,word,i,j-1,index+1)
+            board[i][j]=tmp
+            return res
+
+        m=len(board)
+        n=len(board[0])
+        for i in range(m):
+            for j in range(n):
+                if dfs(board,word,i,j,0):
+                    return True
+        return False
+```
+
 ### 90. 子集 II
     链接：https://leetcode-cn.com/problems/subsets-ii/submissions/
 
@@ -1162,7 +1371,7 @@ class Solution:
         res=[]
         nums.sort()
         def backtrace(path,first):
-            res.append(path[:]) # ???没有return
+            res.append(path[:]) # # 没有return，加上return后不会进入回溯。
             for i in range(first,len(nums)):
                 if i>first and nums[i]==nums[i-1]: # 滤重
                     continue
@@ -1218,6 +1427,8 @@ class Solution:
 参考：https://leetcode-cn.com/problems/restore-ip-addresses/solution/shou-hua-tu-jie-huan-yuan-dfs-hui-su-de-xi-jie-by-/
 
 思路:
+
+回溯的要点1：
 
     做第一步时我们有几种 选择 以 "25525511135" 为例：
 
@@ -1540,7 +1751,7 @@ class Solution:
             if num == 0: # 没有可以点亮的灯了，记录当前结果，并返回
                 h = sum([i*j for i,j in zip(hour, status[:4])])
                 m = sum([i*j for i,j in zip(minute, status[4:])])
-                if h < 12 and m < 60:
+                if h < 12 and m < 60: 
                     res.append('%d:%02d' % (h, m))
                 return
             for i in range(index, 10):
@@ -1708,6 +1919,7 @@ class Solution:
                 path.pop()
         backtrace([],0)
         return res
+        
 ```
 
 ### 面试题 08.07. 无重复字符串的排列组合

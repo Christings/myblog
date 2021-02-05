@@ -21,7 +21,7 @@ categories:
 
 ## 十二、字符串
 
-### ?5.最长回文子串
+### 5.最长回文子串
     链接：https://leetcode-cn.com/problems/longest-palindromic-substring/
 
     给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
@@ -140,20 +140,197 @@ class Solution:
         return s[start: start+max_len]
 ```
 
-?题解四|动态规划：
+题解四|动态规划：
 ![](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/dp.png)
 
-https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zhong-xin-kuo-san-dong-tai-gui-hua-by-liweiwei1419/
+参考：https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zhong-xin-kuo-san-dong-tai-gui-hua-by-liweiwei1419/
 
     1、定义数组的定义
         dp[i][j] 表示子串 s[i, j] 是否为回文子串。
     2、找出数组的关系式
         dp[i][j] = (s[i] == s[j]) and dp[i + 1][j - 1]
+
+        说明：
+
+            「动态规划」事实上是在填一张二维表格，由于构成子串，因此 i 和 j 的关系是 i <= j ，因此，只需要填这张表格对角线以上的部分。
+
+            看到 dp[i + 1][j - 1] 就得考虑边界情况。
+
+        边界条件是：表达式 [i + 1, j - 1] 不构成区间，即长度严格小于 2，即 j - 1 - (i + 1) + 1 < 2 ，整理得 j - i < 3。
+
+        这个结论很显然：j - i < 3 等价于 j - i + 1 < 4，即当子串 s[i..j] 的长度等于 2 或者等于 3 的时候，其实只需要判断一下头尾两个字符是否相等就可以直接下结论了。
+
+            如果子串 s[i + 1..j - 1] 只有 1 个字符，即去掉两头，剩下中间部分只有 11 个字符，显然是回文；
+            如果子串 s[i + 1..j - 1] 为空串，那么子串 s[i, j] 一定是回文子串。
+
+        因此，在 s[i] == s[j] 成立和 j - i < 3 的前提下，直接可以下结论，dp[i][j] = true，否则才执行状态转移。
+
     3、找到初始值
+        初始化的时候，单个字符一定是回文串，因此把对角线先初始化为 true，即 dp[i][i] = true 。
+
+        事实上，初始化的部分都可以省去。因为只有一个字符的时候一定是回文，dp[i][i] 根本不会被其它状态值所参考。
+
+    4、考虑输出
+
+        只要一得到 dp[i][j] = true，就记录子串的长度和起始位置，没有必要截取，这是因为截取字符串也要消耗性能，记录此时的回文子串的「起始位置」和「回文长度」即可。
+
+```
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        n=len(s)
+        if n < 2:
+            return s
+        dp=[[False]*n for i in range(n)]
+        res=1
+        start=0
+
+        for i in range(n):
+            dp[i][i]=True
+
+        for j in range(1,n):
+            for i in range(0,j):
+                if s[i]==s[j]:
+                    if j-i < 3:
+                        dp[i][j]=True
+                    else:
+                        dp[i][j]=dp[i+1][j-1]
+                else:
+                    dp[i][j]=False
+
+                if dp[i][j]:
+                    cur=j-i+1
+                    if cur>res:
+                        res=cur
+                        start=i
+        return s[start:start+res]
+
+```
 
 https://leetcode-cn.com/problems/longest-palindromic-substring/solution/gao-hao-dong-tai-gui-hua-he-zhong-xin-tuo-zhan-zhu/
 
-### 12.整数转罗马数字
+
+### 7. 整数反转
+    链接：https://leetcode-cn.com/problems/reverse-integer/
+
+    给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+
+    示例 1:
+
+    输入: 123
+    输出: 321
+     示例 2:
+
+    输入: -123
+    输出: -321
+    示例 3:
+
+    输入: 120
+    输出: 21
+    注意:
+
+    假设我们的环境只能存储得下 32 位的有符号整数，则其数值范围为 [−231,  231 − 1]。请根据这个假设，如果反转后整数溢出那么就返回0
+
+题解一：
+```
+class Solution:
+    def reverse(self, x: int) -> int:
+        flag=1 if x>0 else -1
+        new=abs(x)
+        res=0
+        while new:
+            res=res*10 + new%10
+            new//=10
+        if res>pow(-2,31) and res<pow(2,31)-1:
+            return flag*res
+        else:
+            return 0
+```
+
+题解二：
+```
+class Solution:
+    def reverse(self, x: int) -> int:
+        x=int(str(x)[::-1]) if x>=0 else -int(str(-x)[::-1])
+        return x if x<pow(2,31)-1 and x>-pow(2,31) else 0
+```
+
+
+### 8. 字符串转换整数 (atoi)
+
+链接：https://leetcode-cn.com/problems/string-to-integer-atoi/
+
+    请你来实现一个 atoi 函数，使其能将字符串转换成整数。
+
+    首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。接下来的转化规则如下：
+
+    如果第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字字符组合起来，形成一个有符号整数。
+    假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成一个整数。
+    该字符串在有效的整数部分之后也可能会存在多余的字符，那么这些字符可以被忽略，它们对函数不应该造成影响。
+    注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换，即无法进行有效转换。
+
+    在任何情况下，若函数不能进行有效的转换时，请返回 0 。
+
+    提示：
+
+    本题中的空白字符只包括空格字符 ' ' 。
+    假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
+     
+
+    示例 1:
+
+    输入: "42"
+    输出: 42
+    示例 2:
+
+    输入: "   -42"
+    输出: -42
+    解释: 第一个非空白字符为 '-', 它是一个负号。
+         我们尽可能将负号与后面所有连续出现的数字组合起来，最后得到 -42 。
+    示例 3:
+
+    输入: "4193 with words"
+    输出: 4193
+    解释: 转换截止于数字 '3' ，因为它的下一个字符不为数字。
+    示例 4:
+
+    输入: "words and 987"
+    输出: 0
+    解释: 第一个非空字符是 'w', 但它不是数字或正、负号。
+         因此无法执行有效的转换。
+    示例 5:
+
+    输入: "-91283472332"
+    输出: -2147483648
+    解释: 数字 "-91283472332" 超过 32 位有符号整数范围。 
+         因此返回 INT_MIN (−231) 。
+
+题解一：
+```
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        str=str.lstrip()
+
+        if len(str)==0:
+            return 0
+        last=0
+        i=1 if str[0]=='+' or str[0]=='-' else 0
+        #循环，直到无法强转成int，跳出循环
+        while i<=len(str):
+            try:
+                last=int(str[:i+1]) # int['aa']会报错，所以走break
+                print(last)
+                i+=1
+            except:
+                break
+        # 判断数字是否超出范围
+        if last<-2**31:
+            return -2**31
+        if last>2**31-1:
+            return 2**31-1
+        return last
+```
+
+### 12.转罗马数字
     链接：https://leetcode-cn.com/problems/integer-to-roman/
 
     罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。
@@ -306,7 +483,7 @@ class Solution:
 ```
 
 
-### ?14.最长公共前缀
+### 14.最长公共前缀
     链接：https://leetcode-cn.com/problems/longest-common-prefix/
 
     编写一个函数来查找字符串数组中的最长公共前缀。
@@ -327,7 +504,8 @@ class Solution:
     所有输入只包含小写字母 a-z 。
 
 https://blog.csdn.net/lz_901/article/details/89021210
-题解一(水平扫描)：
+
+题解一|水平扫描：
 
     1、先找出 str1 和 str2（注：str1代表第一个字符串，str2代表第二个） 的公共字符串 s1。
 
@@ -342,15 +520,6 @@ https://blog.csdn.net/lz_901/article/details/89021210
 ```
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        # if not strs:
-        #     return ''
-        # res=''
-        # for i in range(0,len(strs[0])):
-        #     c=strs[0][i]
-        #     for j in range(1,len(strs)):
-        #         if i == len(str[j]) or c != strs[j][i] 
-        #             return res
-        #     res+=c
         if not strs:
             return ''
         prefix=strs[0]
@@ -374,7 +543,7 @@ find()语法：
     返回值：
         如果包含子字符串返回开始的索引值，否则返回-1。
 
-题解二(水平扫描优化)：
+题解二|水平扫描优化：
 
     想象数组的末尾有一个非常短的字符串，使用上述方法仍旧会进行S次比较。
     优化这类情况的方法是水平扫描，从前往后枚举字符串的每一列，先比较每个字符串相同列上的字符（即不同字符串相同下标的字符），然后再进行下一列的比较。
@@ -386,17 +555,18 @@ find()语法：
 ```
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        if(not strs):
-            return ""
+        if not strs:
+            return ''
         for i in range(len(strs[0])):
-            c=strs[0][i]
-            for j in range(len(strs)):
-                if i==len(strs[j]) or strs[j][i] != c:
+            tmp=strs[0][i]
+            for j in range(1,len(strs)):
+                if i==len(strs[j]) or strs[j][i]!=tmp:
                     return strs[0][0:i]
         return strs[0]
+
 ```
 
-题解三（分治）：
+题解三|分治：
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/lcp2.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/lcp2.png)
 
@@ -442,7 +612,7 @@ class Solution:
         return lcp(strs, 0, len(strs) - 1)
 ```
 
-题解四（zip）：
+题解四|zip：
 ```
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
@@ -480,7 +650,7 @@ zip()语法：
     返回值:
     返回元组列表/一个对象。
 
-题解五（max和min）：
+题解五|max和min：
 
 max()和min()在python字符串中是可以比较的，按照ascii值排序，比如abb，aba，abac，最大为abb，最小为aba。
 
@@ -518,7 +688,7 @@ class Solution:
 
     对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
 
-题解一(子串逐一比较 - 线性时间复杂度)：
+题解一|子串逐一比较|线性时间复杂度：
 
 思路：沿着字符换逐步移动滑动窗口，将窗口内的子串与 needle 字符串比较。
 
@@ -530,14 +700,14 @@ class Solution:
 ```
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        n,length=len(haystack),len(needle)
-        for i in range(n-length+1):
-            if haystack[i:i+length]==needle:
+        n1,n2=len(haystack),len(needle)
+        for i in range(n1-n2+1):
+            if haystack[i:i+n2] == needle:
                 return i
         return -1
 ```
 
-？？题解二（双指针 - 线性时间复杂度）：
+题解二|双指针|线性时间复杂度：
 
 题解一的缺陷是会将 haystack 所有长度为 L 的子串都与 needle 字符串比较，实际上是不需要这么做的。
 
@@ -547,60 +717,53 @@ class Solution:
 
     其次，可以一个字符一个字符比较，一旦不匹配了就立刻终止。
 
-    比较到最后一位时发现不匹配，这时候开始回溯。需要注意的是，pn 指针是移动到 pn = pn - curr_len + 1 的位置，而 不是 pn = pn - curr_len 的位置。
+    比较到最后一位时发现不匹配，这时候开始回溯。需要注意的是，i 指针是移动到 i = i - index + 1 的位置，而 不是 i = i - index 的位置。
 
-    这时候再比较一次，就找到了完整匹配的子串，直接返回子串的开始位置 pn - L。
+    这时候再比较一次，就找到了完整匹配的子串，直接返回子串的开始位置 i - n2。
 
 思路：
 
-    移动 pn 指针，直到 pn 所指向位置的字符与 needle 字符串第一个字符相等。
+    移动 i 指针，直到 i 所指向位置的字符与 needle 字符串第一个字符相等。
 
-    通过 pn，pL，curr_len 计算匹配长度。
+    通过 i，j，index 计算匹配长度。
 
-    如果完全匹配（即 curr_len == L），返回匹配子串的起始坐标（即 pn - L）。
+    如果完全匹配（即 index == n2），返回匹配子串的起始坐标（即 i - n2）。
 
-    如果不完全匹配，回溯。使 pn = pn - curr_len + 1， pL = 0， curr_len = 0。
+    如果不完全匹配，回溯，使 i = i - index + 1， j = 0， index = 0。
 
-时间复杂度：最坏时间复杂度为 O((N - L)L)，最优时间复杂度为 O(N)。
+时间复杂度：最坏时间复杂度为 O((n1 - n2)n2)，最优时间复杂度为 O(n2)。
 空间复杂度：O(1)
 
 ```
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        L, n = len(needle), len(haystack)
-        if L == 0:
+        n1,n2=len(haystack),len(needle)
+        if not n2:
             return 0
-
-        pn = 0
-        while pn < n - L + 1:
-            # find the position of the first needle character
-            # in the haystack string
-            while pn < n - L + 1 and haystack[pn] != needle[0]:
-                pn += 1
-            
-            # compute the max match string
-            curr_len = pL = 0
-            while pL < L and pn < n and haystack[pn] == needle[pL]:
-                pn += 1
-                pL += 1
-                curr_len += 1
-            
-            # if the whole needle string is found,
-            # return its start position
-            if curr_len == L:
-                return pn - L
-            
-            # otherwise, backtrack
-            pn = pn - curr_len + 1
-            
+        i=0
+        while i<(n1-n2+1):
+            while i<(n1-n2+1) and haystack[i] != needle[0]:
+                i+=1
+            j,index=0,0
+            while i<n1 and j<n2 and haystack[i]==needle[j]:
+                i+=1
+                j+=1
+                index+=1
+            if index==n2:
+                return i-n2
+            i=i-index+1 # 如果使用i=i-index会超时。
+        
         return -1
 ```
 
-？？？题解三（KMP）：
+题解三|KMP：
+
+参考：
+
 https://leetcode-cn.com/problems/implement-strstr/solution/kmphua-48xiao-shi-kan-dong-liao-kmpxiang-rang-ni-z/
 
-
 https://www.bilibili.com/video/BV1Px411z7Yo?from=search&seid=13225444196686531503
+
 https://www.bilibili.com/video/BV1hW411a7ys/?spm_id_from=333.788.videocard.0
 
 ```
@@ -620,6 +783,7 @@ class Solution:
             return i-j
         else:
             return -1
+
     def getNext(self,needle):
         next=[0]*len(needle)
         next[0]=-1
@@ -644,73 +808,7 @@ class Solution:
         return i
 ```
 
-### 20. 有效的括号
-    链接：https://leetcode-cn.com/problems/valid-parentheses/
 
-    给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
-
-    有效字符串需满足：
-
-    左括号必须用相同类型的右括号闭合。
-    左括号必须以正确的顺序闭合。
-    注意空字符串可被认为是有效字符串。
-
-    示例 1:
-
-    输入: "()"
-    输出: true
-    示例 2:
-
-    输入: "()[]{}"
-    输出: true
-    示例 3:
-
-    输入: "(]"
-    输出: false
-    示例 4:
-
-    输入: "([)]"
-    输出: false
-    示例 5:
-
-    输入: "{[]}"
-    输出: true
-
-题解一：
-
-时间复杂度：O(N)。遍历了一遍字符串。
-空间复杂度：O(N)。最坏情况下，假如输入是 (((((((，栈的大小将是输入字符串的长度。
-
-```
-class Solution:
-    def isValid(self, s: str) -> bool:
-        dict = {')':'(',']':'[','}':'{'}
-        stack=[]
-        for i in s:
-            if stack and i in dict:
-                if stack[-1] == dict[i]:
-                    stack.pop()
-                else:
-                    return False
-            else:
-                stack.append(i)
-        return not stack
-```
-
-```
-class Solution:
-    def isValid(self, s: str) -> bool:
-        dicts={'(':1,')':-1,'{':2,'}':-2,'[':3,']':-3}
-        list=[]
-        for i in s:
-            if len(list)==0:
-                list.append(i)
-            elif dicts[i]+dicts[list[-1]]==0:
-                del list[-1]
-            else:
-                list.append(i)
-        return len(list)==0
-```
 
 ### 38. 外观数列
     链接：https://leetcode-cn.com/problems/count-and-say/
@@ -743,48 +841,29 @@ class Solution:
 
 https://zhuanlan.zhihu.com/p/106149461
 
-题解一（递归）:
+题解一|递归:
 
 ```
 class Solution:
     def countAndSay(self, n: int) -> str:
-        # 初始条件
         if n==1:
             return '1'
-        print('调用前：',n)
-        pre=self.countAndSay(n-1) # 得到上一行的字符串
-        print('调用后：',n,pre)
+        pre=self.countAndSay(n-1)
         res=''
         count=1
-        length=len(pre)
-        for i in range(1,length):
+        n=len(pre)
+        for i in range(1,n):
             if pre[i] != pre[i-1]:
                 res+=str(count)+pre[i-1]
                 count=1
             else:
                 count+=1
-        print(pre[length-1])
-        res+=str(count)+pre[length-1]
+        res+=str(count)+pre[n-1]
         return res
+
 ```
 
-输出：
-
-    调用前： 5
-    调用前： 4
-    调用前： 3
-    调用前： 2
-    调用后： 2 1
-    1
-    调用后： 3 11
-    1
-    调用后： 4 21
-    1
-    调用后： 5 1211
-    1
-
-
-题解二（迭代）:
+题解二|迭代:
 
 ```
 class Solution:
@@ -792,9 +871,9 @@ class Solution:
         res='1'
         while n-1>0:
             tmp=''
-            pre=res[0]
-            count=0 # count=0
-            for i in range(len(res)): # 从0开始
+            count=0 # 计数
+            pre=res[0] # 实际字符
+            for i in range(len(res)):
                 if pre==res[i]:
                     count+=1
                 else:
@@ -814,8 +893,8 @@ class Solution:
         res='1'
         for i in range(n-1,0,-1):
             tmp=''
-            pre=res[0]
             count=1 # count=1
+            pre=res[0]
             for j in range(1,len(res)): # 从1开始
                 if pre==res[j]:
                     count+=1
@@ -843,7 +922,7 @@ class Solution:
     输入: "Hello World"
     输出: 5
 
-题解一（内置函数）:
+题解一|内置函数:
 ```
 class Solution:
     def lengthOfLastWord(self, s: str) -> int:
@@ -865,6 +944,8 @@ class Solution:
 ```
 
 ### 67. 二进制求和
+    链接：https://leetcode-cn.com/problems/add-binary/
+
     给你两个二进制字符串，返回它们的和（用二进制表示）。
 
     输入为 非空 字符串且只包含数字 1 和 0。
@@ -885,7 +966,7 @@ class Solution:
     1 <= a.length, b.length <= 10^4
     字符串如果不是 "0" ，就都不含前导零。
 
-题解一（内置函数）:
+题解一|内置函数:
 
 时间复杂度为 O(N+M)
 
@@ -895,7 +976,7 @@ class Solution:
         return bin(int(a,2)+int(b,2))[2:]
 ```
 
-题解二(逐位运算)：
+题解二|按位运算：
 
 时间复杂度：O(max(N,M))，其中 N 和 M 是输入字符串 a 和 b 的长度。
 
@@ -933,7 +1014,7 @@ zfill()方法语法：
     返回值:
         返回指定长度的字符串。
 
-题解三（位操作）：
+题解三|位运算：
 
 ![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/bit.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/bit.png)
 
@@ -1139,43 +1220,76 @@ class Solution:
             return self.convertToTitle((n-1)//26) + chr((n-1) % 26 + 65)
 ```
 
-### 171.Excel表列序号
-    链接：https://leetcode-cn.com/problems/excel-sheet-column-number/
 
-    给定一个Excel表格中的列名称，返回其相应的列序号。
 
-    例如，
+### 242. 有效的字母异位词
+    链接：https://leetcode-cn.com/problems/valid-anagram/
 
-        A -> 1
-        B -> 2
-        C -> 3
-        ...
-        Z -> 26
-        AA -> 27
-        AB -> 28 
-        ...
+    给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+
     示例 1:
 
-    输入: "A"
-    输出: 1
-    示例 2:
+    输入: s = "anagram", t = "nagaram"
+    输出: true
+    示例 2:
 
-    输入: "AB"
-    输出: 28
-    示例 3:
+    输入: s = "rat", t = "car"
+    输出: false
+    说明:
+    你可以假设字符串只包含小写字母。
 
-    输入: "ZY"
-    输出: 701
+    进阶:
+    如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？
 
-题解一：
+题解一|排序：
 ```
 class Solution:
-    def titleToNumber(self, s: str) -> int: 
-        res=0
-        for each in s:
-            num=(ord(each)-65)+1
-            res=res*26+num
-        return res
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        if sorted(s) != sorted(t):
+            return False
+        return True
+```
+
+题解二|hash：
+```
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        hash={}
+        for i in range(len(s)):
+            hash[s[i]]=hash.get(s[i],0)+1
+            hash[t[i]]=hash.get(t[i],0)-1
+        for k,v in hash.items():
+            if v != 0:
+                return False
+        return True
+```
+
+题解三|hash:
+```
+class Solution(object):
+    def isAnagram(self, s, t):
+        if len(s) != len(t):
+            return False
+        dicts = collections.defaultdict(int)
+        for i in range(len(s)):
+            dicts[s[i]] = dicts[s[i]] + 1
+            dicts[t[i]] = dicts[t[i]] - 1
+        for val in dicts.values():
+            if val != 0:
+                return False
+        return True
+```
+
+题解四|内置函数：
+```
+import collections
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return collections.Counter(s) == collections.Counter(t)
 ```
 
 ### 344.反转字符串

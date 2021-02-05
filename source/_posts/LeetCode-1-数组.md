@@ -158,7 +158,7 @@ class Solution:
         return dummy.next
 ```
 
-### ？？4.寻找两个有序数组的中位数
+### 4.寻找两个有序数组的中位数
     链接：https://leetcode-cn.com/problems/median-of-two-sorted-arrays/
 
     给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。
@@ -180,7 +180,160 @@ class Solution:
 
     则中位数是 (2 + 3)/2 = 2.5
 
-题解一（暴力）：
+> https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-w-2/
+
+题解一|归并排序：
+```
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        m,n=len(nums1),len(nums2)
+        ans=[]
+        if m==0:
+            if n%2==0:
+                return (nums2[n//2-1]+nums2[n//2])/2
+            else:
+                return nums2[n//2]
+        if n==0:
+            if m%2==0:
+                return (nums1[m//2-1]+nums1[m//2])/2
+            else:
+                return nums1[m//2]
+        count=0
+        i,j=0,0
+        while count != (m+n):
+            if nums1[i]<nums2[j]:
+                ans.append(nums1[i])
+                count+=1
+                i+=1
+            else:
+                ans.append(nums2[j])
+                count+=1
+                j+=1
+
+            if i==m and j!=n:
+                ans+=nums2[j:]
+                break
+            if j==n and i!=m:
+                ans+=nums1[i:]
+                break
+        count=(m+n)
+        if count%2==0:
+            return (ans[count//2-1]+ans[count//2])/2
+        else:
+            return ans[count//2]
+```
+
+```
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        def merge(left,right):
+            result=[]
+            while left and right:
+                if left[0]<right[0]:
+                    result.append(left.pop(0))
+                else:
+                    result.append(right.pop(0))
+            while left:
+                result.append(left.pop(0))
+            while right:
+                result.append(right.pop(0))
+            return result
+        
+        m,n=len(nums1),len(nums2)
+        ans=merge(nums1,nums2)
+        count=(m+n)
+        if count%2==0:
+            return (ans[count//2-1]+ans[count//2])/2
+        else:
+            return ans[count//2]
+```
+
+题解二|双指针：
+
+时间复杂度：O(m+n)
+空间复杂度：O(1)
+
+```
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        m,n=len(nums1),len(nums2)
+        length=m+n
+        left,right=-1,-1 # 保存上一次遍历的结果和当前遍历的结果
+        astart,bstart=0,0 # 双指针
+        for i in range(length//2+1):
+            left=right
+            if astart<m and (bstart>=n or nums1[astart]<nums2[bstart]):
+                right=nums1[astart]
+                astart+=1                
+            else:
+                right=nums2[bstart]
+                bstart+=1
+        if length & 1 == 0: # 判断奇偶
+            return (left+right)/2
+        else:
+            return right
+```
+题解三|Kth：
+
+时间复杂度：O(log(m+n))
+空间复杂度：O(1)
+
+```
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        def getKth(nums1,start1,end1,nums2,start2,end2,k):
+            l1=end1-start1+1
+            l2=end2-start2+1
+            if l1>l2:
+                return getKth(nums2,start2,end2,nums1,start1,end1,k)
+            if l1==0:
+                return nums2[start2+k-1]
+            if k==1:
+                return min(nums1[start1],nums2[start2])
+            i=start1+min(l1,k//2)-1
+            j=start2+min(l2,k//2)-1
+            if nums1[i]>nums2[j]:
+                # print('a',i,j,nums1[i],nums2[j],k)
+                return getKth(nums1,start1,end1,nums2,j+1,end2,k-(j-start2+1))
+            else:
+                # print('b',i,j,nums1[i],nums2[j],k)
+                return getKth(nums1,i+1,end1,nums2,start2,end2,k-(i-start1+1))
+
+        m,n=len(nums1),len(nums2)
+        left=(m+n+1)//2 
+        right=(m+n+2)//2 # 将奇数和偶数的情况合并，如果是奇数，会求2次同样的K。
+        return (getKth(nums1,0,m-1,nums2,0,n-1,left)+getKth(nums1,0,m-1,nums2,0,n-1,right))/2
+```
+
+题解四|划分数组：
+
+时间复杂度：O(log(m+n))
+空间复杂度：O(1)
+```
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        if len(nums1)>len(nums2):
+            return self.findMedianSortedArrays(nums2,nums1)
+        m,n=len(nums1),len(nums2)
+        left,right=0,m
+        med1,med2=0,0 # med1是前半部分最大值，med2是后半部分最小值
+        while left<=right:
+            i=(left+right)//2
+            j=(m+n+1)//2-i
+            
+            nums_i_1=float('-inf') if i==0 else nums1[i-1]
+            nums_i=float('inf') if i==m else nums1[i]
+            nums_j_1 = float('-inf') if j == 0 else nums2[j - 1]
+            nums_j=float('inf')  if j==n else nums2[j]
+        
+            if nums_i_1 <= nums_j:
+                med1, med2 = max(nums_i_1, nums_j_1), min(nums_i, nums_j)
+                left = i + 1
+            else:
+                right = i - 1
+
+        return (med1+med2)/2 if (m+n)%2==0 else med1
+```
 
 
 ### 6.Z字形变换
@@ -252,6 +405,7 @@ class Solution:
     注意:
 
     假设我们的环境只能存储得下 32 位的有符号整数，则其数值范围为 [−2^31,  2^31 − 1]。请根据这个假设，如果反转后整数溢出那么就返回 0。
+
 题解一：
 int型的数值范围是 -2147483648～2147483647， 那么如果我们要翻转 1000000009 这个在范围内的数得到 9000000001，而翻转后的数就超过了范围。
 ```
@@ -322,6 +476,7 @@ class Solution:
     输出: -2147483648
     解释: 数字 "-91283472332" 超过 32 位有符号整数范围。 
           因此返回 INT_MIN (−231) 。
+
 题解一|正则表达式：
 
     ^：匹配字符串开头
@@ -429,7 +584,8 @@ class Solution:
                 return False
         return True
 ```
-题解二（数字反转）:
+
+题解二|数字反转:
 ```
 class Solution:
     def isPalindrome(self, x) :
@@ -475,8 +631,7 @@ class Solution:
         area=0
         for i in range(len(height)):
             for j in range(i+1,len(height)):
-                # print('i',i,height[i])
-                # print('j',j,height[j])
+                # print(i,height[i],j,height[j])
                 area=max(area,min(height[i],height[j])*(j-1)) # j-1为矩阵的长度
 ```
 
@@ -537,6 +692,7 @@ class Solution:
     继续思考如何优化，可以通过双指针动态消去无效解来优化效率。
     铺垫：先将给定 nums 排序，复杂度为 O(nlogn)
     思路：固定 3 个指针中最左（最小）数字的指针 k，双指针 i，j 分设在数组索引 (k, len(nums))两端，通过双指针交替向中间移动，记录对于每个固定指针 k 的所有满足 nums[k] + nums[i] + nums[j] == 0 的 i,j 组合。
+
     时间复杂度O(n^2)，空间复杂度O(n)。
 
 ```
@@ -702,7 +858,8 @@ class Solution:
     记录数组中不同数字的数量；
     作为修改数组元素的索引index。
 最终，返回 k+1 即可。
-时间复杂度O(n),空间复杂福O(1)。
+
+时间复杂度O(n),空间复杂读O(1)。
 
 ```
 class Solution:
@@ -797,6 +954,7 @@ class Solution:
 题解一|双指针：
 
 可以保留两个指针 i 和 j，其中 i 是慢指针，j 是快指针。当 nums[j]与val相等时，递增 j以跳过该元素。只要 nums[j] 不等于 val，我们就复制 nums[j]到 nums[i] 并同时递增两个索引。重复这一过程，直到 j 到达数组的末尾，该数组的新长度为 i。
+
 时间复杂度O(n),空间复杂度O(1).
 ```
 class Solution:
@@ -807,97 +965,6 @@ class Solution:
                 nums[i]=nums[j]
                 i+=1
         return i
-```
-
-### 29.两数相除
-    链接：https://leetcode-cn.com/problems/divide-two-integers/submissions/
-
-    给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
-
-    返回被除数 dividend 除以除数 divisor 得到的商。
-
-    示例 1:
-
-    输入: dividend = 10, divisor = 3
-    输出: 3
-    示例 2:
-
-    输入: dividend = 7, divisor = -3
-    输出: -2
-    说明:
-
-    被除数和除数均为 32 位有符号整数。
-    除数不为 0。
-    假设我们的环境只能存储 32 位有符号整数，其数值范围是 [−231,  231 − 1]。本题中，如果除法结果溢出，则返回 231 − 1。
-
-题解一|减法|超时:
-
-超时：当被除数为2147483648，除数为 1，必然超时。
-
-```
-class Solution:
-    def divide(self, dividend: int, divisor: int) -> int:
-        res=0
-        flag=1 if dividend ^ divisor >=0 else -1
-        dividend=abs(dividend)
-        divisor=abs(divisor)
-        while dividend >= divisor:
-            res+=1
-            dividend-=divisor
-        res=res*flag
-        return min(max(res,-2**31),2**31-1)
-```
-
-题解二|增倍除数:
-    
-    << 是左移，末位补0，类比十进制数在末尾添0相当于原数乘以10，x<<1是将x的二进制表示左移一位，相当于原数x乘2。比如整数4在二进制下是100，4<<1左移1位变成1000(二进制)，结果是8。
-    
-    >>是右移，右移1位相当于除以2。
-
-```
-class Solution:
-    def divide(self, dividend: int, divisor: int) -> int:
-        res=0
-        flag=1 if dividend ^ divisor >=0 else -1
-        dividend=abs(dividend)
-        divisor=abs(divisor)
-        while dividend >= divisor:
-            tmp,i=divisor,1
-            while dividend>=tmp:
-                dividend-=tmp
-                res+=i
-                i <<=1
-                tmp <<=1
-        res=res*flag
-        return min(max(res,-2**31),2**31-1)
-```
-题解三（位移）：
-算法是把除法化归成移位和减法两种运算方法。对于 10 进制数，移位运算就是乘（左移）除（右移）10，而我们都知道计算机中的移位运算是乘（左移）除（右移）2，因为计算机是通过二进制的方法存储数的。这样，类比十进制，二进制的除法（仍以 45/2 为例）可以写作（注意，这里我们并没有用到乘除法）
-
-```
-class Solution:
-    def divide(self, dividend: int, divisor: int) -> int:
-        res=0
-        flag=1 if dividend ^ divisor >=0 else -1
-        dividend=abs(dividend)
-        divisor=abs(divisor)
-        count=0
-
-        # 不断左移，直到大于被除数
-        while dividend >= divisor:
-            count+=1
-            divisor <<=1
-        
-        while count > 0:
-            count -=1
-            divisor >>=1
-            res <<=1
-            if divisor <= dividend:
-                res+=1
-                dividend -= divisor
-        
-        res=res*flag
-        return min(max(res,-2**31),2**31-1)
 ```
 
 ### 31. 下一个排列
@@ -930,6 +997,7 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
+
         for i in range(len(nums)-2,-1,-1):
             if nums[i] < nums[i+1]:
                 nums[i+1:]=sorted(nums[i+1:])
@@ -1015,6 +1083,352 @@ class Solution:
                     if rows[i][char]>1 or columns[j][char]>1 or boxes[index][char]>1:
                         return False
         return True
+```
+
+### 41. 缺失的第一个正数
+    链接：https://leetcode-cn.com/problems/first-missing-positive/
+
+    给你一个未排序的整数数组，请你找出其中没有出现的最小的正整数。
+
+    示例 1:
+
+    输入: [1,2,0]
+    输出: 3
+    示例 2:
+
+    输入: [3,4,-1,1]
+    输出: 2
+    示例 3:
+
+    输入: [7,8,9,11,12]
+    输出: 1
+
+    提示：
+
+    你的算法的时间复杂度应为O(n)，并且只能使用常数级别的额外空间。
+
+题解一|暴力：
+
+    时间复杂度：O(n^2)
+    空间复杂度：O(1)
+
+```
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        n=len(nums)
+        for i in range(1,n+1):
+            has=False
+            for j in range(n):
+                if nums[j]==i: 
+                    has=True
+                    break
+            if not has: # 未找到，直接返回
+                return i
+        return n+1
+```
+
+题解二|排序|二分查找：
+
+    时间复杂度：O(nlogn)
+    空间复杂度：O(1)
+
+```
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        n=len(nums)
+        nums.sort()
+        for i in range(1,n+1):
+            res=self.binarySearch(nums,i)
+            if res==-1:
+                return i
+        return n+1
+    
+    def binarySearch(self,arr,target):
+        left,right=0,len(arr)-1
+        while left<=right:
+            mid=left+(right-left)//2
+            if arr[mid]==target:
+                return mid
+            elif arr[mid] < target:
+                left=mid+1
+            else:
+                right=mid-1
+        
+        return -1
+```
+
+题解三|hash：
+
+    时间复杂度：O(n)
+    空间复杂度：O(n)
+```
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        n=len(nums)
+        hash={}
+        for i in nums:
+            if i not in hash:
+                hash[i]=1
+            else:
+                hash[i]+=1
+        for i in range(1,n+1):
+            if i not in hash:
+                return i
+        return n+1
+```
+
+题解四|置换|hash：
+
+    思路：自定义哈希函数，规则就是数值为 i 的数映射到下标为 i - 1 的位置。
+
+    时间复杂度：O(n)
+    空间复杂度：O(1)
+```
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        n=len(nums)
+        for i in range(n):
+            while nums[i]>=1 and nums[i]<=n and nums[i]!=nums[nums[i]-1]:
+                self.__swap(nums,i,nums[i]-1) # 赋值时有先后顺序，所以会导致出错，建议封装函数。
+        for i in range(n):
+            if i+1 != nums[i]:
+                return i+1
+        return n+1
+    
+    def __swap(self,nums,i,j):
+        nums[i],nums[j]=nums[j],nums[i]
+
+```
+
+题解五|变负|hash:
+
+    时间复杂度：O(n)
+    空间复杂度：O(1)
+```
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        n=len(nums)
+        for i in range(n):
+            if nums[i]<=0:
+                nums[i]=n+1
+        for i in range(n):
+            digit=abs(nums[i])
+            if digit<=n:
+                nums[digit-1]=-abs(nums[digit-1])
+        for i in range(n):
+            if nums[i]>0:
+                return i+1
+        return n+1
+```
+### 42. 接雨水
+    https://leetcode-cn.com/problems/trapping-rain-water/
+
+    给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+    示例 1：
+
+    输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+    输出：6
+    解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。 
+    示例 2：
+
+    输入：height = [4,2,0,3,2,5]
+    输出：9
+     
+
+    提示：
+
+    n == height.length
+    0 <= n <= 3 * 104
+    0 <= height[i] <= 105
+
+思路： 求出每个柱子上面能够存多少水，然后将每根柱子的存水量相加便能得到总的存水量，为求出每根柱子上能够存多少水，就要求出每根柱子左边最高的和右边最高柱子，然后用两者的最小值减去当前柱子的高度。 例如图中从左到右第二根柱子的高度为2，它左边最高柱子的值为5，右边最高柱子的值为4，因此它的最大存水量为 Min（4，5）-2=2。
+
+题解一|暴力：
+
+利用上面思路，从左到右遍历每根柱子，遍历的时候求出每根柱子左边最高和右边最高柱子的值，然后利用两者的最小值减去当前柱子的高度就行了。时间复杂度O（n^2）,空间复杂度O（1）。
+
+注意：如果当前柱子大于它左右最大值的任何一个是存不了水的。
+
+```
+def water(lists):
+    length = len(lists)
+    waters = 0  # 保存最大存水量
+
+    # 一根柱子时，不围水
+    if (lists is None or length <= 1):
+        return 0
+
+    left, right = 0, 0
+    for i in range(length):
+        left, right = 0, 0 # 分别用于保存遍过程中，当前元素左边最大值，和右边最大值。
+        for j in range(i):
+            left = max(left, lists[j]) # 左边最大值
+        print('left',left)
+
+        for j in range(length-1, i, -1):
+            right = max(right, lists[j]) # 右边最大值
+        print('right',right)
+
+        isWaterNums = min(left, right)
+        if isWaterNums > lists[i]:
+            waters += isWaterNums - lists[i]
+        else:
+            waters += 0
+
+        # waters+=lambda min(left,right)-lists[i] if min(left,right)>lists[i] else 0
+        # 如果最小值大于当前元素，存水量等于最小值减去当前元素；如果最小值小于当前元素，存水量为0
+
+    return waters
+
+print(water([1,4,3,1,3,2,3]))
+```
+
+题解二|优化：
+
+分析上面的算法发现算法的时间复杂度为O（n^2）。原因是对于每个元素都要从左到右，和从右到最左遍历其两边最大值，假如使用两个数组 left[ ] , right[ ]来保存每个元素左边最大值，右边最大值的话，这样就不用每次都遍历了，因此时间复杂度可以减少到O（n），但空间复杂度为O（n），典型的空间换时间算法。
+
+对于数组[ 5, 2 , 6 , 2 , 4 ]
+它的左数组：[5,5,6,6,6]
+它的右数组：[4,4,6,6,6]
+算法的流程：
+
+从左到右遍历一次求出每个元素左边的最大值，保存在 left 数组中。 
+从右到左遍历一次求出每个元素右边的最大值，保存在right数。
+最后一次遍历求出每个元素（每根柱子）的存水量。
+
+```
+def water(lists):
+    length = len(lists)
+    waters = 0  # 保存最大存水量
+
+    # 一根柱子时，不围水
+    if (lists is None or length <= 1):
+        return 0
+
+    leftLargest, rightLargest = 0, 0
+    left = [0] * length  # left中保存每个元素左边的最大值，left[i]表示数组中第i个元素的左边最大值。
+    right = [0] * length  # right中保存每个元素左边的最大值，right[i]，表示数组中第i个元素的右边最大值。
+
+    # 遍历找到每个元素左边最大值
+    for i in range(length):
+        leftLargest = max(leftLargest, lists[i])
+        # left.insert(i, leftLargest)
+        # left.append(leftLargest)  # 使用insert正序插入的时候，顺序不会乱掉。
+        left[i] = leftLargest
+
+    # 遍历找到每个元素右边最大值
+    for i in range(length - 1, -1, -1):
+        rightLargest = max(rightLargest, lists[i])
+        # right.insert(i, rightLargest) # 使用insert倒序插入的时候，顺序会乱掉。
+        # right.append(rightLargest)    # 使用append获得的右边的顺序刚好是倒着的
+        right[i] = rightLargest
+
+    print(left)
+    print(right)
+
+    for i in range(length):
+        waters += min(left[i], right[i]) - lists[i] if min(left[i], right[i]) > lists[i] else 0
+
+    return waters
+
+print(water([5, 2, 6, 2, 4]))
+```
+
+题解三|优化：
+
+分析上面算法发现其实没有必要使用 left 数组，因为当从左到右遍历求存水量的过程中可以利用一个变量来保存当前元素左边的最大值。
+
+```
+def water(lists):
+    length = len(lists)
+    waters = 0  # 保存最大存水量
+
+    # 一根柱子时，不围水
+    if (lists is None or length <= 1):
+        return 0
+
+    leftLargest, rightLargest = 0, 0
+    right = [0]*length  # right中保存每个元素左边的最大值，right[i]，表示数组中第i个元素的右边最大值。
+
+    # 遍历找到每个元素右边最大值
+    for i in range(length - 1, -1, -1):
+        rightLargest = max(rightLargest, lists[i])
+        # right.insert(i, rightLargest)
+        # right.append(rightLargest)  # 使用insert倒序插入的时候，顺序会乱掉。
+        right[i]=rightLargest
+
+    for i in range(length):
+        leftLargest = max(leftLargest, lists[i])
+        waters += min(leftLargest, right[i]) - lists[i] if min(leftLargest, right[i]) > lists[i] else 0
+
+    return waters
+
+print(water([5, 2, 6, 2, 4]))
+```
+
+题解四|双指针：
+
+    上面左右两边的黄色块分别表示当前元素左边最大值和右边最大值。
+
+    left ，right分别代表从左到右移动和从右到左移动的指针。
+
+    如果当前元素的左边最大值比右边最大值小，则left指针向右移动，否则right指针向左移动。
+
+    这种左右指针移动的目的是为了保证所求的左右最大值一定是当前元素的左右最大值。
+
+```
+def water(lists):
+    length = len(lists)
+    waters = 0  # 保存最大存水量
+
+    # 一根柱子时，不围水
+    if (lists is None or length <= 1):
+        return 0
+
+    leftLargest, rightLargest = 0, 0
+    left, right = 0, length - 1
+
+    while left < right:
+        leftLargest = max(lists[left], leftLargest)
+        rightLargest = max(lists[right], rightLargest)
+
+        if leftLargest > rightLargest:
+            waters += rightLargest - lists[right]
+            right -= 1
+
+            print('1', waters)
+        else:
+            waters += leftLargest - lists[left]
+            left += 1
+
+            print('2', waters)
+    return waters
+```
+
+```
+def trap(height):
+    if not height: return 0
+    left = 0
+    right = len(height) - 1
+    res = 0
+    # 记录左右边最大值
+    left_max = height[left]
+    right_max = height[right]
+    while left < right:
+        if height[left] < height[right]:
+            if left_max > height[left]:
+                res += left_max - height[left]
+            else:
+                left_max = height[left]
+            left += 1
+        else:
+            if right_max > height[right]:
+                res += right_max - height[right]
+            else:
+                right_max = height[right]
+            right -= 1
+    return res
 ```
 
 ### 45. 跳跃游戏 II
@@ -1139,7 +1553,7 @@ class Solution:
         n=len(matrix[0]) # 矩阵第一行matrix[0]
         # 矩阵转置
         for i in range(n):
-            for j in range(i,n):
+            for j in range(i,n): # 注意这里是i，而不是从0开始。
                 matrix[j][i],matrix[i][j]=matrix[i][j],matrix[j][i]
         # 翻转每行
         for i in range(n):
@@ -1163,13 +1577,12 @@ class Solution:
       ["nat","tan"],
       ["bat"]
     ]
-    说明：
+    ·
 
     所有输入均为小写字母。
     不考虑答案输出的顺序。
 
-题解一（hash）：
-
+题解一|hash：
 ```
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
@@ -1216,13 +1629,14 @@ class Solution:
 思路：转换为int进行加1
 
 题解二：
+
 ```
 class Solution:
     def plusOne(self, digits: List[int]) -> List[int]:
         for i in range(len(digits)-1,-1,-1):
             digits[i]+=1
             digits[i] %= 10
-            if digits[i] != 0:
+            if digits[i] != 0: # 注意这里是digits[i]，而不是digits
                 return digits
         
         digits=[0]*(len(digits)+1) # 解决case[9],输出[1,0]
@@ -1265,120 +1679,6 @@ class Solution:
                 digits[i]=0
                 i-=1
         return digits
-```
-### 69.x的平方根
-    链接：https://leetcode-cn.com/problems/sqrtx/
-    
-    实现 int sqrt(int x) 函数。
-
-    计算并返回 x 的平方根，其中 x 是非负整数。
-
-    由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
-
-    示例 1:
-
-    输入: 4
-    输出: 2
-    示例 2:
-
-    输入: 8
-    输出: 2
-    说明: 8 的平方根是 2.82842..., 
-         由于返回类型是整数，小数部分将被舍去。
-
-题解一(二分法):
-
-思路分析：使用二分法搜索平方根的思想很简单，就类似于小时候我们看的电视节目中的“猜价格”游戏，高了就往低了猜，低了就往高了猜，范围越来越小。因此，使用二分法猜算术平方根就很自然。
-
-一个数的平方根肯定不会超过它自己，不过直觉还告诉我们，一个数的平方根最多不会超过它的一半，例如 8的平方根，8 的一半是 4，4^2=16>8，如果这个数越大越是如此，因此我们要计算一下，这个边界是多少。为此，解如下不等式：(a/2)^2 >= a
-
-时间复杂度：O(logn)
-空间复杂度：O(1)
-
-```
-class Solution:
-    def mySqrt(self, x: int) -> int:
-        left=0
-        right=x//2+1
-        while left < right:
-            # mid = left + (right - left + 1) // 2
-            # mid=(left+right+1)>>1
-            mid=(left+right+1)//2 # 使用除法的耗时比移位多
-            square=mid*mid
-
-            if square>x:
-                right=mid-1
-            else:
-                left=mid
-            
-        return left
-```
-
-```
-# 单独照顾0这个特例
-
-class Solution:
-    def mySqrt(self, x: int) -> int:
-        if x==0:
-            return 0
-        left=1
-        right=x//2
-        while left < right:
-            # mid=(left+right+1)>>1
-            mid=(left+right+1)//2 # 使用除法的耗时比移位多
-            # 一定取右中位数，如果取左中位数(left+right)//2，代码可能会进入死循环
-            square=mid*mid
-
-            if square>x:
-                right=mid-1
-            else:
-                left=mid
-            
-        return left
-```
-
-```
-class Solution:
-
-    def mySqrt(self, x):
-        left = 0
-        right = 999999
-        while left < right:
-            # 这种取中位数的方法又快又好，是我刚学会的，原因在下面这篇文章的评论区
-            # https://www.liwei.party/2019/06/17/leetcode-solution-new/search-insert-position/
-            mid = (left + right + 1) >> 1
-            square = mid * mid
-            if square > x:
-                right = mid - 1
-            else:
-                left = mid
-
-        return left
-```
-?题解二（牛顿法）:
-
-牛顿法的应用：一个是求方程的根，另一个是求解最优化问题
-
-使用牛顿法可以得到一个正实数的算术平方根，因为题目中说“结果只保留整数部分”，因此，我们把使用牛顿法得到的浮点数转换为整数即可。
-
-在迭代过程中，以直线代替曲线，用一阶泰勒展式（即在当前点的切线）代替原曲线，求直线与 xx 轴的交点，重复这个过程直到收敛。
-![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/newton.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/newton.png)
-
-```
-class Solution:
-    def mySqrt(self, x: int) -> int:
-        if x<0:
-            # raise Exception('不能输入负数)
-            return -1
-        if x==0:
-            return 0
-        
-        cur=1
-        while True:
-            pre=cur
-            cur=(cur+x/cur)/2
-            if abs(cur-pre)< 1e-6:
-                return int(cur)
 ```
 
 ### 73. 矩阵置零
@@ -1459,14 +1759,15 @@ class Solution:
     用matrix第一行和第一列记录该行该列是否有0,作为标志位
     但是对于第一行,和第一列要设置一个标志位,为了防止自己这一行(一列)也有0的情况.
 
-
     参考：https://leetcode-cn.com/problems/set-matrix-zeroes/solution/li-yong-di-yi-xing-he-di-yi-lie-ji-lu-o1kong-jian-/
 
     定义flag_line=False，判断第一行是否需要置0。
     定义flag_row=False，判断第一列是否需要置0。
     遍历第一列，若第一列中存在0，将flag_row=True，表示需要将第一列置0。
     遍历第一行，若第一行中存在0，将flag_line=True，表示需要将第一行置0。
+
     遍历矩阵，遍历区间，行区间[1,m)，列区间[1,m)，若matrix[i][j]==0，则将对应的行和列记录下来，即将第一行和第一列中对应的位置置为0。matrix[i][0]=matrix[0][j]=0
+
     再遍历一次矩阵，若当前位置的行或列索引对应的第一行或者第一列处为0，即matrix[i][0]==0 or matrix[0][j]==0，将此位置置为0。
     根据flag_line，判断是否需要将第一行置为0。
     根据flag_row，判断第一列是否需要置0。
@@ -1566,7 +1867,7 @@ class Solution:
 
     输出: [1,2,2,3,5,6]
 
-题解一（合并后再排序）：
+题解一|合并后再排序：
 
 时间复杂度 : O((n + m)\log(n + m))
 空间复杂度 : O(1)
@@ -1579,7 +1880,7 @@ class Solution:
         nums1[:]=sorted(nums1[:m]+nums2)
 ```
 
-题解二（双指针 / 从前往后）：
+题解二|双指针 / 从前往后）：
 
 时间复杂度 : O(n + m)
 空间复杂度 : O(m)
@@ -1605,7 +1906,7 @@ class Solution:
             nums1[p1+p2:]=nums2[p2:]
 ```
 
-题解三(双指针 / 从后往前)：
+题解三|双指针|从后往前：
 
 时间复杂度 : O(n + m)
 空间复杂度 : O(1)
@@ -1747,6 +2048,62 @@ class Solution:
                 k-=1
 ```
 
+### 268. 丢失的数字
+    链接：https://leetcode-cn.com/problems/missing-number/
+
+    给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。
+
+    进阶：
+
+    你能否实现线性时间复杂度、仅使用额外常数空间的算法解决此问题?
+
+
+    示例 1：
+
+    输入：nums = [3,0,1]
+    输出：2
+    解释：n = 3，因为有 3 个数字，所以所有的数字都在范围 [0,3] 内。2 是丢失的数字，因为它没有出现在 nums 中。
+    示例 2：
+
+    输入：nums = [0,1]
+    输出：2
+    解释：n = 2，因为有 2 个数字，所以所有的数字都在范围 [0,2] 内。2 是丢失的数字，因为它没有出现在 nums 中。
+    示例 3：
+
+    输入：nums = [9,6,4,2,3,5,7,0,1]
+    输出：8
+    解释：n = 9，因为有 9 个数字，所以所有的数字都在范围 [0,9] 内。8 是丢失的数字，因为它没有出现在 nums 中。
+    示例 4：
+
+    输入：nums = [0]
+    输出：1
+    解释：n = 1，因为有 1 个数字，所以所有的数字都在范围 [0,1] 内。1 是丢失的数字，因为它没有出现在 nums 中。
+    
+
+    提示：
+
+    n == nums.length
+    1 <= n <= 104
+    0 <= nums[i] <= n
+    nums 中的所有数字都 独一无二
+
+题解一|数学|高斯求和：
+
+    注意：高斯求和有溢出的风险
+
+    时间复杂度：O(n)
+    空间复杂度：O(1)
+
+```
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        n=len(nums)
+        ans=((n+1)*n)//2
+        for i in range(len(nums)):
+            ans-=nums[i]
+        return ans
+```
+
 ### 283. 移动零
     链接：https://leetcode-cn.com/problems/move-zeroes/
 
@@ -1801,6 +2158,136 @@ class Solution:
         return nums
 ```
 
+### 349.两个数组的交集
+
+    链接：https://leetcode-cn.com/problems/intersection-of-two-arrays/
+
+    给定两个数组，编写一个函数来计算它们的交集。
+
+    示例 1：
+
+    输入：nums1 = [1,2,2,1], nums2 = [2,2]
+    输出：[2]
+    示例 2：
+
+    输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+    输出：[9,4]
+     
+
+    说明：
+
+    输出结果中的每个元素一定是唯一的。
+    我们可以不考虑输出结果的顺序。
+
+题解一|集合：
+
+集合（set）是一个无序的不重复元素序列，可以使用大括号 { } 或者 set() 函数创建集合。
+
+注意：创建一个空集合必须用 set() 而不是 { }，因为 { } 是用来创建一个空字典。
+
+```
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        res=set()
+        for i in nums1:
+            if i in nums2:
+                res.add(i)
+        return list(res)
+```
+
+题解二：
+
+时间复杂度：一般情况下是 O(m+n)，最坏情况下是 O(m×n) 。
+空间复杂度：最坏的情况是 O(m+n)，数组中的所有元素都不同。
+
+```
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        set1=set(num1)
+        set2=set(num2)
+        return list(set1 & set2)
+```
+
+### 350. 两个数组的交集 II
+    链接：https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
+
+    给定两个数组，编写一个函数来计算它们的交集。
+
+    示例 1：
+
+    输入：nums1 = [1,2,2,1], nums2 = [2,2]
+    输出：[2,2]
+    示例 2:
+
+    输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+    输出：[4,9]
+
+    说明：
+
+    输出结果中每个元素出现的次数，应与元素在两个数组中出现次数的最小值一致。
+    我们可以不考虑输出结果的顺序。
+    进阶：
+
+    如果给定的数组已经排好序呢？你将如何优化你的算法？
+    如果 nums1 的大小比 nums2 小很多，哪种方法更优？
+    如果 nums2 的元素存储在磁盘上，内存是有限的，并且你不能一次加载所有的元素到内存中，你该怎么办？
+
+题解一|排序：
+
+时间复杂度：O(mlogm+nlogn)，其中 m 和 n 分别是两个数组的长度。对两个数组进行排序的时间复杂度是 O(mlogm+nlogn)，遍历两个数组的时间复杂度是 O(m+n)，因此总时间复杂度是 O(mlogm+nlogn)。
+
+空间复杂度：O(min(m,n))，其中 m 和 n 分别是两个数组的长度。为返回值创建一个数组 intersection，其长度为较短的数组的长度。不过在 C++ 中，我们可以直接创建一个 vector，不需要把答案临时存放在一个额外的数组中，所以这种实现的空间复杂度为 O(1)。
+
+```
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        nums1.sort()
+        nums2.sort()
+        index1,index2=0,0
+        intersection=[]
+        while index1<len(nums1) and index2<len(nums2):
+            if nums1[index1] < nums2[index2]:
+                index1+=1
+            elif nums1[index1] > nums2[index2]:
+                index2+=1
+            else:
+                intersection.append(nums1[index1])
+                index1+=1
+                index2+=1
+        return intersection
+```
+
+题解二|hash：
+```
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        hash={}
+        intersection=[]
+        for i in nums1:
+            hash[i]=hash.get(i,0)+1
+        for i in nums2:
+            if hash.get(i,0)>0:
+                intersection.append(i)
+                hash[i]-=1
+        return intersection
+```
+
+```
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        hash={}
+        intersection=[]
+        for i in nums1:
+            hash[i]=hash.get(i,0)+1
+        for i in nums2:
+            if hash.get(i,0)>0:
+                intersection.append(i)
+                hash[i]-=1
+                if hash[i]==0: # 动态减少空间，以免hash表越来越大。
+                    hash.pop(i)
+        return intersection
+```
+
 ### 442. 数组中重复的数据
     链接：https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/
 
@@ -1818,9 +2305,50 @@ class Solution:
     输出:
     [2,3]
 
-题解一|原地变负：
+题解一|置换|hash：
+
+思路：自定义哈希函数，规则就是数值为 i 的数映射到下标为 i - 1 的位置。
+
+    时间复杂度：O(n)
+    空间复杂度：O(1)
+
+```
+class Solution:
+    def findDuplicates(self, nums: List[int]) -> List[int]:
+        n=len(nums)
+        res=[]
+
+        for i in range(n):
+            while nums[i]>=1 and nums[i]<=n and nums[i]!=nums[nums[i]-1]:
+                self.__swap(nums,i,nums[i]-1)
+        
+        for i in range(n):
+            if nums[i] != i+1:
+                res.append(nums[i])
+        return res
+                
+    def __swap(self,arr,i,j):
+        arr[i],arr[j]=arr[j],arr[i]
+```
+
+题解二|原地变负|hash：
 
 注意：1 ≤ a[i] ≤ n，所以变负时才不会越界。
+
+找到数字i时，将位置i-1处的数字翻转为负数。
+如果位置i-1 上的数字已经为负，则i是出现两次的数字。
+
+```
+class Solution:
+    def findDuplicates(self, nums: List[int]) -> List[int]:
+        ans=[]
+        for i in range(len(nums)):
+            index=abs(nums[i])-1
+            if nums[index]<0:
+                ans.append(index+1)
+            num[index]=-nums[index]
+        return ans
+```
 
 ```
 class Solution:
@@ -1830,6 +2358,65 @@ class Solution:
             if nums[abs(num)-1] < 0:
                 ans.append(abs(num))
             nums[abs(num)-1]*=-1
+        return ans
+```
+
+### 448. 找到所有数组中消失的数字
+    给定一个范围在  1 ≤ a[i] ≤ n ( n = 数组大小 ) 的 整型数组，数组中的元素一些出现了两次，另一些只出现一次。
+
+    找到所有在 [1, n] 范围之间没有出现在数组中的数字。
+
+    您能在不使用额外空间且时间复杂度为O(n)的情况下完成这个任务吗? 你可以假定返回的数组不算在额外空间内。
+
+    示例:
+
+    输入:
+    [4,3,2,7,8,2,3,1]
+
+    输出:
+    [5,6]
+
+题解一|置换|hash:
+
+思路：自定义哈希函数，规则就是数值为 i 的数映射到下标为 i - 1 的位置。
+
+    时间复杂度：O(n)
+    空间复杂度：O(1)
+
+```
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        n=len(nums)
+        ans=[]
+        for i in range(n):
+            while nums[i]>=1 and nums[i]<=n and nums[i]!=nums[nums[i]-1]:
+                self.__swap(nums,i,nums[i]-1) # 赋值时有先后顺序，所以会导致出错，建议封装函数。    
+        for i in range(n):
+            if i+1 != nums[i]:
+                ans.append(i+1)
+        return ans
+    
+    def __swap(self,nums,i,j):
+        nums[i],nums[j]=nums[j],nums[i]
+```
+
+
+题解二|原地变负|hash:
+
+找到数字i时，将位置i-1处的数字翻转为负数。
+如果位置i-1 上的数字已经为负，则i是出现两次的数字。
+
+```
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        ans=[]
+        for i in range(len(nums)):
+            index=abs(nums[i])-1
+            if nums[index]>0:
+                nums[index]*=-1
+        for i in range(len(nums)):
+            if nums[i]>0:
+                ans.append(i+1)
         return ans
 ```
 
@@ -1915,6 +2502,28 @@ class Solution:
         return result
 ```
 
+### 867. 转置矩阵
+    链接：https://leetcode-cn.com/problems/transpose-matrix/
+
+    给定一个矩阵 A， 返回 A 的转置矩阵。
+
+    矩阵的转置是指将矩阵的主对角线翻转，交换矩阵的行索引与列索引。
+
+    示例 1：
+
+    输入：[[1,2,3],[4,5,6],[7,8,9]]
+    输出：[[1,4,7],[2,5,8],[3,6,9]]
+    示例 2：
+
+    输入：[[1,2,3],[4,5,6]]
+    输出：[[1,4],[2,5],[3,6]]
+     
+
+    提示：
+
+    1 <= A.length <= 1000
+    1 <= A[0].length <= 1000
+
 ### 1424. 对角线遍历 II
     链接：https://leetcode-cn.com/problems/diagonal-traverse-ii/solution/mei-ge-shu-zu-yuan-su-de-wei-zhi-jue-ding-liao-ta-/
     
@@ -1957,4 +2566,56 @@ class Solution:
         for i in sub:
             result+=i[::-1]
         return result
+```
+
+### 1679. K 和数对的最大数目
+    链接：https://leetcode-cn.com/problems/max-number-of-k-sum-pairs/
+
+    给你一个整数数组 nums 和一个整数 k 。
+
+    每一步操作中，你需要从数组中选出和为 k 的两个整数，并将它们移出数组。
+
+    返回你可以对数组执行的最大操作数。
+
+    示例 1：
+
+    输入：nums = [1,2,3,4], k = 5
+    输出：2
+    解释：开始时 nums = [1,2,3,4]：
+    - 移出 1 和 4 ，之后 nums = [2,3]
+    - 移出 2 和 3 ，之后 nums = []
+    不再有和为 5 的数对，因此最多执行 2 次操作。
+    示例 2：
+
+    输入：nums = [3,1,3,4,3], k = 6
+    输出：1
+    解释：开始时 nums = [3,1,3,4,3]：
+    - 移出前两个 3 ，之后nums = [1,4,3]
+    不再有和为 6 的数对，因此最多执行 1 次操作。
+    
+
+    提示：
+
+    1 <= nums.length <= 105
+    1 <= nums[i] <= 109
+    1 <= k <= 109
+
+题解一|二分：
+```
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        i,j=0,len(nums)-1
+        count=0
+        while i<j:
+            tmp=nums[i]+nums[j]
+            if tmp==k:
+                count+=1
+                i+=1
+                j-=1
+            elif tmp>k:
+                j-=1
+            else:
+                i+=1
+        return count
 ```

@@ -29,7 +29,9 @@ categories:
     输出: 3
     解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
          请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
-题解一（暴力破解）：
+
+
+题解一|暴力破解：
 时间复杂度O(n^3)
 ```
 class Solution:
@@ -43,8 +45,8 @@ class Solution:
         for i in range(length):
             for j in range(i+1,length):  
                 if s[i] != s[j]:
-                    print(i,j)
-                    print(s[i:j+1])
+                    # print(i,j)
+                    # print(s[i:j+1])
                     if self.isUnique(s[i:j+1]):
                         ans=max(ans,len(s[i:j+1]))
         return ans
@@ -66,19 +68,60 @@ ah
 2 3
 ha
 ```
-题解二（滑动窗口）：
 
-什么是滑动窗口？
+题解二|滑动窗口|万能模版：
+```
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        from collections import defaultdict
+        lookup=defaultdict(int) # 使用int的话，默认值变为0
+        left,right=0,0
+        res=0
+        count=0
+        while right < len(s):
+            if lookup[s[right]]>0:
+                count+=1
+            lookup[s[right]]+=1
+            right+=1
+            while count > 0:
+                if lookup[s[left]]>1:
+                    count-=1
+                lookup[s[left]]-=1
+                left+=1
+            res=max(res,right-left)
+        return res
+```
 
-    其实就是一个队列,比如例题中的 abcabcbb，进入这个队列（窗口）为 abc 满足题目要求，当再进入 a，队列变成了 abca，这时候不满足要求。所以，我们要移动这个队列！
+题解二|滑动窗口：
 
-    如何移动？
+    我们使用两个指针表示字符串中的某个子串的左右边界，其中左指针代表着上文中「枚举子串的起始位置」，而右指针即为上文中的 right；
 
-    我们只要把队列的左边的元素移出就行了，直到满足题目要求！
+    在每一步的操作中，我们会将左指针向右移动一格，表示我们开始枚举下一个字符作为起始位置，然后我们可以不断地向右移动右指针，但需要保证这两个指针对应的子串中没有重复的字符。在移动结束后，这个子串就对应着以左指针开始的，不包含重复字符的最长子串。我们记录下这个子串的长度；
 
-    一直维持这样的队列，找出队列出现最长的长度时候，求出解！
+    在枚举结束后，我们找到的最长的子串的长度即为答案。
 
-时间复杂度：O(n)
+时间复杂度：O(N)，其中 N 是字符串的长度。左指针和右指针分别会遍历整个字符串一次。
+空间复杂度：O(∣Σ∣)
+
+```
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        occ=set()
+        n=len(s)
+        right,ans=-1,0
+        for i in range(n):
+            if i!=0:
+                occ.remove(s[i-1])
+            while right+1<n and s[right+1] not in occ:
+                occ.add(s[right+1])
+                right+=1
+            ans=max(ans,right-i+1)
+        return ans
+```
 
 ```
 class Solution:
@@ -114,31 +157,6 @@ class Solution:
 
 ```
 
-另一种写法：
-```
-from collection improt defaultdict
-
-class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        lookup=defaultdict(int)
-        start=0
-        end=0
-        maxLen=0
-        counter=0
-        while end<len(s):
-            if lookup[s[end]]>0:
-                counter+=1
-            lookup[s[end]]+=1
-            end+=1
-            while counter>0:
-                if lookup[s[start]]>1:
-                    counter-=1
-                lookup[s[start]]-=1
-                start+=1
-            maxLen=max(maxLen,end-start)
-        return maxLen
-```
-
 ### 28. 实现 strStr()
     链接：https://leetcode-cn.com/problems/implement-strstr/
 
@@ -160,7 +178,7 @@ class Solution:
 
     对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
 
-题解一(子串逐一比较 - 线性时间复杂度)：
+题解一|子串逐一比较|线性时间复杂度：
 
 思路：沿着字符换逐步移动滑动窗口，将窗口内的子串与 needle 字符串比较。
 
@@ -179,7 +197,7 @@ class Solution:
         return -1
 ```
 
-？？题解二（双指针 - 线性时间复杂度）：
+题解二|双指针:
 
 题解一的缺陷是会将 haystack 所有长度为 L 的子串都与 needle 字符串比较，实际上是不需要这么做的。
 
@@ -209,38 +227,26 @@ class Solution:
 ```
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        L, n = len(needle), len(haystack)
-        if L == 0:
+        m,n=len(haystack),len(needle)
+        if n==0:
             return 0
-
-        pn = 0
-        while pn < n - L + 1:
-            # find the position of the first needle character
-            # in the haystack string
-            while pn < n - L + 1 and haystack[pn] != needle[0]:
-                pn += 1
-            
-            # compute the max match string
-            curr_len = pL = 0
-            while pL < L and pn < n and haystack[pn] == needle[pL]:
-                pn += 1
-                pL += 1
-                curr_len += 1
-            
-            # if the whole needle string is found,
-            # return its start position
-            if curr_len == L:
-                return pn - L
-            
-            # otherwise, backtrack
-            pn = pn - curr_len + 1
-            
+        p1=0
+        while p1<m-n+1:
+            while p1<m-n+1 and haystack[p1] != needle[0]:
+                p1+=1
+            curr=p2=0
+            while p1<m and p2<n and haystack[p1]==needle[p2]:
+                p1+=1
+                p2+=1
+                curr+=1
+            if curr==n:
+                return p1-n
+            p1=p1-curr+1
         return -1
 ```
 
-？？？题解三（KMP）：
+？？？题解三|KMP：
 https://leetcode-cn.com/problems/implement-strstr/solution/kmphua-48xiao-shi-kan-dong-liao-kmpxiang-rang-ni-z/
-
 
 https://www.bilibili.com/video/BV1Px411z7Yo?from=search&seid=13225444196686531503
 https://www.bilibili.com/video/BV1hW411a7ys/?spm_id_from=333.788.videocard.0
@@ -265,7 +271,7 @@ class Solution:
     def getNext(self,needle):
         next=[0]*len(needle)
         next[0]=-1
-        print(next)
+        # print(next)
         i=0
         j=-1
         while i<len(needle)-1:
@@ -286,6 +292,183 @@ class Solution:
         return i
 ```
 
+### 30. 串联所有单词的子串
+    链接：https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/
+
+    给定一个字符串 s 和一些长度相同的单词 words。找出 s 中恰好可以由 words 中所有单词串联形成的子串的起始位置。
+
+    注意子串要与 words 中的单词完全匹配，中间不能有其他字符，但不需要考虑 words 中单词串联的顺序。
+
+    示例 1：
+
+    输入：
+      s = "barfoothefoobarman",
+      words = ["foo","bar"]
+    输出：[0,9]
+    解释：
+    从索引 0 和 9 开始的子串分别是 "barfoo" 和 "foobar" 。
+    输出的顺序不重要, [9,0] 也是有效答案。
+    示例 2：
+
+    输入：
+      s = "wordgoodgoodgoodbestword",
+      words = ["word","good","best","word"]
+    输出：[]
+
+题解一|逐字母前进：
+
+    时间复杂度：O(m*n)
+```
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        ans=[]
+        if not s or not words:
+            return ans
+
+        word_hash={}
+        for each in words:
+            word_hash[each]=word_hash.get(each,0)+1
+
+        s_len,w_len=len(s),len(words[0])
+        n=w_len * len(words) # 符合要求的子串长度
+        
+        for i in range(s_len-n+1):
+            res_hash=word_hash.copy()
+            j=i+w_len
+            while s[j-w_len:j] in res_hash and res_hash[s[j-w_len:j]]>0:
+                res_hash[s[j-w_len:j]]-=1
+                j+=w_len
+            if sum(res_hash.values())==0:
+                ans.append(i)
+        return ans
+```
+
+```
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        ans=[]
+        if not s or not words:
+            return ans
+
+        word_hash={}
+        for each in words:
+            word_hash[each]=word_hash.get(each,0)+1
+
+        s_len,w_len=len(s),len(words[0])
+        n=w_len * len(words) # 符合要求的子串长度
+        
+        for i in range(s_len-n+1):
+            tmp=s[i:i+n]
+            res_hash={}
+            for j in range(0,n,w_len):
+                res_hash[tmp[j:j+w_len]]=res_hash.get(tmp[j:j+w_len],0)+1
+            if word_hash==res_hash:
+                ans.append(i)
+        return ans
+```
+
+题解二|逐单词前进
+
+```
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        ans=[]
+        if not words:
+            return ans
+
+        word_hash={}
+        for each in words:
+            word_hash[each]=word_hash.get(each,0)+1
+
+        s_len,w_len=len(s),len(words[0])
+        n=w_len * len(words) # 符合要求的子串长度
+        
+        for offset in range(w_len):
+            tmp_hash={}
+            for i in range(offset,offset+n-w_len,w_len):
+                tmp_hash[s[i:i+w_len]]=tmp_hash.get(s[i:i+w_len],0)+1
+            for begin in range(offset,s_len-n+1,w_len):
+                tmp_hash[s[begin+n-w_len:begin+n]]=tmp_hash.get(s[begin+n-w_len:begin+n],0)+1
+                if tmp_hash==word_hash:
+                    ans.append(begin)
+                tmp_hash[s[begin:begin+w_len]]-=1
+                if tmp_hash[s[begin:begin+w_len]]==0:
+                    del tmp_hash[s[begin:begin+w_len]]
+        return ans
+
+```
+
+
+```
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        from collections import Counter
+        ans=[]
+        if not s or not words:
+            return ans
+
+        word_hash=Counter(words)
+
+        s_len,w_len=len(s),len(words[0])
+        n=w_len * len(words) # 符合要求的子串长度
+        
+        for i in range(w_len):
+            cnt=0
+            left,right=i,i
+            cur_hash=Counter()
+            while right+w_len <= s_len:
+                each=s[right:right+w_len]
+                right+=w_len
+                cur_hash[each]+=1
+                cnt+=1
+                print(cur_hash)
+                while cur_hash[each] > word_hash[each]:
+                    tmp=s[left:left+w_len]
+                    left+=w_len
+                    cur_hash[tmp]-=1
+                    cnt-=1
+                if cnt==len(words):
+                    ans.append(left)
+        return ans
+```
+
+优化：
+```
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        from collections import Counter
+        ans=[]
+        if not s or not words:
+            return ans
+
+        word_hash=Counter(words)
+
+        s_len,w_len=len(s),len(words[0])
+        n=w_len * len(words) # 符合要求的子串长度
+        
+        for i in range(w_len):
+            cnt=0
+            left,right=i,i
+            cur_hash=Counter()
+            while right+w_len <= s_len:
+                each=s[right:right+w_len]
+                right+=w_len
+                if each not in words:
+                    left=right
+                    cur_hash.clear()
+                    cnt=0
+                else:
+                    cur_hash[each]+=1
+                    cnt+=1
+                    while cur_hash[each] > word_hash[each]:
+                        tmp=s[left:left+w_len]
+                        left+=w_len
+                        cur_hash[tmp]-=1
+                        cnt-=1
+                    if cnt==len(words):
+                        ans.append(left)
+        return ans
+```
 
 ### 76.最小覆盖子串
     链接：https://leetcode-cn.com/problems/minimum-window-substring/
@@ -301,7 +484,38 @@ class Solution:
     如果 S 中不存这样的子串，则返回空字符串 ""。
     如果 S 中存在这样的子串，我们保证它是唯一的答案。
 
-题解一（滑动窗口）：
+题解一|滑动窗口|万能模版：
+
+```
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        from collections import defaultdict
+        lookup=defaultdict(int)
+        for each in t:
+            lookup[each]+=1
+        left,right=0,0
+        count=len(t)
+        min_len=float('inf')
+        res=''
+
+        while right<len(s):
+            if lookup[s[right]]>0:
+                count-=1
+            lookup[s[right]]-=1
+            right+=1
+            while count==0:
+                if min_len>right-left:
+                    min_len=right-left
+                    res=s[left:right]
+                if lookup[s[left]]==0:
+                    count+=1
+                lookup[s[left]]+=1
+                left+=1
+        return res
+
+```
+
+题解一|滑动窗口：
 
     保证窗口(队列)字符串含有t中字符的个数大于等于t里相应元素个数
 ```
@@ -353,4 +567,79 @@ class Solution:
                 start+=1
         return res
 
+```
+
+### 159. 至多包含两个不同字符的最长子串
+
+    给定一个字符串 s ，找出 至多 包含两个不同字符的最长子串 t 。
+
+    示例 1:
+
+    输入: "eceba"
+    输出: 3
+    解释: t 是 "ece"，长度为3。
+    1
+    2
+    3
+    示例 2:
+
+    输入: "ccaabbb"
+    输出: 5
+    解释: t 是 "aabbb"，长度为5。
+
+题解一|滑动窗口|万能模版：
+
+```
+class Solution:
+    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:
+        from collections import defaultdict
+        lookup=defaultdict(int)
+        left,right=0,0
+        res=0
+        count=0
+        while right<len(s):
+            if lookup[s[right]]==0:
+                count+=1
+            lookup[s[right]]+=1
+            right+=1
+            while count>2:
+                if lookup[s[left]]==1:
+                    count-=1
+                lookup[s[left]]-=1
+                left+=1
+            res=max(res,right-left)
+            return res
+```
+
+### 340. 至多包含 K 个不同字符的最长子串
+
+    给定一个字符串 s ，找出 至多 包含 k 个不同字符的最长子串 T。
+
+    示例1：
+
+    输入: s = "eceba", k = 2
+    输出: 3
+    解释: 则 T 为 "ece"，所以长度为 3。
+
+题解一|滑动窗口|万能模版：
+```
+class Solution:
+    def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        from collections import defaultdict
+        lookup=defaultdict(int)
+        left,right=0,0
+        res=0
+        count=0
+        while right < len(s):
+            lookup[s[right]]==0:
+                count+=1
+            lookup[s[right]]+=1
+            right+=1
+            while count > k:
+                if lookup[s[left]]==1:
+                    count-=1
+                lookup[s[left]]-=1
+                left+=1
+            res=max(res,right-left)
+        return res
 ```

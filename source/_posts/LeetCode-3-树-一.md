@@ -25,7 +25,12 @@ categories:
 
     输出: [1,3,2]
     进阶: 递归算法很简单，你可以通过迭代算法完成吗？
-题解一（递归）：
+
+题解一|递归：
+
+时间复杂度：O(n)，其中 n 为二叉树节点的个数。二叉树的遍历中每个节点会被访问一次且只会被访问一次。
+空间复杂度：O(n)。空间复杂度取决于递归的栈深度，而栈深度在二叉树为一条链的情况下会达到 O(n) 的级别。
+
 ```
 # Definition for a binary tree node.
 # class TreeNode:
@@ -55,7 +60,8 @@ class Solution:
             return [] 
         return self.inorderTraversal(root.left) + [root.val] + self.inorderTraversal(root.right)
 ```
-题解二（迭代）:
+题解二|迭代:
+
 ![inorder](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/inorder.png)
 
 ```
@@ -145,7 +151,7 @@ class Solution:
     def build(self,start,end):
         # 结束条件
         if start>end:
-            return [None,]
+            return [None]
         
         trees=[]
         for i in range(start,end+1):
@@ -177,7 +183,9 @@ class Solution:
          3     2     1      1   3      2
         /     /       \                 \
        2     1         2                 3
-题解一（动态规划）:
+
+题解一|动态规划:
+
 二叉树定义：
 
 二叉查找树（Binary Search Tree），（又：二叉搜索树，二叉排序树）它或者是一棵空树，或者是具有下列性质的二叉树： 若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值； 若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值； 它的左、右子树也分别为二叉排序树。
@@ -334,8 +342,8 @@ class Solution:
 题解三|中序遍历:
     中序遍历[1,2,3]，检查 inorder 中的每个元素是否小于下一个。
 
-    时间复杂度 : 最坏情况下（树为二叉搜索树或破坏条件的元素是最右叶结点）为 {O}(N)。
-    空间复杂度 : {O}(N) 用于存储 stack。
+    时间复杂度 : 最坏情况下（树为二叉搜索树或破坏条件的元素是最右叶结点）为 O(N)。
+    空间复杂度 : O(N) 用于存储 stack。
 
 ```
 # Definition for a binary tree node.
@@ -679,7 +687,7 @@ class Solution:
         return helper(root.left,root.right)
 ```
 
-题解二（迭代）：
+题解二|迭代：
 ```
 # Definition for a binary tree node.
 # class TreeNode:
@@ -1071,7 +1079,8 @@ class Solution:
 
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
-        if not inorder:
+        if not inorder or not preorder:
+        # if not inorder: # 只能是判断inorder，而不能是preorder，原因应该是preorder.pop(0)操作造成的。
             return
         root=TreeNode(preorder.pop(0))
         i=inorder.index(root.val)
@@ -1093,6 +1102,7 @@ class Solution:
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
         if not inorder:
+        # if not preorder:
             return
         # 前序遍历第一个值为根节点
         root=TreeNode(preorder[0])
@@ -1151,6 +1161,7 @@ class Solution:
 class Solution:
     def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode: 
         if len(inorder) == 0:
+        #if not inorder or not postorder:
             return None
         
         # 后序遍历最后一个节点为根节点
@@ -1279,7 +1290,7 @@ class Solution:
 
 参考文章：https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/solution/jiang-you-xu-shu-zu-zhuan-huan-wei-er-cha-sou-s-15/
 
-题解一|递归+二分：
+题解一|递归|二分：
 
 1、函数作用
 通过上述解题过程我们可以明确该问题的子问题是：构造树的每个节点以及该节点的左右子树。因此，递归函数的作用很明显：
@@ -1403,6 +1414,7 @@ class Solution:
 
 ```
 from random import randint
+
 class Solution:
     def sortedArrayToBST(self, nums: List[int]) -> TreeNode:        
         def helper(left, right):
@@ -1639,7 +1651,6 @@ def minDepth(root):
                 queue.appendleft(cur.right)
         depth+=1
     return depth
-
 ```
 
 ### 114. 二叉树展开为链表
@@ -1813,7 +1824,7 @@ class Solution:
                 return
             l=root.left
             r=root.right
-            while l:
+            while l: # while l and r:也可以
                 l.next=r
                 l=l.right
                 r=r.left
@@ -1987,6 +1998,14 @@ class Solution:
 
 参考：https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/solution/shou-hui-tu-jie-hen-you-ya-de-yi-dao-dfsti-by-hyj8/
 
+
+https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/solution/er-cha-shu-de-zui-da-lu-jing-he-zhu-yao-li-jie-ti-/
+
+关键就是区分：
+
+1. 当前节点最大路径和计算：以当前节点为起点的所有路径和
+2. 当前节点对上一层的贡献：只能选择当前节点的最大的一条路径作为贡献，因为路径节点不可重复
+
 ```
 # Definition for a binary tree node.
 # class TreeNode:
@@ -2003,14 +2022,11 @@ class Solution:
                 return 0
             # 递归计算左右子节点的最大贡献值
             # 只有在最大贡献值大于0时，才回选取对应子节点
-            leftMax=max(0,helper(root.left))
-            rightMax=max(0,helper(root.right))
+            leftMax=max(0,helper(root.left)) # 左孩子贡献
+            rightMax=max(0,helper(root.right)) # 右孩子贡献
 
             # 节点的最大路径和取决于该节点值与该节点的左右节点的最大贡献值
-            price=root.val+leftMax+rightMax  
-
-            # 更新答案
-            self.ans=max(self.ans,price)
+            self.ans=max(self.ans,root.val+leftMax+rightMax) # 更新答案
 
             # 返回节点的最大贡献值
             return root.val+max(leftMax,rightMax)
@@ -2501,7 +2517,7 @@ class Solution(object):
             node,depth=queue.pop()
             if node:
                 max_depth=max(max_depth,depth)
-                right.setdefault(depth,node.val)
+                right.setdefault(depth,node.val) # 和get()类似，setdefault()如果键不存在于字典中，将会添加键并将值设为默认值。
                 queue.append((node.left,depth+1))
                 queue.append((node.right,depth+1))
         return [right[i] for i in range(max_depth+1)]
@@ -2530,8 +2546,8 @@ class Solution(object):
 
 题解一|递归：
 
-时间复杂度：O(N)。
-空间复杂度：O(logN)，其中 d 指的是树的的高度，运行过程中堆栈所使用的空间。
+时间复杂度：O(n)。
+空间复杂度：O(logn)，其中 d 指的是树的的高度，运行过程中堆栈所使用的空间。
 
 ```
 # Definition for a binary tree node.
@@ -2754,6 +2770,31 @@ class Solution:
                 return root.val
             root=root.right
 ```
+
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: TreeNode, k: int) -> int:
+        if not root or not k:
+            return
+        stack=[]
+        while stack or root:
+            if root:
+                stack.append(root)
+                root=root.left
+            else:
+                root=stack.pop()
+                k-=1
+                if not k:
+                    return root.val
+                root=root.right
+```
+
 
 ### 235. 二叉搜索树的最近公共祖先
     链接：https://leetcode-cn.com/problems/
@@ -2991,7 +3032,7 @@ class Solution:
                 if not left and not right:
                     res.append('->'.join(path))
                 path.pop()
-                return True  # 别漏掉
+                return True  # 别漏掉，用来判断left和right的True和False
 
         helper(root,[])
         return res
@@ -3023,6 +3064,156 @@ class Solution:
                 path.pop()
         helper(root,[])
         return res
+```
+
+### 297. 二叉树的序列化与反序列化
+    链接：https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
+
+    序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
+
+    请设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
+
+    示例: 
+
+    你可以将以下二叉树：
+
+        1
+       / \
+      2   3
+         / \
+        4   5
+
+    序列化为 "[1,2,3,null,null,4,5]"
+    提示: 这与 LeetCode 目前使用的方式一致，详情请参阅 LeetCode 序列化二叉树的格式。你并非必须采取这种方式，你也可以采用其他的方法解决这个问题。
+
+    说明: 不要使用类的成员 / 全局 / 静态变量来存储状态，你的序列化和反序列化算法应该是无状态的。
+
+题解一|DFS：
+```
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        if not root:
+            return 'X,'
+        res=''
+        if root:
+            res+=str(root.val)+','
+            res+=self.serialize(root.left)
+            res+=self.serialize(root.right)
+            return res
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        if not root:
+            return 'X,'
+        left=self.serialize(root.left)
+        right=self.serialize(root.right)
+        return str(root.val)+','+left+right
+            
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        data=data.split(',')
+        root=self.buildTree(data)
+        return root
+
+    def buildTree(self,data):
+        val=data.pop(0)
+        if val=='X':
+            return None
+        node=TreeNode(val)
+        node.left=self.buildTree(data)
+        node.right=self.buildTree(data)
+        return node
+        
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
+```
+
+题解二|BFS：
+```
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+from collections import deque
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        if not root:
+            return
+        q=deque()
+        q.append(root)
+        res=''
+        while q:
+            node=q.popleft()
+            if node:
+                res+=str(node.val)+','
+                q.append(node.left)
+                q.append(node.right)
+            else:
+                res+='X,'
+        return res
+            
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        if not data:
+            return
+        data=data.split(',')
+        root=TreeNode(data.pop(0))
+        q=[root]
+        while q:
+            node=q.pop(0)
+            if data:
+                val=data.pop(0)
+                if val != 'X':
+                    node.left=TreeNode(val)
+                    q.append(node.left)
+            if data:
+                val=data.pop(0)
+                if val != 'X':
+                    node.right=TreeNode(val)
+                    q.append(node.right)
+        return root
+            
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
 ```
 
 ### 404. 左叶子之和
@@ -3158,7 +3349,6 @@ class Node:
         self.val = val
         self.children = children
 """
-
 class Solution:
     def levelOrder(self, root: 'Node') -> List[List[int]]:
         if not root:
@@ -3411,6 +3601,7 @@ class Solution:
             if not root:
                 return []
             return inOrder(root.left)+[root.val]+inOrder(root.right)
+
         tmp=inOrder(root)
         res=float('inf')
         for i in range(1,len(tmp)):
@@ -3435,7 +3626,7 @@ class Solution:
                 /   \
               20     13
 
-题解一|递归|后序遍历：
+题解一|递归：
 ```
 class Solution:
     def convertBST(self, root: TreeNode) -> TreeNode:
@@ -3450,7 +3641,8 @@ class Solution:
         helper(root)
         return root
 ```
-题解二|迭代|后序遍历：
+
+题解二|迭代：
 ```
 # Definition for a binary tree node.
 # class TreeNode:
@@ -3738,7 +3930,6 @@ class Solution:
                 helper(i)
         helper(root)
         return res
-
 ```
 
 题解二|迭代：
@@ -4015,6 +4206,63 @@ class Solution:
                     queue.append(node.right)
             res.append(sum(tmp)/len(tmp))
         return res
+```
+
+### 671. 二叉树中第二小的节点
+    链接：https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/
+
+    给定一个非空特殊的二叉树，每个节点都是正数，并且每个节点的子节点数量只能为 2 或 0。如果一个节点有两个子节点的话，那么该节点的值等于两个子节点中较小的一个。
+
+    更正式地说，root.val = min(root.left.val, root.right.val) 总成立。
+
+    给出这样的一个二叉树，你需要输出所有节点中的第二小的值。如果第二小的值不存在的话，输出 -1 。
+
+    示例 1：
+
+    输入：root = [2,2,5,null,null,5,7]
+    输出：5
+    解释：最小的值是 2 ，第二小的值是 5 。
+    示例 2：
+
+    输入：root = [2,2,2]
+    输出：-1
+    解释：最小的值是 2, 但是不存在第二小的值。
+     
+    提示：
+
+    树中节点数目在范围 [1, 25] 内
+    1 <= Node.val <= 231 - 1
+    对于树中每个节点 root.val == min(root.left.val, root.right.val)
+
+题解一：
+```
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def findSecondMinimumValue(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        def helper(root,value):
+            if not root:
+                return -1
+            if root.val > value:
+                return root.val
+            l=helper(root.left,value)
+            r=helper(root.right,value)
+            if l==-1:
+                return r
+            if r==-1:
+                return l
+            return min(l,r)
+        if not root:
+            return -1
+        return helper(root,root.val)
 ```
 
 
