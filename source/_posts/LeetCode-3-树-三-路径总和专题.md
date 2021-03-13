@@ -113,6 +113,7 @@ class Solution:
             if not root.left and not root.right and sum-root.val==0:
                 path+=[root.val]
                 paths.append(path)
+                return 
 
             helper(root.left,sum-root.val,path+[root.val])
             helper(root.right,sum-root.val,path+[root.val])
