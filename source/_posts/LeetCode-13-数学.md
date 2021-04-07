@@ -288,7 +288,9 @@ class Solution:
                 return int(cur)
 ```
 
-### 136. 只出现一次的数字
+### 136.只出现一次的数字
+    链接：https://leetcode-cn.com/problems/single-number/
+
     给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
 
     说明：
@@ -299,41 +301,12 @@ class Solution:
 
     输入: [2,2,1]
     输出: 1
-    示例 2:
+    示例 2:
 
     输入: [4,1,2,1,2]
     输出: 4
 
-题解一|位运算：
-```
-class Solution:
-    def singleNumber(self, nums: List[int]) -> int:
-        return reduce(lambda x,y:x^y,nums)
-```
-
-```
-class Solution:
-    def singleNumber(self, nums: List[int]) -> int:
-        res=0
-        for i in nums:
-            res^=i
-        return res
-```
-
-```
-class Solution(object):
-    def singleNumber(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        ans=nums[0]
-        for i in range(1,len(nums)):
-            ans^=nums[i]
-        return ans
-```
-
-题解二|hash:
+题解一|list：
 ```
 class Solution:
     def singleNumber(self, nums: List[int]) -> int:
@@ -343,9 +316,10 @@ class Solution:
                 temp.append(i)
             else:
                 temp.remove(i)
-        return temp[0]
+        # return temp[0]
+        return temp.pop()
 ```
-
+题解二|hash：
 ```
 class Solution:
     def singleNumber(self, nums: List[int]) -> int:
@@ -359,6 +333,83 @@ class Solution:
             if v==1:
                 return k
 ```
+题解三|位运算：
+
+异或运算有以下三个性质。
+
+    任何数和 0 做异或运算，结果仍然是原来的数，即 a⊕0=a。
+    任何数和其自身做异或运算，结果是 0，即 a⊕a=0。
+    异或运算满足交换律和结合律，即 a⊕b⊕a=b⊕a⊕a=b⊕(a⊕a)=b⊕0=b。
+
+```
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        res=0
+        for i in nums:
+            res^=i
+        return res
+```
+
+```
+from functools import reduce # python2不需要引入
+
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        return reduce(lambda x,y:x^y,nums)
+```
+
+### 137.只出现一次的数字 II
+    链接：https://leetcode-cn.com/problems/single-number-ii/
+
+    给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现了三次。找出那个只出现了一次的元素。
+
+    说明：
+
+    你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+
+    示例 1:
+
+    输入: [2,2,3,2]
+    输出: 3
+    示例 2:
+
+    输入: [0,1,0,1,0,1,99]
+    输出: 99
+
+题解一|hash：
+
+```
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        hash={}
+        for i in nums:
+            if i not in hash:
+                hash[i]=1
+            else:
+                hash[i]+=1
+        for k,v in hash.items():
+            if v!=3:
+                return k
+```
+
+题解二|数学运算：
+
+    3×(a+b+c)−(a+a+a+b+b+b+c)=2c
+
+    时间复杂度：O(N)，遍历输入数组。
+    空间复杂度：O(N)，存储 N/3N/3 个元素的集合。
+
+```
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        return (3*sum(set(nums))-sum(nums))//2
+```
+
+？？？题解三|位运算:
+
+![https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/or.png](https://gypsy-1255824480.cos.ap-beijing.myqcloud.com/blog/or.png)
+
+
 
 ### 166. 分数到小数
     链接：https://leetcode-cn.com/problems/fraction-to-recurring-decimal/

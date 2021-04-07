@@ -693,7 +693,7 @@ class Solution:
     铺垫：先将给定 nums 排序，复杂度为 O(nlogn)
     思路：固定 3 个指针中最左（最小）数字的指针 k，双指针 i，j 分设在数组索引 (k, len(nums))两端，通过双指针交替向中间移动，记录对于每个固定指针 k 的所有满足 nums[k] + nums[i] + nums[j] == 0 的 i,j 组合。
 
-    时间复杂度O(n^2)，空间复杂度O(n)。
+    时间复杂度O(n^2)，空间复杂度O(1)。
 
 ```
 class Solution:

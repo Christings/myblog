@@ -114,7 +114,7 @@ class Solution:
 空间复杂度：O(1)，我们只用了常量级的额外空间。
 
 ```
-# Definition for singly-linked list.
+# Definition for singly-linked list.a
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
