@@ -9,7 +9,7 @@ categories:
 
 ## 十、图
 
-### ???133.克隆图
+### 133.克隆图
     链接：https://leetcode-cn.com/problems/clone-graph/
 
     给你无向 连通 图中一个节点的引用，请你返回该图的 深拷贝（克隆）。
@@ -22,6 +22,7 @@ categories:
     }
 
 题解一|dfs|hash：
+
 思路：
 
 1、使用一个哈希表存储所有已被访问和克隆的节点。哈希表中的 key 是原始图中的节点，value 是克隆图中的对应节点。
@@ -58,14 +59,8 @@ class Solution:
         return dfs(node)
 ```
 题解二|bfs：
+
 ```
-"""
-# Definition for a Node.
-class Node:
-    def __init__(self, val = 0, neighbors = []):
-        self.val = val
-        self.neighbors = neighbors
-"""
 """
 # Definition for a Node.
 class Node:
@@ -179,6 +174,46 @@ class Solution:
         return count
 ```
 
+```
+class Solution:
+    def __init__(self) -> None:
+        self.directions=[(1,0),(-1,0),(0,1),(0,-1)]
+
+    def inArea(self,i,j,rows,cols):
+        return i>=0 and i<rows and j>=0 and j<cols
+
+    def numIslands(self, grid: List[List[str]]) -> int:
+        if not grid or not grid[0]:
+            return 0
+            
+        m,n=len(grid),len(grid[0])
+
+        count=0
+
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]=='1':
+                    grid[i][j]=='2'
+                    self.bfs(grid,i,j,m,n)
+                    count+=1
+        return count
+
+    def bfs(self,grid,i,j,rows,cols):
+        queue=[(i,j)]
+        while queue:
+            front=queue.pop(0)
+            x=front[0]
+            y=front[1]
+            for direction in self.directions:
+                newx=x+direction[0]
+                newy=y+direction[1]
+                if self.inArea(newx,newy,rows,cols) and grid[newx][newy]=='1':
+                    grid[newx][newy]='2'
+                    queue.append((newx,newy))
+        return True
+```
+
+
 ### 463. 岛屿的周长
     链接：https://leetcode-cn.com/problems/island-perimeter/
 
@@ -271,6 +306,7 @@ class Solution:
                 return 0
             grid[i][j]=2
             return 1+dfs(grid,i+1,j)+dfs(grid,i-1,j)+dfs(grid,i,j+1)+dfs(grid,i,j-1)
+            
         m=len(grid)
         n=len(grid[0])
         area=0
@@ -282,6 +318,93 @@ class Solution:
                     tmp=dfs(grid,i,j)
                     area=max(area,tmp)
         return area
+```
+
+题解二|bfs：
+
+时间复杂度：O(m*n)，这里 m 表示二维矩阵的行数、n 表示二维矩阵的列数，最坏情况下每一个单元格都会被遍历一次；
+空间复杂度：O(m)*n，数组 visited 的大小为 
+m×n，队列的大小最多为 m*n。
+
+```
+class Solution:
+    def __init__(self) -> None:
+        self.directions=[(0,1),(0,-1),(1,0),(-1,0)]
+
+    def inArea(self,i,j,rows,cols):
+        return i>=0 and i<rows and j>=0 and j<cols
+
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        m,n=len(grid),len(grid[0])
+        visited=[[False]*n for i in range(m)]
+        maxArea=0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==1 and not visited[i][j]:
+                    maxArea=max(maxArea,self.bfs(grid,i,j,m,n,visited))
+        return maxArea
+    
+    def bfs(self,grid,i,j,rows,cols,visited):
+        count=0
+        queue=[(i,j)]
+        visited[i][j]=True
+        while queue:
+            front=queue.pop(0)
+            x=front[0]
+            y=front[1]
+            count+=1
+            for direction in self.directions:
+                newx=x+direction[0]
+                newy=y+direction[1]
+
+                if self.inArea(newx,newy,rows,cols) and grid[newx][newy] == 1 and not visited[newx][newy]:
+                    queue.append((newx,newy))
+                    visited[newx][newy]=True
+        return count
+```
+
+转换为一维向量：
+
+```
+class Solution:
+    def __init__(self) -> None:
+        self.directions=[(0,1),(0,-1),(1,0),(-1,0)]
+
+    def inArea(self,i,j,rows,cols):
+        return i>=0 and i<rows and j>=0 and j<cols
+
+    def getIndex(self,x,y,cols):
+        return x*cols+y
+
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        m,n=len(grid),len(grid[0])
+        visited=[False]* (m*n)
+        maxArea=0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==1 and not visited[self.getIndex(i,j,n)]:
+                    maxArea=max(maxArea,self.bfs(grid,i,j,m,n,visited))
+        return maxArea
+    
+    def bfs(self,grid,i,j,rows,cols,visited):
+        count=0
+        index=self.getIndex(i,j,cols)
+        queue=[index]
+        visited[index]=True
+        while queue:
+            front=queue.pop(0)
+            x=front//cols
+            y=front%cols
+            count+=1
+            for direction in self.directions:
+                newx=x+direction[0]
+                newy=y+direction[1]
+                newindex=self.getIndex(newx,newy,cols)
+
+                if self.inArea(newx,newy,rows,cols) and grid[newx][newy] == 1 and not visited[newindex]:
+                    queue.append(newindex)
+                    visited[newindex]=True
+        return count
 ```
 
 ### 827. 最大人工岛

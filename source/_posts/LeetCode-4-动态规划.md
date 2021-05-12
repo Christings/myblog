@@ -2049,9 +2049,8 @@ class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         if not nums:
             return 0
-        dp=[]
+        dp=len(nums)*[1]
         for i in range(len(nums)):
-            dp.append(1)
             for j in range(i):
                 if nums[i]>nums[j]:
                     dp[i]=max(dp[i],dp[j]+1)
@@ -2068,7 +2067,7 @@ class Solution:
 
     设 res 为 tails 当前长度，代表直到当前的最长上升子序列长度。设 j∈[0,res)，考虑每轮遍历 nums[k] 时，通过二分法遍历 [0,res) 列表区间，找出 nums[k]的大小分界点，会出现两种情况：
 
-        区间中存在 tails[i] > nums[k] ： 将第一个满足 tails[i] > nums[k]执行 tails[i] = nums[k] ；因为更小的 nums[k]后更可能接一个比它大的数字。
+        区间中存在 tails[i] > nums[k] ： 将第一个满足 tails[i] > nums[k]执行 tails[i] = nums[k] ；因���更小的 nums[k]后更可能接一个比它大的数字。
         
         区间中不存在 tails[i] > nums[k] ： 意味着 nums[k]可以接在前面所有长度的子序列之后，因此肯定是接到最长的后面（长度为 res），新子序列长度为 res + 1。
 
@@ -2108,28 +2107,27 @@ https://mp.weixin.qq.com/s/02o_OPgePjaz3dXnw9TA1w
 ```
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
         n=len(nums)
-        top=n*[0]
-        piles=0
+        dp=n*[0]
+        count=0
         for i in range(n):
-            poker=nums[i]
-            left,right=0,piles
+            left,right=0,count
             while left<right:
-                mid=left+(right-left)//2
-                if top[mid]>poker:
+                mid=left+((right-left)>>1)
+                if top[mid]>=nums[i]:
                     right=mid
-                elif top[mid]<poker:
-                    left=mid+1
                 else:
-                    right=mid
+                    left=mid+1
 
-            if left==piles:
-                piles+=1
-            top[left]=poker
-        return piles
+            if left==count:
+                count+=1
+            top[left]=nums[i]
+        return count
 ```
 
-题解三|贪心|二分查找：
+题解三|二分查找：
 
 时间复杂度：O(nlogn)。数组 nums 的长度为 n，我们依次用数组中的元素去更新 dp 数组，而更新 do 数组时需要进行 O(logn) 的二分搜索，所以总时间复杂度为 O(nlogn)。
 

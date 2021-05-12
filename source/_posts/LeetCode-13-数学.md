@@ -193,7 +193,7 @@ class Solution(object):
     说明: 8 的平方根是 2.82842..., 
          由于返回类型是整数，小数部分将被舍去。
 
-题解一|二分法):
+题解一|二分法:
 
 思路分析：使用二分法搜索平方根的思想很简单，就类似于小时候我们看的电视节目中的“猜价格”游戏，高了就往低了猜，低了就往高了猜，范围越来越小。因此，使用二分法猜算术平方根就很自然。
 
@@ -201,6 +201,23 @@ class Solution(object):
 
 时间复杂度：O(logn)
 空间复杂度：O(1)
+
+```
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        left,right=1,x//2+1
+        while left<=right:
+            mid=left+(right-left)//2
+            square=mid*mid
+            if square==x:
+                return mid
+            elif square>x:
+                right=mid-1
+            else:
+                left=mid+1
+        return right
+        
+```
 
 ```
 class Solution:

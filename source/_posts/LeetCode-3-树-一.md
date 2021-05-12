@@ -870,6 +870,35 @@ class Solution:
         return res
 ```
 
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return []
+        ans=[]
+        queue=[root]
+        while queue:
+            n=len(queue)
+            tmp=[]
+            for i in range(n):
+                node=queue.pop(0)
+                tmp.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            ans.append(tmp)
+        return ans
+```
+
+
+
 ### 103.二叉树的锯齿形层次遍历
     链接：https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/
 
@@ -1606,6 +1635,21 @@ class Solution:
             return min(left,right)+1
 ```
 
+```
+class Solution:
+    def minDepth(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        if not root.left and not root.right:
+            return 1
+        l=self.minDepth(root.left)
+        r=self.minDepth(root.right)
+        
+        if not root.left or not root.right:
+            return l+r+1
+        return min(l,r)+1
+```
+
 题解二|层次遍历:
 ```
 # Definition for a binary tree node.
@@ -1649,6 +1693,49 @@ def minDepth(root):
                 queue.appendleft(cur.left)
             if cur.right:
                 queue.appendleft(cur.right)
+        depth+=1
+    return depth
+```
+
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def minDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        queue=[(root,1)]
+        while queue:
+            node,dep=queue.pop(0)
+            if not node.left and not node.right:
+                return dep
+            if node.left:
+                queue.append((node.left,dep+1))
+            if node.right:
+                queue.append((node.right,dep+1))
+```
+
+```
+def minDepth(root):
+    if not root:
+        return 0
+    queue=[root]
+    depth=1
+    while queue:
+        size=len(queue)
+        for i in range(size):
+            node=queue.pop(0)
+            if not node.left and not node.right:
+                return depth
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
         depth+=1
     return depth
 ```
@@ -2072,6 +2159,9 @@ class Solution:
     从根到叶子节点路径 4->0 代表数字 40.
     因此，数字总和 = 495 + 491 + 40 = 1026.
 
+思路：
+二叉树的每条从根节点到叶子节点的路径都代表一个数字。其实，每个节点都对应一个数字，等于其父节点对应的数字乘以 10 再加上该节点的值（这里假设根节点的父节点对应的数字是 00）。只要计算出每个叶子节点对应的数字，然后计算所有叶子节点对应的数字之和，即可得到结果。可以通过深度优先搜索和广度优先搜索实现。
+
 题解一|递归：
 ```
 # Definition for a binary tree node.
@@ -2099,6 +2189,56 @@ class Solution:
         return ans
 ```
 
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sumNumbers(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        return self.dfs(root,0)
+    def dfs(self,root,ans):
+        if not root:
+            return 0
+        ans=10*ans+root.val
+        if not root.left and not root.right:
+            return ans
+        return self.dfs(root.left,ans)+self.dfs(root.right,ans)
+```
+
+题解二|bfs:
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sumNumbers(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        ans=0
+        queue=[(root,root.val)]
+        while queue:
+            node,val=queue.pop(0)
+            left,right=node.left,node.right
+            if not left and not right:
+                ans+=val
+            else:
+                if left:
+                    queue.append((left,val*10+left.val))
+                if right:
+                    queue.append((right,val*10+right.val))
+        return ans
+
+
+
+```
 ### 144.二叉树的前序遍历
     链接：https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
 
@@ -3270,6 +3410,22 @@ class Solution:
         sum += self.sumOfLeftLeaves(root.right)
         return sum
 ```
+
+```
+class Solution:
+    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        def helper(root):
+            if not root:
+                return 0
+            if root.left and not root.left.left and not root.left.right: 
+                return root.left.val+helper(root.right)
+            return helper(root.left)+helper(root.right)
+
+        helper(root)
+```
+
 题解二|迭代：
 ```
 # Definition for a binary tree node.
@@ -3286,11 +3442,12 @@ class Solution:
         stack=[root]
         res=0
         while stack:
-            node=stack.pop()
-            if node:
-                if node.left and not node.left.left and not node.left.right:
-                    res+=node.left.val
+            node=stack.pop(0)
+            if node.left and not node.left.left and not node.left.right:
+                res+=node.left.val
+            if node.left:
                 stack.append(node.left)
+            if node.right:
                 stack.append(node.right)
         return res
 ```
