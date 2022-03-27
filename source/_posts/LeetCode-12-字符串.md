@@ -90,7 +90,7 @@ class Solution:
         return ans
 ```
 
-题解二：
+题解二|中心扩展：
 
     每个字母当成回文串的中心
     考虑两种情况:回文串的长度为奇数或者偶数情况。
@@ -111,6 +111,29 @@ class Solution:
             helper(i,i)
             helper(i,i+1) # 解决case为"cbbd",即解决回文串为偶数的情况
         return self.res
+```
+
+```
+def expandAroundCenter(s, left, right):
+    while left >= 0 and right < len(s) and s[left] == s[right]:
+        left -= 1
+        right += 1
+    return left + 1, right - 1
+
+
+def longestPalindrome(s: str) -> str:
+    start, end = 0, 0
+    for i in range(len(s)):
+        left1, right1 = expandAroundCenter(s, i, i)
+        print("a", left1, right1)
+        left2, right2 = expandAroundCenter(s, i, i + 1)
+        print("b", left2, right2)
+        if right1 - left1 > end - start:
+            start, end = left1, right1
+        if right2 - left2 > end - start:
+            start, end = left2, right2
+    return s[start: end + 1]
+
 ```
 
 ?题解三：

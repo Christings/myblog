@@ -908,6 +908,27 @@ class Solution:
         return head
 ```
 
+题解二｜一次遍历：
+
+```
+def reverseBetween(self,head, m, n):
+
+        if not head:
+            return
+        dummy = ListNode(-1)
+        dummy.next = head
+        pre = dummy
+        for _ in range(m-1):
+            pre = pre.next
+        cur = pre.next
+        for _ in range(n-m):
+            nxt=cur.next
+            cur.next=nxt.next
+            nxt.next=pre.next # 注意：这里不能使用cur，因为整个过程pre和cur不会移动。
+            pre.next=nxt
+        return dummy.next
+```
+
 ### 141.环形链表
     链表：https://leetcode-cn.com/problems/linked-list-cycle
 
